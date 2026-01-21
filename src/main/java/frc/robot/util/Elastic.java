@@ -14,14 +14,10 @@ import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringTopic;
 
 public final class Elastic {
-  private static final StringTopic notificationTopic =
-      NetworkTableInstance.getDefault().getStringTopic("/Elastic/RobotNotifications");
-  private static final StringPublisher notificationPublisher =
-      notificationTopic.publish(PubSubOption.sendAll(true), PubSubOption.keepDuplicates(true));
-  private static final StringTopic selectedTabTopic =
-      NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
-  private static final StringPublisher selectedTabPublisher =
-      selectedTabTopic.publish(PubSubOption.keepDuplicates(true));
+  private static final StringTopic notificationTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/RobotNotifications");
+  private static final StringTopic selectedTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
+  private static final StringPublisher notificationPublisher = notificationTopic.publish(PubSubOption.sendAll(true), PubSubOption.keepDuplicates(true));
+  private static final StringPublisher selectedTabPublisher = selectedTabTopic.publish(PubSubOption.keepDuplicates(true));
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   /**
@@ -105,13 +101,7 @@ public final class Elastic {
      * @param width the width of the notification display area
      * @param height the height of the notification display area, inferred if below zero
      */
-    public Notification(
-        NotificationLevel level,
-        String title,
-        String description,
-        int displayTimeMillis,
-        double width,
-        double height) {
+    public Notification(NotificationLevel level, String title, String description, int displayTimeMillis, double width, double height) {
       this.level = level;
       this.title = title;
       this.displayTimeMillis = displayTimeMillis;
@@ -139,8 +129,7 @@ public final class Elastic {
      * @param description the descriptive text of the notification
      * @param displayTimeMillis the display time in milliseconds
      */
-    public Notification(
-        NotificationLevel level, String title, String description, int displayTimeMillis) {
+    public Notification(NotificationLevel level, String title, String description, int displayTimeMillis) {
       this(level, title, description, displayTimeMillis, 350, -1);
     }
 
@@ -154,8 +143,7 @@ public final class Elastic {
      * @param width the width of the notification display area
      * @param height the height of the notification display area, inferred if below zero
      */
-    public Notification(
-        NotificationLevel level, String title, String description, double width, double height) {
+    public Notification(NotificationLevel level, String title, String description, double width, double height) {
       this(level, title, description, 3000, width, height);
     }
 

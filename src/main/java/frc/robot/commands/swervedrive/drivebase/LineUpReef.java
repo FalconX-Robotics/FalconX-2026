@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
@@ -16,10 +17,6 @@ public class LineUpReef extends Command {
         LEFT,
         RIGHT
     }
-    // private static enum State {
-    //     DRIVE,
-    //     CORRECT
-    // }
 
     private SwerveSubsystem swerve;
     private Vision vision;
@@ -49,7 +46,7 @@ public class LineUpReef extends Command {
             Rotation2d rot = Rotation2d.fromDegrees(tagPose.getRotation().getDegrees() + 180);
             targetPose = new Pose2d(x, y, rot);
             goToTarget = swerve.driveToPose(targetPose).andThen(getAdjustCommand(id, side));
-            goToTarget.schedule();
+            CommandScheduler.getInstance().schedule(goToTarget);
             SmartDashboard.putNumber("Line Up Reef/Pose X", targetPose.getX());
             SmartDashboard.putNumber("Line Up Reef/Pose Y", targetPose.getY());
             SmartDashboard.putNumber("Line Up Reef/Pose Angle", targetPose.getRotation().getDegrees());
@@ -69,6 +66,7 @@ public class LineUpReef extends Command {
                     currentOffset = new Pose2d(currentOffset.getX() - 0.5, currentOffset.getY() - 0.5, currentOffset.getRotation());
                     break;
             }
+
             double xSpeed = -currentOffset.getX() / 3;
             double ySpeed = -currentOffset.getY() / 3;
             double rotSpeed = -currentOffset.getRotation().getRadians()/3;
@@ -85,6 +83,7 @@ public class LineUpReef extends Command {
         super.end(interrupted);
         SmartDashboard.putBoolean("Line Up Reef/Running", false);
     }
+    
     @Override
     public boolean isFinished() {
         System.out.println(goToTarget.isFinished());

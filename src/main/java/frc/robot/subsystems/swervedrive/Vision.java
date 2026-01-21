@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
@@ -31,7 +30,6 @@ public class Vision {
     private boolean hasFieldLayout = false;
 
     private VisionSystemSim visionSim = new VisionSystemSim("Limelight");
-    private TargetModel aprilTag = TargetModel.kAprilTag36h11;
     private SimCameraProperties cameraSimProperties = new SimCameraProperties();
     private PhotonCameraSim cameraSim;
     private SwerveSubsystem swerve;
@@ -45,8 +43,9 @@ public class Vision {
             } else {
                 this.fieldLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-reefscape.json");
             }
-            
-        } catch (Exception e) {System.err.println("April tag layout file not found");}
+        } catch (Exception e) {
+            System.err.println("April tag layout file not found");
+        }
 
         if (Robot.isSimulation()) {
             visionSim.addAprilTags(this.fieldLayout);
@@ -67,19 +66,26 @@ public class Vision {
     // Robot relative Pose
     public Optional<Transform3d> getTagPose(int id) {
         Optional<PhotonPipelineResult> result = getLastResult();
-        if (result.isEmpty()) return Optional.empty();
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+
         List<PhotonTrackedTarget> targets = result.get().getTargets();
         for (PhotonTrackedTarget target : targets) {
             if (target.getFiducialId() == id) {
                 return Optional.of(target.getBestCameraToTarget());
             }
         }
+
         return Optional.empty();
     }
 
     public Optional<Pose2d> getFieldPose() {
         Optional<PhotonPipelineResult> result = getLastResult();
-        if (result.isEmpty()) return Optional.empty();
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+
         Optional<MultiTargetPNPResult> multiTagResult = result.get().getMultiTagResult();
         SmartDashboard.putBoolean("Has Mutitag Result", hasFieldLayout);
         if (multiTagResult.isPresent()) {
@@ -89,17 +95,17 @@ public class Vision {
             return Optional.of(new Pose2d(robotTransform.getX(), robotTransform.getY(), robotTransform.getRotation().toRotation2d()));
 
         }
+
         return Optional.empty();
     }
     public Optional<PhotonPipelineResult> getLastResult() {
-        PhotonPipelineResult result = camera.getLatestResult();
-        return Optional.ofNullable(result);
-        // return camera.getLatestResult()
-        // var results = camera.getAllUnreadResults();
-        // if (results.size() == 0) return Optional.empty();
-        // return Optional.of(results.get(results.size()-1));
+        List<PhotonPipelineResult> results = camera.getAllUnreadResults();
+        return results.size() > 0 ? Optional.of(results.get(results.size() - 1)) : null;
     }
-    public AprilTagFieldLayout getFieldLayout() {return fieldLayout;}
+
+    public AprilTagFieldLayout getFieldLayout() {
+        return fieldLayout;
+    }
 
     public void updateSimulation() {
         visionSim.update(swerve.getPose());
@@ -109,7 +115,10 @@ public class Vision {
     
     public boolean linedUpReef() {
         boolean hasEllipse = SmartDashboard.getBoolean("NT_Vision/has_ellipse", false);
-        if (!hasEllipse) return false;
+        if (!hasEllipse) {
+            return false;
+        }
+
         double ellipseX = SmartDashboard.getNumber("NT_Vision/ellipse_loc_x", 0.0);
         double ellipseY = SmartDashboard.getNumber("NT_Vision/ellipse_loc_y", 0.0);
         return MathUtil.isNear(0, ellipseX, 15) && MathUtil.isNear(0, ellipseY, 15);

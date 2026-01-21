@@ -8,9 +8,11 @@ public class ChangeSpeed extends Command{
     public ChangeSpeed(SwerveSubsystem swerve) {
         this.swerve = swerve;
     }
+
     public void execute() {
         swerve.speedMode = true;
     }
+    
     @Override
     public void end(boolean interrupted) {
         swerve.speedMode = false;

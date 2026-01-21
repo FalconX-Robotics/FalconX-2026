@@ -11,7 +11,6 @@ import frc.robot.subsystems.swervedrive.Vision;
 import swervelib.SwerveController;
 
 public class PointToTarget extends Command {
-
     private SwerveSubsystem swerve;
     private final int id = 4;
     private Vision vision;
@@ -28,7 +27,7 @@ public class PointToTarget extends Command {
 
     public void execute() {
         Optional<Transform3d> cameraToTag = vision.getTagPose(id);
-        if(cameraToTag.isPresent() && !isTurning) {
+        if (cameraToTag.isPresent() && !isTurning) {
             System.out.println("Sees target");
             isTurning = true;
             System.out.println("point to target");
@@ -36,12 +35,9 @@ public class PointToTarget extends Command {
             // targetAngle = targetYaw - swerve.getYaw().getRadians();
             targetAngle = targetYaw + Math.PI;
             targetAngle = ((targetAngle + Math.PI)%(Math.PI*2)-Math.PI);
-            ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(0, 0,
-                                                         new Rotation2d(targetAngle));
+            ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(0, 0, new Rotation2d(targetAngle));
             swerve.drive(SwerveController.getTranslation2d(desiredSpeeds), desiredSpeeds.omegaRadiansPerSecond/2, true);
         }
-        // double[] tagRotation = {cameraToTag.get().getRotation().getX(),cameraToTag.get().getRotation().getY(),cameraToTag.get().getRotation().getZ()};
-        // SmartDashboard.putNumberArray("tag rotation",    );
     }
 
     @Override

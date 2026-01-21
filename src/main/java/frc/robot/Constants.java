@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
-// import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.Util;
 import swervelib.math.Matter;
@@ -29,9 +28,9 @@ public final class Constants
 {
 
   public static final double ROBOT_MASS = Util.poundsToKilos(126.6); // 32lbs * kg per pound
-  public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
-  public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(10);
+  public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+  public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
+  public static final double MAX_SPEED = Units.feetToMeters(10);
   public static final double MAX_ANGULAR_VELOCITY = 1 * Math.PI;
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;
@@ -40,8 +39,7 @@ public final class Constants
 
   public static final Pose2d START_POSE = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
 
-  public static final double MAX_VISION_AMBIGUITY = 0.25;
-      // Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_VISION_AMBIGUITY = 0.25; 
   public static final double CLAW_RADIUS = 0;
   public static final double MAX_INTAKE_SPEED = 1.0;
   public static final double MAX_RELEASE_SPEED = -1.0;
@@ -63,50 +61,37 @@ public final class Constants
 
   public static final double ARM_CONVERSION_FACTOR = (1.0/(6.21430317958)) * Math.PI/2;
 
-  public static final class AutonConstants
-  {
-
+  public static final class AutonConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
-    public static final PIDConstants ANGLE_PID       = new PIDConstants(0.4, 0, 0.01);
-    
+    public static final PIDConstants ANGLE_PID = new PIDConstants(0.4, 0, 0.01);
   }
 
-  public static final class DrivebaseConstants
-  {
+  public static final class DrivebaseConstants {
     public static final double SPEED_MODE_SCALE = 0.2;
+    
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
-    // public static final double SPEED_MODE_SCALE = 0.5;
   }
 
-  public static class OperatorConstants
-  {
-
+  public static class OperatorConstants {
     // Joystick Deadband
-    
     public static final double LEFT_X_DEADBAND  = 0.1;
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
 
-  public static class ID 
-  {
-
+  public static class ID  {
     public static final int armID = 22;
-
-
   }
 
-public static class GearRatio 
-{
-  //change when we know the REAL gear ratio
-  public static final double armGearRatio = 0.5;
-
-
-}
+  public static class GearRatio {
+    //change when we know the REAL gear ratio
+    public static final double armGearRatio = 0.5;
+  }
 
 }
+
 /**
  * PDH 1
  * BR Drive 10

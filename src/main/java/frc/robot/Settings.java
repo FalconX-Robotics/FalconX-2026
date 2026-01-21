@@ -17,6 +17,7 @@ public class Settings {
         operatorSettings = new OperatorSettings();
         driverSettings = new DriverSettings();
     }
+
     public class DriverSettings {
         public Trigger speedModeButton = new Trigger(()-> {return driveController.getRightTriggerAxis() > 0.5;});
         public Trigger invertButton = driveController.start();
@@ -28,18 +29,21 @@ public class Settings {
             if (inverted) {axis = -axis;}
             return axis;
         }
+
         public double getLeftY() {
             double axis = driveController.getLeftY();
             axis = MathUtil.applyDeadband(axis, 0.1);
             if (inverted) {axis = -axis;}
             return axis;
         }
+
         public double getRightX() {
             double axis = driveController.getRightX();
             axis = MathUtil.applyDeadband(axis, 0.1);
             if (inverted) {axis = -axis;}
             return axis;
         }
+
         public double getRightY() {
             double axis = driveController.getRightY();
             axis = MathUtil.applyDeadband(axis, 0.1);
@@ -47,6 +51,7 @@ public class Settings {
             return axis;
         }
     }
+
     /**Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator) */
     public class OperatorSettings {
         // public Trigger coralIntakeButton       = operatorController.x();
@@ -68,23 +73,25 @@ public class Settings {
         // public final double releaseSpeed = 0.5;
 
         // public double climbSpeed = 5;
-
         
         public double getLeftX() {
             double axis = operatorController.getLeftX();
             axis = MathUtil.applyDeadband(axis, 0.1);
             return axis;
         }
+
         public double getLeftY() {
             double axis = operatorController.getLeftY();
             axis = MathUtil.applyDeadband(axis, 0.1);
             return axis;
         }
+
         public double getRightX() {
             double axis = operatorController.getRightX();
             axis = MathUtil.applyDeadband(axis, 0.1);
             return axis;
         }
+
         public double getRightY() {
             double axis = operatorController.getRightY();
             axis = MathUtil.applyDeadband(axis, 0.1);
