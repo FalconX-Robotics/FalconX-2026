@@ -12,6 +12,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,7 +42,7 @@ public class Vision {
             if (Robot.isReal()) {
                 this.fieldLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-test-field.json");
             } else {
-                this.fieldLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-reefscape.json");
+                this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
             }
         } catch (Exception e) {
             System.err.println("April tag layout file not found");
@@ -60,6 +61,12 @@ public class Vision {
             Rotation3d robotToCameraRotation = Constants.ROBOT_TO_CAMERA_POSE.getRotation();
             Transform3d robotToCamera = new Transform3d(robotToCameraTranslation, robotToCameraRotation);
             visionSim.addCamera(cameraSim, robotToCamera);
+
+            //local host configurations
+
+            // cameraSim.enableRawStream(true);
+            // cameraSim.enableProcessedStream(true);
+            // cameraSim.enableDrawWireframe(true);
         }
     }
 
@@ -100,7 +107,7 @@ public class Vision {
     }
     public Optional<PhotonPipelineResult> getLastResult() {
         List<PhotonPipelineResult> results = camera.getAllUnreadResults();
-        return results.size() > 0 ? Optional.of(results.get(results.size() - 1)) : null;
+        return results.size() > 0 ? Optional.of(results.get(results.size() - 1)) : Optional.empty();
     }
 
     public AprilTagFieldLayout getFieldLayout() {

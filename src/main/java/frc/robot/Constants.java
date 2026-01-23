@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -46,7 +48,7 @@ public final class Constants
   public static final double MAX_ANGLE_UP_SPEED = 1.0;
   public static final double MAX_ANGLE_DOWN_SPEED = -1.0;
 
-  public static final Pose2d STARTING_POSE = new Pose2d();
+  public static final Pose2d STARTING_POSE = new Pose2d(3,4,Rotation2d.fromDegrees(0.0));
 
   public static final int CORAL_SENSOR = 1;
   public static final int ARM_MOTOR = 20;
