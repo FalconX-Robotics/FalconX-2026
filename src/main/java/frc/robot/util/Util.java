@@ -4,12 +4,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+import org.dyn4j.geometry.Vector2;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
 
 public class Util {
@@ -50,4 +54,22 @@ public class Util {
     public static Pose3d transformToPose(Transform3d transform) {
         return new Pose3d(transform.getTranslation(), transform.getRotation());
     }
+    public static Vector2 getTargetPosition(){
+  if (DriverStation.getAlliance().get() == Alliance.Red) {
+    double x = 651-182.11;
+    double y = 317/2;
+    return new Vector2(x, y);
+  }
+  else {
+    double x = 182.11;
+    double y = 317/2;
+    return new Vector2(x, y);
+
+  }
+
+}
+    // public static double findVelocity() {
+
+    // }
+
 }

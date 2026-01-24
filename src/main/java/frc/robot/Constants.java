@@ -26,7 +26,7 @@ import swervelib.math.Matter;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants
+public abstract class Constants
 {
 
   public static final double ROBOT_MASS = Util.poundsToKilos(126.6); // 32lbs * kg per pound
@@ -37,31 +37,16 @@ public final class Constants
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;
 
+  public static final int SHOOTERID = 21;
+
+  public static final double SHOOTER_ANGLE = 80;
+
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 
-  public static final Pose2d START_POSE = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
-
-  public static final double MAX_VISION_AMBIGUITY = 0.25; 
-  public static final double CLAW_RADIUS = 0;
-  public static final double MAX_INTAKE_SPEED = 1.0;
-  public static final double MAX_RELEASE_SPEED = -1.0;
-  public static final double MAX_ANGLE_UP_SPEED = 1.0;
-  public static final double MAX_ANGLE_DOWN_SPEED = -1.0;
 
   public static final Pose2d STARTING_POSE = new Pose2d(3,4,Rotation2d.fromDegrees(0.0));
 
-  public static final int CORAL_SENSOR = 1;
-  public static final int ARM_MOTOR = 20;
-  public static final int FEEDER_MOTOR = 21;
-  public static final int INTAKE_MOTOR = 22;
-  public static final int ELEVATOR_MOTOR = 30;
-  public static final int CLIMB_ID = 40;
 
-  public static final int LED_PORT = 1;
-  public static final int ELEVATOR_HIGH_SWITCH = 5;
-  public static final int ELEVATOR_LOW_SWITCH = 0;
-
-  public static final double ARM_CONVERSION_FACTOR = (1.0/(6.21430317958)) * Math.PI/2;
 
   public static final class AutonConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);

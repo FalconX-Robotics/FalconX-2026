@@ -22,10 +22,11 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class Vision {
+public class Vision extends SubsystemBase{
     public PhotonCamera camera;
     private AprilTagFieldLayout fieldLayout;
     private boolean hasFieldLayout = false;
@@ -118,17 +119,6 @@ public class Vision {
         visionSim.update(swerve.getPose());
         Field2d visionSimField = visionSim.getDebugField(); 
         SmartDashboard.putData("Vision Sim Field", visionSimField);
-    }
-    
-    public boolean linedUpReef() {
-        boolean hasEllipse = SmartDashboard.getBoolean("NT_Vision/has_ellipse", false);
-        if (!hasEllipse) {
-            return false;
-        }
-
-        double ellipseX = SmartDashboard.getNumber("NT_Vision/ellipse_loc_x", 0.0);
-        double ellipseY = SmartDashboard.getNumber("NT_Vision/ellipse_loc_y", 0.0);
-        return MathUtil.isNear(0, ellipseX, 15) && MathUtil.isNear(0, ellipseY, 15);
     }
 }
 
