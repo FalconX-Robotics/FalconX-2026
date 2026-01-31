@@ -14,6 +14,7 @@ import edu.wpi.first.util.datalog.IntegerLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Util {
@@ -68,8 +69,24 @@ public class Util {
   }
 
 }
-    // public static double findVelocity() {
+    public static double findVelocity(double distanceInMeters) {
 
-    // }
+       double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
+    
+       double sin = Math.sin(angle);
+       double cos = Math.cos(angle);
+       double tan = Math.tan(angle);
+
+       double x = distanceInMeters;
+       double y = Constants.HEIGHT_OF_TARGET;
+
+       double a = (y-(tan * x));
+       double c = ((4.9 * x * x) / (cos * cos));
+
+       double result = (Math.sqrt(-4 * a * c) / (2 * a));
+       
+       return Math.abs(result);
+
+    }
 
 }

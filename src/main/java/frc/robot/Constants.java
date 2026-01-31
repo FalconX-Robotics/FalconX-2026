@@ -40,6 +40,8 @@ public abstract class Constants
   public static final int SHOOTERID = 21;
 
   public static final double SHOOTER_ANGLE = 80;
+  
+  public static final double HEIGHT_OF_TARGET = 1.8288;
 
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 

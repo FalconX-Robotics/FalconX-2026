@@ -22,7 +22,11 @@ public class GetToSpeed extends Command {
         Vector2 targetPosition = Util.getTargetPosition();
         Vector2 robotPosition = new Vector2(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY());
         double distance = targetPosition.distance(robotPosition);
-        double height = 72;
-        
+
+        shooter.setShooterSpeed(Util.findVelocity(distance));
     } 
+    // public boolean isFinished() {
+        
+    // }
+
 }

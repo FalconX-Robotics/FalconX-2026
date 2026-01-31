@@ -43,7 +43,7 @@ public class Vision extends SubsystemBase{
             if (Robot.isReal()) {
                 this.fieldLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-test-field.json");
             } else {
-                this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+                this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
             }
         } catch (Exception e) {
             System.err.println("April tag layout file not found");

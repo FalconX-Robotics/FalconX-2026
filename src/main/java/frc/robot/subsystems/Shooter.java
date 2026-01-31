@@ -18,9 +18,9 @@ public class Shooter extends SubsystemBase{
        final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
        motor.setControl(request.withVelocity(speed));
         
-
         
     }
+
 
     // public void periodic() {
     //    double voltageToSet = pidController.calculate(motor.get());
@@ -45,4 +45,9 @@ public class Shooter extends SubsystemBase{
 
         motor.getConfigurator().apply(talonFXConfigs);
     }
+
+
+    // public double getSpeed() {
+        
+    // }
 }

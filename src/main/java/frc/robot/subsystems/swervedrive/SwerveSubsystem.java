@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification.NotificationLevel;
 import swervelib.SwerveController;
@@ -124,10 +125,23 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setHeadingCorrection(false);
+    if (Robot.isSimulation() == true) {
+         swerveDrive.setHeadingCorrection(false);
+    }
+    else {
+       swerveDrive.setHeadingCorrection(true);
+    }
+   
     
     // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-    swerveDrive.setCosineCompensator(false);
+    if (Robot.isSimulation() == true) {
+      swerveDrive.setCosineCompensator(false);
+    }
+    else {
+      swerveDrive.setCosineCompensator(true);
+    }
+    
+    swerveDrive.chassisVelocityCorrection = true;
 
     // Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
@@ -176,7 +190,7 @@ public class SwerveSubsystem extends SubsystemBase {
     rotationLog.append(getYaw().getDegrees());
     Optional<Pose2d> cameraPose = vision.getFieldPose();
     if (cameraPose.isPresent()) {
-      // swerveDrive.resetOdometry(cameraPose.get());
+      swerveDrive.addVisionMeasurement(cameraPose.get(), Timer.getFPGATimestamp());
     }
     
     // vision.updatePoseEstimation(swerveDrive);
@@ -267,19 +281,21 @@ public class SwerveSubsystem extends SubsystemBase {
             // This will flip the path being followed to the red side of the field.
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-            // var alliance = DriverStation.getAlliance();
-            // if (alliance.isPresent())
-            // {
-            //   return alliance.get() == DriverStation.Alliance.Red;
-            // }
-            // return false;
+             var alliance = DriverStation.getAlliance();
+             if (alliance.isPresent())
+             {
+               return alliance.get() == DriverStation.Alliance.Red;
+             }
+           
             return false;
           },
           this
           // Reference to this subsystem to set requirements
       );
       Pathfinding.setPathfinder(new LocalADStar());
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
