@@ -25,6 +25,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
 
@@ -39,10 +40,11 @@ public class RobotContainer {
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
-  final CommandXboxController operatorXbox = new CommandXboxController(1);
+  public final CommandXboxController operatorXbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem swerve;
+  public final SwerveSubsystem swerve;
   private final Settings settings = new Settings(driverXbox, operatorXbox);
+  private final Shooter shooter;
   
   CvSink cvSink;
   CvSource camOutput;
@@ -70,6 +72,7 @@ public class RobotContainer {
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
   
+    this.shooter = new Shooter(this);
 
     
 

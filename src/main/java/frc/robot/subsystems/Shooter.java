@@ -8,25 +8,33 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.GetToSpeed;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase{
     TalonFX motor = new TalonFX(Constants.SHOOTERID);
     
-    public void setShooterSpeed(double speed) {
-       final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-       motor.setControl(request.withVelocity(speed));
-        
-        
-    }
+    SwerveSubsystem swerveSubsystem;
 
+    RobotContainer robotContainer;
 
-    // public void periodic() {
-    //    double voltageToSet = pidController.calculate(motor.get());
-    // }
+    CommandXboxController operaterController; 
 
-    public Shooter() {
+    public Shooter(RobotContainer robotContainer) {
+
+        this.robotContainer = robotContainer;
+
+        this.swerveSubsystem = robotContainer.swerve;
+
+        operaterController = robotContainer.operatorXbox;
+
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;
@@ -44,10 +52,29 @@ public class Shooter extends SubsystemBase{
         motionMagicConfigs.MotionMagicJerk = 4000;
 
         motor.getConfigurator().apply(talonFXConfigs);
+
+        
+    }
+   
+    public void setShooterSpeed(double speed) {
+       final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
+       motor.setControl(request.withVelocity(speed));
+        
     }
 
 
-    // public double getSpeed() {
-        
-    // }
+    public void periodic() {
+        if (operaterController.getHID().getYButtonPressed()){
+            CommandScheduler.getInstance().schedule(new GetToSpeed(swerveSubsystem, this));
+        }
+     }
+
+   
+
+
+     public double getSpeed() {
+         double velocity = (motor.getVelocity().getValueAsDouble()*2*Math.PI)/Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
+
+         return velocity*Constants.RADIUS_OF_SHOOTER_WHEEL; // velocity at which objects comes out
+     }
 }

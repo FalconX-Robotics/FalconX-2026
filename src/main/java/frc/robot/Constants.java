@@ -43,6 +43,10 @@ public abstract class Constants
   
   public static final double HEIGHT_OF_TARGET = 1.8288;
 
+  public static final double SHOOTER_GEAR_RATIO = 1/1;
+
+  public static final double RADIUS_OF_SHOOTER_WHEEL = 0.0508; // in meters (2 inches)
+
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 
 
