@@ -24,6 +24,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
 
@@ -37,13 +38,12 @@ public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<>();
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController driverXboxController = new CommandXboxController(0);   // Driver Controller Port is Port #0
-  final CommandXboxController operatorXboxController = new CommandXboxController(1); // Operator Controller Port is Port #1
-  
+  final CommandXboxController driverXboxController = new CommandXboxController(0);
+  public final CommandXboxController operatorXboxController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem swerve;
-  
+  public final SwerveSubsystem swerve;
   private final Settings settings = new Settings(driverXboxController, operatorXboxController);
+  private final Shooter shooter;
   
   CvSink cvSink;
   CvSource camOutput;
@@ -67,6 +67,8 @@ public class RobotContainer {
     swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
+    
+    this.shooter = new Shooter(this);
     
     absFieldDrive = new AbsoluteFieldDrive(swerve,
       () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
@@ -148,7 +150,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // 
     return autoChooser.getSelected();
   }
 
