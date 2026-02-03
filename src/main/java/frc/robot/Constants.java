@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-
-import static edu.wpi.first.units.Units.Rotation;
-
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,9 +23,7 @@ import swervelib.math.Matter;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public abstract class Constants
-{
-
+public abstract class Constants {
   public static final double ROBOT_MASS = Util.poundsToKilos(126.6); // 32lbs * kg per pound
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
@@ -37,18 +32,13 @@ public abstract class Constants
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;
 
-  public static final int SHOOTERID = 21;
-
   public static final double SHOOTER_ANGLE = 80;
   
   public static final double HEIGHT_OF_TARGET = 1.8288;
 
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 
-
-  public static final Pose2d STARTING_POSE = new Pose2d(3,4,Rotation2d.fromDegrees(0.0));
-
-
+  public static final Pose2d STARTING_POSE = new Pose2d(3, 4, Rotation2d.fromDegrees(0.0));
 
   public static final class AutonConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
@@ -71,14 +61,14 @@ public abstract class Constants
   }
 
   public static class ID  {
-    public static final int armID = 22;
+    public static final int ARM_ID = 22;
+    public static final int SHOOTER_ID = 21;
   }
 
   public static class GearRatio {
     //change when we know the REAL gear ratio
-    public static final double armGearRatio = 0.5;
+    public static final double ARM_GEAR_RATIO = 0.5;
   }
-
 }
 
 /**

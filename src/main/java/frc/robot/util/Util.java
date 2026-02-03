@@ -18,75 +18,69 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Util {
-    private static LocalDateTime startTime;
+  private static LocalDateTime startTime;
+
+  public static String getLogFilename() {
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.of("UTC"));
+    String prefix = Robot.isSimulation() ? "sim_" : "robot_";
     
-    public static String getLogFilename() {
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.of("UTC"));
-        if (Robot.isSimulation()) {
-            return "sim_" + timeFormatter.format(startTime) + ".wpilog";
-        }
-        return "robot_" + timeFormatter.format(startTime) + ".wpilog";
-    }
-
-    public static void setStartTime(LocalDateTime time) {
-        startTime = time;
-    }
-
-    public static DoubleLogEntry createDoubleLog(String name) {
-        return new DoubleLogEntry(DataLogManager.getLog(), name);
-    }
-
-    public static IntegerLogEntry createIntLog(String name) {
-        return new IntegerLogEntry(DataLogManager.getLog(), name);
-    }
-
-    public static BooleanLogEntry createBooleanLog(String name) {
-        return new BooleanLogEntry(DataLogManager.getLog(), name);
-    }
-
-    public static double poundsToKilos(double pounds) {
-        return pounds * 0.453592;
-    }
-    
-    public static double remap(double in, double lowIn, double hiIn, double lowOut, double hiOut) {
-        return lowOut + (in - lowIn) * (hiOut - lowIn) / (hiIn - lowIn);
-    }
-
-    public static Pose3d transformToPose(Transform3d transform) {
-        return new Pose3d(transform.getTranslation(), transform.getRotation());
-    }
-    public static Vector2 getTargetPosition(){
-  if (DriverStation.getAlliance().get() == Alliance.Red) {
-    double x = 651-182.11;
-    double y = 317/2;
-    return new Vector2(x, y);
-  }
-  else {
-    double x = 182.11;
-    double y = 317/2;
-    return new Vector2(x, y);
-
+    return prefix + timeFormatter.format(startTime) + ".wpilog";
   }
 
-}
-    public static double findVelocity(double distanceInMeters) {
+  public static void setStartTime(LocalDateTime time) {
+    startTime = time;
+  }
 
-       double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
-    
-       double sin = Math.sin(angle);
-       double cos = Math.cos(angle);
-       double tan = Math.tan(angle);
+  public static DoubleLogEntry createDoubleLog(String name) {
+    return new DoubleLogEntry(DataLogManager.getLog(), name);
+  }
 
-       double x = distanceInMeters;
-       double y = Constants.HEIGHT_OF_TARGET;
+  public static IntegerLogEntry createIntLog(String name) {
+    return new IntegerLogEntry(DataLogManager.getLog(), name);
+  }
 
-       double a = (y-(tan * x));
-       double c = ((4.9 * x * x) / (cos * cos));
+  public static BooleanLogEntry createBooleanLog(String name) {
+    return new BooleanLogEntry(DataLogManager.getLog(), name);
+  }
 
-       double result = (Math.sqrt(-4 * a * c) / (2 * a));
-       
-       return Math.abs(result);
+  public static double poundsToKilos(double pounds) {
+    return pounds * 0.453592;
+  }
 
+  public static double remap(double in, double lowIn, double hiIn, double lowOut, double hiOut) {
+    return lowOut + (in - lowIn) * (hiOut - lowIn) / (hiIn - lowIn);
+  }
+
+  public static Pose3d transformToPose(Transform3d transform) {
+    return new Pose3d(transform.getTranslation(), transform.getRotation());
+  }
+
+  public static Vector2 getTargetPosition(){
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      double x = 651-182.11;
+      double y = 317/2;
+      return new Vector2(x, y);
+    } else {
+      double x = 182.11;
+      double y = 317/2;
+      return new Vector2(x, y);
     }
+  }
 
+  public static double findVelocity(double distanceInMeters) {
+    double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
+
+    double cos = Math.cos(angle);
+    double tan = Math.tan(angle);
+
+    double x = distanceInMeters;
+    double y = Constants.HEIGHT_OF_TARGET;
+
+    double a = (y - (tan * x));
+    double c = ((4.9 * x * x) / (cos * cos));
+
+    double result = (Math.sqrt(-4 * a * c) / (2 * a));
+
+    return Math.abs(result);
+  }
 }
