@@ -54,6 +54,10 @@ public class Shooter extends SubsystemBase{
   }
   
   public void setShooterSpeed(double speed) {
+    speed /= Constants.RADIUS_OF_SHOOTER_WHEEL;
+    speed *= Constants.SHOOTER_GEAR_RATIO;
+    speed /= 2 * Math.PI;
+     
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     motor.setControl(request.withVelocity(speed));      
   }
