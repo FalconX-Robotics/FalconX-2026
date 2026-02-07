@@ -19,10 +19,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
 
@@ -36,79 +38,92 @@ public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<>();
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController driverXbox = new CommandXboxController(0);
-  final CommandXboxController operatorXbox = new CommandXboxController(1);
+  final CommandXboxController driverXboxController = new CommandXboxController(0);
+  public final CommandXboxController operatorXboxController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final Settings settings = new Settings(driverXbox, operatorXbox);
+  public final SwerveSubsystem swerve;
+  private final Settings settings = new Settings(driverXboxController, operatorXboxController);
+  private final Shooter shooter;
   
   CvSink cvSink;
   CvSource camOutput;
 
-
   Thread camThread;
 
-  AbsoluteFieldDrive absFieldDrive = new AbsoluteFieldDrive(swerve,
-  () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-  () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND), 
-  () -> Math.atan2(-settings.driverSettings.getRightX(), settings.driverSettings.getRightY()));
+  AbsoluteFieldDrive absFieldDrive;
 
-  // Applies deadbands and inverts controls because joysticks
-  // are back-right positive while robot
-  // controls are front-left positive
-  // left stick controls translation
-  // right stick controls the desired angle NOT angular rotation
-  Command zeroMotion = swerve.driveCommand(
-    ()-> 0.0, ()->0.0, ()->0.0);
-  
-  Command driveFieldOrientedDirectAngle = swerve.driveCommand(
-      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-      () -> -settings.driverSettings.getRightX(),
-      () -> -settings.driverSettings.getRightY());
-
-  Command driveInputs = new ParallelCommandGroup(new ChangeSpeed(swerve), swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-  Command dhara = new ParallelCommandGroup(swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-  
-  // Applies deadbands and inverts controls because joysticks
-  // are back-right positive while robot
-  // controls are front-left positive
-  // left stick controls translation
-  // right stick controls the angular velocity of the robot
-  Command absoluteDrive = new AbsoluteDrive(swerve, 
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_X_DEADBAND),
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-    () -> MathUtil.applyDeadband(settings.driverSettings.getRightX(), OperatorConstants.RIGHT_X_DEADBAND),
-    () -> MathUtil.applyDeadband(settings.driverSettings.getRightY(), OperatorConstants.RIGHT_X_DEADBAND)
-  );
-
-  Command driveFieldOrientedAnglularVelocity = swerve.driveCommand(
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_X_DEADBAND),
-    () -> settings.driverSettings.getRightX() * -1
-  );
-
-  Command driveFieldOrientedDirectAngleSim = swerve.simDriveCommand(
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-    () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-    () -> driverXbox.getRawAxis(2)
-  );
-
+  Command zeroMotion;
+  Command driveFieldOrientedDirectAngle;
+  Command driveInputs;
+  Command dhara;
+  Command absoluteDrive;
+  Command driveFieldOrientedAnglularVelocity;
+  Command driveFieldOrientedDirectAngleSim;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
+    
+    this.shooter = new Shooter(this);
+    
+    absFieldDrive = new AbsoluteFieldDrive(swerve,
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND), 
+      () -> Math.atan2(-settings.driverSettings.getRightX(), settings.driverSettings.getRightY())
+    );
+
+    // Applies deadbands and inverts controls because joysticks
+    // are back-right positive while robot
+    // controls are front-left positive
+    // left stick controls translation
+    // right stick controls the desired angle NOT angular rotation
+    zeroMotion = swerve.driveCommand(() -> 0.0, () -> 0.0, () -> 0.0);
   
+    driveFieldOrientedDirectAngle = swerve.driveCommand(
+      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+      () -> -settings.driverSettings.getRightX(),
+      () -> -settings.driverSettings.getRightY()
+    );
+
+    driveInputs = new ParallelCommandGroup(new ChangeSpeed(swerve), swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
+    dhara = new ParallelCommandGroup(swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
+  
+    // Applies deadbands and inverts controls because joysticks
+    // are back-right positive while robot
+    // controls are front-left positive
+    // left stick controls translation
+    // right stick controls the angular velocity of the robot
+    absoluteDrive = new AbsoluteDrive(swerve, 
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(settings.driverSettings.getRightX(), OperatorConstants.RIGHT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(settings.driverSettings.getRightY(), OperatorConstants.RIGHT_X_DEADBAND)
+    );
+
+    driveFieldOrientedAnglularVelocity = swerve.driveCommand(
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_X_DEADBAND),
+      () -> settings.driverSettings.getRightX() * -1
+    );
+
+    driveFieldOrientedDirectAngleSim = swerve.simDriveCommand(
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+      () -> driverXboxController.getRawAxis(2)
+    );
+
     swerve.setupPathPlanner();
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure thse trigger bindings
-    configureBindings();
+    this.configureBindings();
   }
 
   public void robotPeriodic() {
@@ -139,12 +154,10 @@ public class RobotContainer {
   }
 
   public void setDriveMode() {
-    configureBindings();
+    this.configureBindings();
   }
 
   public void setMotorBrake(boolean brake) {
     swerve.setMotorBrake(brake);
   }
 }
-
-

@@ -12,13 +12,13 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.util.Util;
 
-public class LineUpReef extends Command {
+public class LineUpLadder extends Command {
   public static enum Side {
     LEFT,
     RIGHT
   }
 
-  private SwerveSubsystem swerve;
+  private SwerveSubsystem swerveSubsystem;
   private Vision vision;
   private int id;
   private Pose2d tagPose;
@@ -27,34 +27,34 @@ public class LineUpReef extends Command {
   private AprilTagFieldLayout field;
   private Command goToTarget;
 
-  public LineUpReef(SwerveSubsystem swerve, int id, Side side) {
-    this.swerve = swerve;
+  public LineUpLadder(SwerveSubsystem swerveSubsystem, int id, Side side) {
+    this.swerveSubsystem = swerveSubsystem;
     this.id = id;
     this.side = side;
-    field = swerve.getVision().getFieldLayout();
-    vision = swerve.getVision();
-    addRequirements(swerve);
+    field = swerveSubsystem.getVision().getFieldLayout();
+    vision = swerveSubsystem.getVision();
+    addRequirements(swerveSubsystem);
   }
 
   @Override
   public void initialize() {
-    SmartDashboard.putBoolean("Line Up Reef/Running", true);
+    SmartDashboard.putBoolean("Line Up Ladder/Running", true);
 
     if (field.getTagPose(id).isPresent()) {
       tagPose = field.getTagPose(id).get().toPose2d();
-      double x = tagPose.getX() + tagPose.getRotation().getCos();
-      double y = tagPose.getY() + tagPose.getRotation().getSin();
+      double x = tagPose.getX(); // + tagPose.getRotation().getCos();
+      double y = tagPose.getY(); //  + tagPose.getRotation().getSin();
       Rotation2d rot = Rotation2d.fromDegrees(tagPose.getRotation().getDegrees() + 180);
       
       targetPose = new Pose2d(x, y, rot);
-      goToTarget = swerve.driveToPose(targetPose).andThen(getAdjustCommand(id, side));
+      goToTarget = swerveSubsystem.driveToPose(targetPose).andThen(getAdjustCommand(id, side));
       CommandScheduler.getInstance().schedule(goToTarget);
 
-      SmartDashboard.putNumber("Line Up Reef/Pose X", targetPose.getX());
-      SmartDashboard.putNumber("Line Up Reef/Pose Y", targetPose.getY());
-      SmartDashboard.putNumber("Line Up Reef/Pose Angle", targetPose.getRotation().getDegrees());
+      SmartDashboard.putNumber("Line Up Ladder/Pose X", targetPose.getX());
+      SmartDashboard.putNumber("Line Up Ladder/Pose Y", targetPose.getY());
+      SmartDashboard.putNumber("Line Up Ladder/Pose Angle", targetPose.getRotation().getDegrees());
     } else {
-      throw new RuntimeException("LineUpReef Target does not exist");
+      throw new RuntimeException("LineUpLadder Target does not exist");
     }
   }
 
@@ -74,8 +74,8 @@ public class LineUpReef extends Command {
       double ySpeed = -currentOffset.getY() / 3;
       double rotSpeed = -currentOffset.getRotation().getRadians()/3;
       Translation2d translation = new Translation2d(xSpeed, ySpeed);
-      swerve.drive(translation, rotSpeed, false);
-      }, swerve).until(()-> {
+      swerveSubsystem.drive(translation, rotSpeed, false);
+      }, swerveSubsystem).until(()-> {
         return Util.transformToPose(vision.getTagPose(index).get()).toPose2d().relativeTo(Pose2d.kZero).getTranslation().getNorm() < 0.1;
       });
   }

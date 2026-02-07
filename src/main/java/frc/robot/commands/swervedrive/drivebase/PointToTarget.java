@@ -11,44 +11,44 @@ import frc.robot.subsystems.swervedrive.Vision;
 import swervelib.SwerveController;
 
 public class PointToTarget extends Command {
-    private SwerveSubsystem swerve;
-    private final int id = 4;
-    private Vision vision;
-    private boolean isTurning = false;
-    private double targetAngle = 0;
-    private double targetYaw = 0;
+  private SwerveSubsystem swerve;
+  private final int id = 4;
+  private Vision vision;
+  private boolean isTurning = false;
+  private double targetAngle = 0;
+  private double targetYaw = 0;
 
-    public PointToTarget(SwerveSubsystem swerve) {
-        this.swerve = swerve;
-        this.vision = swerve.getVision();
-        addRequirements(swerve);
-        isTurning = false;
-    }
+  public PointToTarget(SwerveSubsystem swerve) {
+    this.swerve = swerve;
+    this.vision = swerve.getVision();
+    addRequirements(swerve);
+    isTurning = false;
+  }
 
-    public void execute() {
-        Optional<Transform3d> cameraToTag = vision.getTagPose(id);
-        if (cameraToTag.isPresent() && !isTurning) {
-            System.out.println("Sees target");
-            isTurning = true;
-            System.out.println("point to target");
-            targetYaw = cameraToTag.get().getRotation().getZ();
-            // targetAngle = targetYaw - swerve.getYaw().getRadians();
-            targetAngle = targetYaw + Math.PI;
-            targetAngle = ((targetAngle + Math.PI)%(Math.PI*2)-Math.PI);
-            ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(0, 0, new Rotation2d(targetAngle));
-            swerve.drive(SwerveController.getTranslation2d(desiredSpeeds), desiredSpeeds.omegaRadiansPerSecond/2, true);
-        }
+  public void execute() {
+    Optional<Transform3d> cameraToTag = vision.getTagPose(id);
+    if (cameraToTag.isPresent() && !isTurning) {
+      System.out.println("Sees target");
+      isTurning = true;
+      System.out.println("point to target");
+      targetYaw = cameraToTag.get().getRotation().getZ();
+      // targetAngle = targetYaw - swerve.getYaw().getRadians();
+      targetAngle = targetYaw + Math.PI;
+      targetAngle = ((targetAngle + Math.PI) % (Math.PI * 2) - Math.PI);
+      ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(0, 0, new Rotation2d(targetAngle));
+      swerve.drive(SwerveController.getTranslation2d(desiredSpeeds), desiredSpeeds.omegaRadiansPerSecond/2, true);
     }
+  }
 
-    @Override
-    public boolean isFinished() {
-        System.out.println(Math.abs(targetAngle - swerve.getYaw().getRadians()));
-        return Math.abs(Math.toDegrees(targetAngle - swerve.getYaw().getRadians())) < 10;
-    }
+  @Override
+  public boolean isFinished() {
+    System.out.println(Math.abs(targetAngle - swerve.getYaw().getRadians()));
+    return Math.abs(Math.toDegrees(targetAngle - swerve.getYaw().getRadians())) < 10;
+  }
 
-    @Override
-    public void end(boolean interrupted) {
-        isTurning = false;
-        System.out.println("stopped");
-    }
+  @Override
+  public void end(boolean interrupted) {
+    isTurning = false;
+    System.out.println("stopped");
+  }
 }

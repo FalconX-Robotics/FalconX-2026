@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,9 +23,7 @@ import swervelib.math.Matter;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants
-{
-
+public abstract class Constants {
   public static final double ROBOT_MASS = Util.poundsToKilos(126.6); // 32lbs * kg per pound
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
@@ -35,31 +32,17 @@ public final class Constants
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;
 
+  public static final double SHOOTER_ANGLE = 80;
+  
+  public static final double HEIGHT_OF_TARGET = 1.8288;
+
+  public static final double SHOOTER_GEAR_RATIO = 1/1;
+
+  public static final double RADIUS_OF_SHOOTER_WHEEL = 0.0508; // in meters (2 inches)
+
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 
-  public static final Pose2d START_POSE = new Pose2d(2, 2, Rotation2d.fromDegrees(0));
-
-  public static final double MAX_VISION_AMBIGUITY = 0.25; 
-  public static final double CLAW_RADIUS = 0;
-  public static final double MAX_INTAKE_SPEED = 1.0;
-  public static final double MAX_RELEASE_SPEED = -1.0;
-  public static final double MAX_ANGLE_UP_SPEED = 1.0;
-  public static final double MAX_ANGLE_DOWN_SPEED = -1.0;
-
-  public static final Pose2d STARTING_POSE = new Pose2d();
-
-  public static final int CORAL_SENSOR = 1;
-  public static final int ARM_MOTOR = 20;
-  public static final int FEEDER_MOTOR = 21;
-  public static final int INTAKE_MOTOR = 22;
-  public static final int ELEVATOR_MOTOR = 30;
-  public static final int CLIMB_ID = 40;
-
-  public static final int LED_PORT = 1;
-  public static final int ELEVATOR_HIGH_SWITCH = 5;
-  public static final int ELEVATOR_LOW_SWITCH = 0;
-
-  public static final double ARM_CONVERSION_FACTOR = (1.0/(6.21430317958)) * Math.PI/2;
+  public static final Pose2d STARTING_POSE = new Pose2d(3, 4, Rotation2d.fromDegrees(0.0));
 
   public static final class AutonConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
@@ -82,7 +65,8 @@ public final class Constants
   }
 
   public static class ID  {
-    public static final int armID = 22;
+    public static final int ARM_ID = 22;
+    public static final int SHOOTER_ID = 21;
   }
    
   public static class DriveTrainConstants {
@@ -106,9 +90,8 @@ public final class Constants
 
   public static class GearRatio {
     //change when we know the REAL gear ratio
-    public static final double armGearRatio = 0.5;
+    public static final double ARM_GEAR_RATIO = 0.5;
   }
-
 }
 
 /**
