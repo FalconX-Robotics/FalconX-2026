@@ -35,7 +35,7 @@ public class ClimbUp extends Command {
     
     @Override
     public boolean isFinished() {
-        return rotationsDone > maxRotations;
+        return rotationsDone >= maxRotations;
     }
 
     

@@ -13,8 +13,6 @@ public class Climber extends SubsystemBase{
     public final TalonFX motor = new TalonFX(Constants.ID.ARM_ID);
     RobotContainer robotContainer;
     CommandXboxController operatorController;
-    final double maxRotations = 2.0;
-    double rotationsDone = 0.0;
     DigitalInput climbDownLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
     
 
