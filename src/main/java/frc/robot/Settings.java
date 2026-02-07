@@ -57,25 +57,10 @@ public class Settings {
    * Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator)
    */
   public class OperatorSettings {
-    // public Trigger coralIntakeButton       = operatorController.x();
-    // // public Trigger armAngleButton          = operatorController.b();
-    // public Trigger releaseButton    = operatorController.b();
-    // public Trigger travelButton = operatorController.y();
-    // public Trigger overrideArm = new Trigger(() -> {return Math.abs(operatorController.getRightY()) > 0.1;});
-
-    // public Trigger climbButton = operatorController.leftBumper();
-    // public Trigger unClimbButton = operatorController.rightBumper();
-
-    // public Trigger moveToL2 = operatorController.povDown();
-    // public Trigger moveToL3 = operatorController.povUp();
-    // public Trigger moveToIntake = operatorController.a();
-    // public Trigger moveToLoAlgae = operatorController.leftTrigger();
-    // public Trigger moveToHiAlgae = operatorController.rightTrigger();
-
-    // public final double intakeSpeed = -1/3.0;
-    // public final double releaseSpeed = 0.5;
-
-    // public double climbSpeed = 5;
+    
+    public final Trigger fireTrigger = new Trigger(()-> {
+      return driverController.getRightTriggerAxis() > 0.5;
+    });
 
     public Trigger climbButton = operatorController.a();
 
@@ -95,6 +80,14 @@ public class Settings {
 
     public double getRightY() {
       return MathUtil.applyDeadband(operatorController.getRightY(), 0.1);
+    }
+
+    public double getLeftTriggerAxis() {
+      return MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), 0.1);
+    }
+
+    public double getRightTriggerAxis() {
+      return MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), 0.1);
     }
   }
 
