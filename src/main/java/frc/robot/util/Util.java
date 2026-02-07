@@ -21,14 +21,14 @@ public class Util {
   private static LocalDateTime startTime;
 
   public static String getLogFilename() {
-    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.of("UTC"));
-    String prefix = Robot.isSimulation() ? "sim_" : "robot_";
+    final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.of("UTC"));
+    final String prefix = Robot.isSimulation() ? "sim_" : "robot_";
     
-    return prefix + timeFormatter.format(startTime) + ".wpilog";
+    return prefix + timeFormatter.format(Util.startTime) + ".wpilog";
   }
 
   public static void setStartTime(LocalDateTime time) {
-    startTime = time;
+    Util.startTime = time;
   }
 
   public static DoubleLogEntry createDoubleLog(String name) {
@@ -55,32 +55,24 @@ public class Util {
     return new Pose3d(transform.getTranslation(), transform.getRotation());
   }
 
-  public static Vector2 getTargetPosition(){
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
-      double x = 651-182.11;
-      double y = 317/2;
-      return new Vector2(x, y);
-    } else {
-      double x = 182.11;
-      double y = 317/2;
-      return new Vector2(x, y);
-    }
+  public static Vector2 getTargetPosition() {
+    final double x = (DriverStation.getAlliance().get() == Alliance.Red) ? (651 - 182.11) : 182.11;
+    final double y = 317 / 2;;
+    return new Vector2(x, y);
   }
 
   public static double findVelocity(double distanceInMeters) {
-    double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
+    final double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
 
-    double cos = Math.cos(angle);
-    double tan = Math.tan(angle);
+    final double cos = Math.cos(angle);
+    final double tan = Math.tan(angle);
 
-    double x = distanceInMeters;
-    double y = Constants.HEIGHT_OF_TARGET;
+    final double x = distanceInMeters;
+    final double y = Constants.HEIGHT_OF_TARGET;
 
-    double a = (y - (tan * x));
-    double c = ((4.9 * x * x) / (cos * cos));
+    final double a = y - (tan * x);
+    final double c = 4.9 * Math.pow(x, 2) / Math.pow(cos, 2);
 
-    double result = (Math.sqrt(-4 * a * c) / (2 * a));
-
-    return Math.abs(result);
+    return Math.abs(Math.sqrt(-4 * a * c) / (2 * a));
   }
 }

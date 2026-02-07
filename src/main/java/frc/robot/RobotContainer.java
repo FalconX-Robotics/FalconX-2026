@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,9 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -35,99 +29,76 @@ import frc.robot.util.Util;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  public SendableChooser<Command> autoChooser = new SendableChooser<>();
+  public static class Controllers {
+    public final CommandXboxController driver = new CommandXboxController(0);   // Driver Controller Port is port 0
+    public final CommandXboxController operator = new CommandXboxController(1); // Operator Controller Port is port 1
+  }
+
+  public static class Subsystems {
+    public SwerveSubsystem swerve;
+    public Shooter shooter;
+  }
   
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController driverXboxController = new CommandXboxController(0);
-  public final CommandXboxController operatorXboxController = new CommandXboxController(1);
-  // The robot's subsystems and commands are defined here...
-  public final SwerveSubsystem swerve;
-  private final Settings settings = new Settings(driverXboxController, operatorXboxController);
-  private final Shooter shooter;
+  public static class Commands {
+    public Command driveInputs;
+    public Command dhara;
+  }
+
+  public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   
-  CvSink cvSink;
-  CvSource camOutput;
+  /**
+   * The controllers associated with controlling the robot.
+   */
+  public final Controllers controllers = new Controllers();
 
-  Thread camThread;
+  /**
+   * The settings (controller bindings) for the controllers.
+   */
+  public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
+  
+  /**
+   * All related subsystems with the robot.
+   */
+  public final Subsystems subsystems = new Subsystems();
 
-  AbsoluteFieldDrive absFieldDrive;
-
-  Command zeroMotion;
-  Command driveFieldOrientedDirectAngle;
-  Command driveInputs;
-  Command dhara;
-  Command absoluteDrive;
-  Command driveFieldOrientedAnglularVelocity;
-  Command driveFieldOrientedDirectAngleSim;
+  /**
+   * All related commands with the robot.
+   */
+  public final Commands commands = new Commands();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
-    
-    this.shooter = new Shooter(this);
-    
-    absFieldDrive = new AbsoluteFieldDrive(swerve,
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND), 
-      () -> Math.atan2(-settings.driverSettings.getRightX(), settings.driverSettings.getRightY())
+
+    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+    this.subsystems.shooter = new Shooter(this);
+
+    final Command driveInputs = this.subsystems.swerve.driveInputs(
+      () -> -this.settings.driverSettings.getLeftY(),
+      () -> -this.settings.driverSettings.getLeftX(),
+      () -> -this.settings.driverSettings.getRightX()
     );
 
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the desired angle NOT angular rotation
-    zeroMotion = swerve.driveCommand(() -> 0.0, () -> 0.0, () -> 0.0);
-  
-    driveFieldOrientedDirectAngle = swerve.driveCommand(
-      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-      () -> -settings.driverSettings.getRightX(),
-      () -> -settings.driverSettings.getRightY()
-    );
+    this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), driveInputs);
+    this.commands.dhara = new ParallelCommandGroup(driveInputs);
 
-    driveInputs = new ParallelCommandGroup(new ChangeSpeed(swerve), swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-    dhara = new ParallelCommandGroup(swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-  
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the angular velocity of the robot
-    absoluteDrive = new AbsoluteDrive(swerve, 
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getRightX(), OperatorConstants.RIGHT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getRightY(), OperatorConstants.RIGHT_X_DEADBAND)
-    );
+    this.subsystems.swerve.setupPathPlanner();
 
-    driveFieldOrientedAnglularVelocity = swerve.driveCommand(
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_X_DEADBAND),
-      () -> settings.driverSettings.getRightX() * -1
-    );
-
-    driveFieldOrientedDirectAngleSim = swerve.simDriveCommand(
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-      () -> driverXboxController.getRawAxis(2)
-    );
-
-    swerve.setupPathPlanner();
-
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    this.autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", this.autoChooser);
 
     // Configure thse trigger bindings
     this.configureBindings();
   }
 
+  /**
+   * Robot periodic method. Runs at 50Hz (once every 20ms).
+   */
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("inverted", settings.driverSettings.inverted);
+    SmartDashboard.putBoolean("inverted", this.settings.driverSettings.inverted);
   }
   
   /**
@@ -140,9 +111,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    settings.driverSettings.speedModeButton.whileTrue(driveInputs);
-    swerve.setDefaultCommand(dhara);
-
+    this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs); // settings.driverSettings.speedModeButton is a Trigger with the condition of RT value > 0.5
+    this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
   }
 
   /**
@@ -151,7 +121,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return this.autoChooser.getSelected();
   }
 
   public void setDriveMode() {
@@ -159,6 +129,6 @@ public class RobotContainer {
   }
 
   public void setMotorBrake(boolean brake) {
-    swerve.setMotorBrake(brake);
+    this.subsystems.swerve.setMotorBrake(brake);
   }
 }

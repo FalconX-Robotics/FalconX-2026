@@ -11,9 +11,8 @@ import frc.robot.util.Util;
 public class GetToSpeed extends Command {
   private final SwerveSubsystem swerveSubsystem;
   private final Shooter shooter;
-  private boolean IsActive = false;
+  private boolean isActive = false;
   private double velocity;
-  private double tolerance = 0.0001;
 
   public GetToSpeed(SwerveSubsystem swerveSubsystem, Shooter shooter) {
     this.swerveSubsystem = swerveSubsystem;
@@ -28,14 +27,14 @@ public class GetToSpeed extends Command {
 
     velocity = Util.findVelocity(distance);
     shooter.setShooterSpeed(Util.findVelocity(distance));
-    IsActive = true;
+    isActive = true;
   }
     
   public boolean isFinished() {
-    if (IsActive){
-      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), tolerance);
+    if (isActive){
+      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 0.0001);
       if (result){
-        IsActive = false;
+        isActive = false;
       }
         
       return result;   
