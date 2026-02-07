@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter(RobotContainer robotContainer) {
     this.robotContainer = robotContainer;
-
+    this.swerveSubsystem = robotContainer.swerve;
 
     operatorController = robotContainer.operatorXboxController;
 
@@ -54,11 +54,6 @@ public class Shooter extends SubsystemBase {
     feederMotor.set(speed);
   }
 
-  public void periodic() {
-    if (operaterController.getHID().getYButtonPressed()){
-      CommandScheduler.getInstance().schedule(new GetToSpeed(swerveSubsystem, this));
-    }
-  }
 
   public double getSpeed() {
     double velocity = mainMotor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels

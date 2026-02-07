@@ -45,7 +45,7 @@ public class RobotContainer {
   final CommandXboxController driverXboxController = new CommandXboxController(0);
   public final CommandXboxController operatorXboxController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  public final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final Settings settings = new Settings(driverXboxController, operatorXboxController);
   private final Shooter shooter;
   private final Climber climber;
