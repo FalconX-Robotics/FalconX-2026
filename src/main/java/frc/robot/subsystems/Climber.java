@@ -14,10 +14,13 @@ public class Climber extends SubsystemBase{
     RobotContainer robotContainer;
     CommandXboxController operatorController;
     DigitalInput climbDownLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
+
+    public static Climber instance;
     
 
 
     public Climber(RobotContainer robotContainer) {
+        Climber.instance = this;
         
         this.robotContainer = robotContainer;
 

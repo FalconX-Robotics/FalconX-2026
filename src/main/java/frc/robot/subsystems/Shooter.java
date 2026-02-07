@@ -20,7 +20,10 @@ public class Shooter extends SubsystemBase {
   final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
 
+  public static Shooter instance;
+
   public Shooter(RobotContainer robotContainer) {
+    Shooter.instance = this;
     this.robotContainer = robotContainer;
     this.swerveSubsystem = robotContainer.swerve;
 
@@ -59,5 +62,10 @@ public class Shooter extends SubsystemBase {
     double velocity = mainMotor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
 
     return velocity * Constants.SHOOTER_WHEEL_RADIUS; // velocity at which objects comes out
+  }
+
+  public boolean isHolding() {
+    // TODO - need prox sensor to check if ball is being held
+    return false;
   }
 }

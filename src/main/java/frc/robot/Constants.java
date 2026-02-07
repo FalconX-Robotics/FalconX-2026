@@ -47,6 +47,10 @@ public abstract class Constants {
 
   public static final Pose2d STARTING_POSE = new Pose2d(3, 4, Rotation2d.fromDegrees(0.0));
 
+  // LED is in PWM and thus doesn't need a unique value unless there are other things in PWM.
+  // THIS IS AN IMPORT FROM 2024
+  public static final int LED_PORT = 0;
+
   public static final class AutonConstants {
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants ANGLE_PID = new PIDConstants(0.4, 0, 0.01);

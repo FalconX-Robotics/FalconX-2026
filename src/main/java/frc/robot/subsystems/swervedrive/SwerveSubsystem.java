@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
+import org.dyn4j.geometry.Vector2;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 
@@ -20,6 +21,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
@@ -53,6 +55,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification.NotificationLevel;
+import frc.robot.util.Util;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -93,6 +96,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean allowVisionPose = true;
   public boolean climbing = false;
 
+  public static SwerveSubsystem instance;
+
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }
@@ -104,6 +109,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("deprecation")
   public SwerveSubsystem(File directory) {
+    SwerveSubsystem.instance = this;
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
@@ -738,5 +744,16 @@ public class SwerveSubsystem extends SubsystemBase {
   public void addFakeVisionReading() {
     final Pose2d robotPose = new Pose2d(3, 3, Rotation2d.fromDegrees(65));
     this.swerveDrive.addVisionMeasurement(robotPose, Timer.getFPGATimestamp());
+  }
+
+  public boolean isLinedUp() {
+    Vector2 targetPosition = Util.getTargetPosition();
+    double robotX = getPose().getX();
+    double robotY = getPose().getY();
+
+    double targetAngle = Math.atan2(targetPosition.y-robotY, targetPosition.x-robotX);
+    double robotAngle = getYaw().getRadians();
+
+    return Math.abs(robotAngle - targetAngle) < 0.1;
   }
 }
