@@ -65,27 +65,13 @@ public abstract class Constants {
   }
 
   public static class ID  {
-    public static final int ARM_ID = 22;
-    public static final int SHOOTER_ID = 21;
+    public static final int INTAKE_SHOOTER_ID = 21;
+    public static final int FEEDER_ID = 22;
   }
    
-  public static class DriveTrainConstants {
 
-    public static final int LEFT_FRONT_ID = 1;
-    public static final int RIGHT_FRONT_ID = 2;
-    public static final int LEFT_REAR_ID = 3;
-    public static final int RIGHT_REAR_ID = 4;
-  }
 
-  public static class HootakeConstants {
-    
-    public static final int FEEDER_ROLLER_ID = 5;
-    public static final int INTAKE_LAUNCHER_ROLLER_ID = 6;
-    public static final int CURRENT_LIMIT_ID = 7;
-
-    
-
-  }
+  
 
 
   public static class GearRatio {
