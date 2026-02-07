@@ -36,9 +36,12 @@ public abstract class Constants {
   
   public static final double HEIGHT_OF_TARGET = 1.8288;
 
-  public static final double SHOOTER_GEAR_RATIO = 1;
+  public static final double SHOOTER_GEAR_RATIO = 1.0/1.0;
 
   public static final double SHOOTER_WHEEL_RADIUS = Units.inchesToMeters(2.0);
+  public static final double RADIUS_OF_SHOOTER_WHEEL = 0.0508; // in meters (2 inches)
+
+ 
 
   public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(0, 0, 0.5, new Rotation3d());
 
@@ -67,6 +70,10 @@ public abstract class Constants {
   public static class ID  {
     public static final int INTAKE_SHOOTER_ID = 21;
     public static final int FEEDER_ID = 22;
+    public static final int ARM_ID = 22; // Check this later
+    public static final int SHOOTER_ID = 21; //Old
+    public static final int LIMIT_SWITCH_ID = 9; // Check this later
+    
   }
    
 
@@ -76,7 +83,7 @@ public abstract class Constants {
 
   public static class GearRatio {
     //change when we know the REAL gear ratio
-    public static final double ARM_GEAR_RATIO = 0.5;
+    public static final double ARM_GEAR_RATIO = 1.0/36.0;
   }
 }
 

@@ -62,6 +62,10 @@ public class Settings {
       return driverController.getRightTriggerAxis() > 0.5;
     });
 
+    public Trigger climbButton = operatorController.a();
+
+    public Trigger shooterButton = operatorController.b();
+
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }
@@ -96,5 +100,6 @@ public class Settings {
 
     operatorSettings = new OperatorSettings();
     driverSettings = new DriverSettings();
+    
   }
 }
