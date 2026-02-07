@@ -14,7 +14,9 @@ import frc.robot.commands.GetToSpeed;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase {
-  final TalonFX motor = new TalonFX(Constants.ID.SHOOTER_ID);
+  final TalonFX mainMotor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
+  final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
+  final SwerveSubsystem swerveSubsystem;
   final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
 
@@ -36,7 +38,7 @@ public class Shooter extends SubsystemBase {
     slot0Configs.kI = 0.0;
     slot0Configs.kD = 0.0;
 
-    motor.getConfigurator().apply(talonFXConfigs);
+    mainMotor.getConfigurator().apply(talonFXConfigs);
   }
   
   public void setShooterSpeed(double speed) {
@@ -45,12 +47,21 @@ public class Shooter extends SubsystemBase {
     speed /= 2 * Math.PI;
      
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    motor.setControl(request.withVelocity(speed));      
+    mainMotor.setControl(request.withVelocity(speed));      
   }
 
+  public void setFeederSpeed(double speed) {
+    feederMotor.set(speed);
+  }
+
+  public void periodic() {
+    if (operaterController.getHID().getYButtonPressed()){
+      CommandScheduler.getInstance().schedule(new GetToSpeed(swerveSubsystem, this));
+    }
+  }
 
   public double getSpeed() {
-    double velocity = motor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
+    double velocity = mainMotor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
 
     return velocity * Constants.SHOOTER_WHEEL_RADIUS; // velocity at which objects comes out
   }
