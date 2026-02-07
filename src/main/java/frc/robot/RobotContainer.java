@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -25,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
@@ -46,13 +45,11 @@ public class RobotContainer {
   final CommandXboxController driverXboxController = new CommandXboxController(0);
   public final CommandXboxController operatorXboxController = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  public final SwerveSubsystem swerve;
+  private final SwerveSubsystem swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final Settings settings = new Settings(driverXboxController, operatorXboxController);
   private final Shooter shooter;
   private final Climber climber;
   
-  CvSink cvSink;
-  CvSource camOutput;
 
   Thread camThread;
 
@@ -72,10 +69,10 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
     
+   
     this.shooter = new Shooter(this);
     this.climber = new Climber(this);
     this.climbUp = new ClimbUp(this.climber);
@@ -101,45 +98,23 @@ public class RobotContainer {
       () -> -settings.driverSettings.getRightY()
     );
 
-    driveInputs = new ParallelCommandGroup(new ChangeSpeed(swerve), swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-    dhara = new ParallelCommandGroup(swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
-  
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the angular velocity of the robot
-    absoluteDrive = new AbsoluteDrive(swerve, 
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getRightX(), OperatorConstants.RIGHT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getRightY(), OperatorConstants.RIGHT_X_DEADBAND)
-    );
+    this.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.swerve), driveInputs);
+    this.dhara = new ParallelCommandGroup(driveInputs);
 
-    driveFieldOrientedAnglularVelocity = swerve.driveCommand(
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY() * -1, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX() * -1, OperatorConstants.LEFT_X_DEADBAND),
-      () -> settings.driverSettings.getRightX() * -1
-    );
+    this.swerve.setupPathPlanner();
 
-    driveFieldOrientedDirectAngleSim = swerve.simDriveCommand(
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-      () -> driverXboxController.getRawAxis(2)
-    );
+    this.autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", this.autoChooser);
 
-    swerve.setupPathPlanner();
-
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    
     // Configure thse trigger bindings
     this.configureBindings();
   }
 
+  /**
+   * Robot periodic method. Runs at 50Hz (once every 20ms).
+   */
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("inverted", settings.driverSettings.inverted);
+    SmartDashboard.putBoolean("inverted", this.settings.driverSettings.inverted);
   }
   
   /**
@@ -157,6 +132,9 @@ public class RobotContainer {
     
     SequentialCommandGroup climberSequence= new SequentialCommandGroup(climbUp, new WaitCommand(3.5), climbDown);
     this.settings.operatorSettings.climbButton.onTrue(climberSequence);
+
+    this.settings.operatorSettings.shooterButton.onTrue(new GetToSpeed(swerve, shooter));
+    
   }
 
   /**
@@ -165,7 +143,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return this.autoChooser.getSelected();
   }
 
   public void setDriveMode() {
@@ -173,6 +151,6 @@ public class RobotContainer {
   }
 
   public void setMotorBrake(boolean brake) {
-    swerve.setMotorBrake(brake);
+    this.swerve.setMotorBrake(brake);
   }
 }

@@ -1,20 +1,23 @@
 package frc.robot;
 
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Settings {
-  private CommandXboxController driveController, operatorController;
+  public final CommandXboxController driverController;
+  public final CommandXboxController operatorController;
 
   public class DriverSettings {
-    public Trigger speedModeButton = new Trigger(()-> {return driveController.getRightTriggerAxis() > 0.5;});
-    public Trigger invertButton = driveController.start();
-    public boolean inverted = false;
+    public final Trigger speedModeButton = new Trigger(()-> {
+      return driverController.getRightTriggerAxis() > 0.5;
+    });
+
+    public final Trigger invertButton = driverController.start();
+    public final boolean inverted = false;
 
     public double getLeftX() {
-      double axis = MathUtil.applyDeadband(driveController.getLeftX(), 0.1);
+      double axis = MathUtil.applyDeadband(driverController.getLeftX(), 0.1);
       if (inverted) {
         axis = -axis;
       }
@@ -23,7 +26,7 @@ public class Settings {
     }
 
     public double getLeftY() {
-      double axis = MathUtil.applyDeadband(driveController.getLeftY(), 0.1);
+      double axis = MathUtil.applyDeadband(driverController.getLeftY(), 0.1);
       if (inverted) {
         axis = -axis;
       }
@@ -32,7 +35,7 @@ public class Settings {
     }
 
     public double getRightX() {
-      double axis = MathUtil.applyDeadband(driveController.getRightX(), 0.1);
+      double axis = MathUtil.applyDeadband(driverController.getRightX(), 0.1);
       if (inverted) {
         axis = -axis;
       }
@@ -41,7 +44,7 @@ public class Settings {
     }
 
     public double getRightY() {
-      double axis = MathUtil.applyDeadband(driveController.getRightY(), 0.1);
+      double axis = MathUtil.applyDeadband(driverController.getRightY(), 0.1);
       if (inverted) {
         axis = -axis;
       }
@@ -76,6 +79,8 @@ public class Settings {
 
     public Trigger climbButton = operatorController.a();
 
+    public Trigger shooterButton = operatorController.b();
+
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }
@@ -98,7 +103,7 @@ public class Settings {
 
   public Settings(CommandXboxController driveController, CommandXboxController operatorController) {
     this.operatorController = operatorController;
-    this.driveController = driveController;
+    this.driverController = driveController;
 
     operatorSettings = new OperatorSettings();
     driverSettings = new DriverSettings();

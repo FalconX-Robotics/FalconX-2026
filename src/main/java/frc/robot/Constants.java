@@ -25,9 +25,9 @@ import swervelib.math.Matter;
  */
 public abstract class Constants {
   public static final double ROBOT_MASS = Util.poundsToKilos(126.6); // 32lbs * kg per pound
-  public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+  public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), Constants.ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED = Units.feetToMeters(10);
+  public static final double MAX_SPEED = Units.feetToMeters(10.0);
   public static final double MAX_ANGULAR_VELOCITY = 1 * Math.PI;
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;
@@ -38,6 +38,7 @@ public abstract class Constants {
 
   public static final double SHOOTER_GEAR_RATIO = 1.0/1.0;
 
+  public static final double SHOOTER_WHEEL_RADIUS = Units.inchesToMeters(2.0);
   public static final double RADIUS_OF_SHOOTER_WHEEL = 0.0508; // in meters (2 inches)
 
  
@@ -51,7 +52,7 @@ public abstract class Constants {
     public static final PIDConstants ANGLE_PID = new PIDConstants(0.4, 0, 0.01);
   }
 
-  public static final class DrivebaseConstants {
+  public static final class SwerveDriveConstants {
     public static final double SPEED_MODE_SCALE = 0.2;
     
     // Hold time on motor brakes when disabled
@@ -60,10 +61,10 @@ public abstract class Constants {
 
   public static class OperatorConstants {
     // Joystick Deadband
-    public static final double LEFT_X_DEADBAND  = 0.1;
-    public static final double LEFT_Y_DEADBAND  = 0.1;
+    public static final double LEFT_X_DEADBAND = 0.1;
+    public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT    = 6;
+    public static final double TURN_CONSTANT = 6;
   }
 
   public static class ID  {
@@ -72,6 +73,25 @@ public abstract class Constants {
     public static final int LIMIT_SWITCH_ID = 9; // Check this later
     
   }
+   
+  public static class DriveTrainConstants {
+
+    public static final int LEFT_FRONT_ID = 1;
+    public static final int RIGHT_FRONT_ID = 2;
+    public static final int LEFT_REAR_ID = 3;
+    public static final int RIGHT_REAR_ID = 4;
+  }
+
+  public static class HootakeConstants {
+    
+    public static final int FEEDER_ROLLER_ID = 5;
+    public static final int INTAKE_LAUNCHER_ROLLER_ID = 6;
+    public static final int CURRENT_LIMIT_ID = 7;
+
+    
+
+  }
+
 
   public static class GearRatio {
     //change when we know the REAL gear ratio
