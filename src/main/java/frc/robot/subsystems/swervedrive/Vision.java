@@ -33,7 +33,10 @@ public class Vision extends SubsystemBase{
   private PhotonCameraSim cameraSim;
   private SwerveSubsystem swerve;
 
+  public static Vision instance;
+
   public Vision(PhotonCamera camera, SwerveSubsystem swerve) {
+    Vision.instance = this;
     this.camera = camera;
     this.swerve = swerve;
     

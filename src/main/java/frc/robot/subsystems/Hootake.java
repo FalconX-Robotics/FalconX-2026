@@ -12,7 +12,11 @@ public class Hootake extends SubsystemBase {
     public TalonFX feederRoller;
     public TalonFX intakeLauncherRoller;
 
+    public static Hootake instance;
+
     public Hootake() {
+        Hootake.instance = this;
+        
         feederRoller = new TalonFX(Constants.HootakeConstants.FEEDER_ROLLER_ID);
         intakeLauncherRoller = new TalonFX(Constants.HootakeConstants.FEEDER_ROLLER_ID);
         TalonFXConfiguration feederConfiguration = new TalonFXConfiguration();
