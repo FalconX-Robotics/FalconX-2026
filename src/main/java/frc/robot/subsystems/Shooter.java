@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase{
 
   RobotContainer robotContainer;
 
-  CommandXboxController operaterController; 
+  CommandXboxController operatorController; 
 
   public Shooter(RobotContainer robotContainer) {
 
@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase{
 
     this.swerveSubsystem = robotContainer.swerve;
 
-    operaterController = robotContainer.operatorXboxController;
+    operatorController = robotContainer.operatorXboxController;
 
     TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
@@ -63,7 +63,7 @@ public class Shooter extends SubsystemBase{
   }
 
   public void periodic() {
-    if (operaterController.getHID().getYButtonPressed()){
+    if (operatorController.getHID().getYButtonPressed()){
       CommandScheduler.getInstance().schedule(new GetToSpeed(swerveSubsystem, this));
     }
   }

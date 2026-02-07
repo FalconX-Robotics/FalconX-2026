@@ -18,12 +18,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ClimbDown;
+import frc.robot.commands.ClimbUp;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
@@ -44,6 +49,7 @@ public class RobotContainer {
   public final SwerveSubsystem swerve;
   private final Settings settings = new Settings(driverXboxController, operatorXboxController);
   private final Shooter shooter;
+  private final Climber climber;
   
   CvSink cvSink;
   CvSource camOutput;
@@ -59,6 +65,8 @@ public class RobotContainer {
   Command absoluteDrive;
   Command driveFieldOrientedAnglularVelocity;
   Command driveFieldOrientedDirectAngleSim;
+  Command climbDown;
+  Command climbUp;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,6 +77,9 @@ public class RobotContainer {
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
     
     this.shooter = new Shooter(this);
+    this.climber = new Climber(this);
+    this.climbUp = new ClimbUp(this.climber);
+    this.climbDown = new ClimbDown(this.climber);
     
     absFieldDrive = new AbsoluteFieldDrive(swerve,
       () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
@@ -122,6 +133,7 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
+    
     // Configure thse trigger bindings
     this.configureBindings();
   }
@@ -142,6 +154,9 @@ public class RobotContainer {
   private void configureBindings() {
     settings.driverSettings.speedModeButton.whileTrue(driveInputs);
     swerve.setDefaultCommand(dhara);
+    
+    SequentialCommandGroup climberSequence= new SequentialCommandGroup(climbUp, new WaitCommand(3.5), climbDown);
+    this.settings.operatorSettings.climbButton.onTrue(climberSequence);
   }
 
   /**
