@@ -142,6 +142,7 @@ public class RobotContainer {
   private void configureBindings() {
     settings.driverSettings.speedModeButton.whileTrue(driveInputs);
     swerve.setDefaultCommand(dhara);
+
   }
 
   /**
