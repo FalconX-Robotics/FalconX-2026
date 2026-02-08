@@ -1,15 +1,11 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -17,26 +13,22 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class Shooter extends SubsystemBase{
-  TalonFX motor = new TalonFX(Constants.ID.SHOOTER_ID);
-
-  SwerveSubsystem swerveSubsystem;
-
-  RobotContainer robotContainer;
-
-  CommandXboxController operaterController; 
+public class Shooter extends SubsystemBase {
+  final TalonFX motor = new TalonFX(Constants.ID.SHOOTER_ID);
+  final SwerveSubsystem swerveSubsystem;
+  final RobotContainer robotContainer;
+  final CommandXboxController operaterController; 
 
   public Shooter(RobotContainer robotContainer) {
-
     this.robotContainer = robotContainer;
+    this.swerveSubsystem = robotContainer.subsystems.swerve;
+    this.operaterController = robotContainer.controllers.operator;
 
-    this.swerveSubsystem = robotContainer.swerve;
+    final TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+    talonFXConfigs.MotionMagic.MotionMagicAcceleration = 400;
+    talonFXConfigs.MotionMagic.MotionMagicJerk = 4000; // jerk is change in acceleration over time (like acceleration is to velocity, and velocity is to position)
 
-    operaterController = robotContainer.operatorXboxController;
-
-    TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
-
-    Slot0Configs slot0Configs = talonFXConfigs.Slot0;
+    final Slot0Configs slot0Configs = talonFXConfigs.Slot0;
     slot0Configs.kS = 0.25;
     slot0Configs.kV = 0.12;
     slot0Configs.kA = 0.01;
@@ -44,17 +36,11 @@ public class Shooter extends SubsystemBase{
     slot0Configs.kI = 0.0;
     slot0Configs.kD = 0.0;
 
-    MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-
-    // motionMagicConfigs.MotionMagicCruiseVelocity = 80;
-    motionMagicConfigs.MotionMagicAcceleration = 400;
-    motionMagicConfigs.MotionMagicJerk = 4000;
-
     motor.getConfigurator().apply(talonFXConfigs);
   }
   
   public void setShooterSpeed(double speed) {
-    speed /= Constants.RADIUS_OF_SHOOTER_WHEEL;
+    speed /= Constants.SHOOTER_WHEEL_RADIUS;
     speed *= Constants.SHOOTER_GEAR_RATIO;
     speed /= 2 * Math.PI;
      
@@ -69,8 +55,8 @@ public class Shooter extends SubsystemBase{
   }
 
   public double getSpeed() {
-    double velocity = (motor.getVelocity().getValueAsDouble()*2*Math.PI)/Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
+    double velocity = motor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
 
-    return velocity*Constants.RADIUS_OF_SHOOTER_WHEEL; // velocity at which objects comes out
+    return velocity * Constants.SHOOTER_WHEEL_RADIUS; // velocity at which objects comes out
   }
 }

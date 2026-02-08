@@ -15,9 +15,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,25 +36,25 @@ public class Vision extends SubsystemBase{
   public Vision(PhotonCamera camera, SwerveSubsystem swerve) {
     this.camera = camera;
     this.swerve = swerve;
+    
     try {
       this.fieldLayout = Robot.isReal() ? new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-test-field.json") : AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    } catch (Exception e) {
-      System.err.println("April tag layout file not found");
+    } catch (Exception exception) {
+      System.err.println("ERROR: April tag layout file not found!");
+      exception.printStackTrace();
     }
 
-  if (Robot.isSimulation()) {
-    visionSim.addAprilTags(this.fieldLayout);
-    cameraSimProperties.setCalibration(640, 480, Rotation2d.fromDegrees(100));
-    cameraSimProperties.setCalibError(0.25, 0.08);
-    cameraSimProperties.setFPS(20);
-    cameraSimProperties.setAvgLatencyMs(35);
-    cameraSimProperties.setLatencyStdDevMs(5);
+    if (Robot.isSimulation()) {
+      this.visionSim.addAprilTags(this.fieldLayout);
+      this.cameraSimProperties.setCalibration(640, 480, Rotation2d.fromDegrees(100));
+      this.cameraSimProperties.setCalibError(0.25, 0.08);
+      this.cameraSimProperties.setFPS(20);
+      this.cameraSimProperties.setAvgLatencyMs(35);
+      this.cameraSimProperties.setLatencyStdDevMs(5);
 
-    cameraSim = new PhotonCameraSim(camera, cameraSimProperties);
-    Translation3d robotToCameraTranslation = Constants.ROBOT_TO_CAMERA_POSE.getTranslation();
-    Rotation3d robotToCameraRotation = Constants.ROBOT_TO_CAMERA_POSE.getRotation();
-    Transform3d robotToCamera = new Transform3d(robotToCameraTranslation, robotToCameraRotation);
-    visionSim.addCamera(cameraSim, robotToCamera);
+      final Transform3d robotToCamera = new Transform3d(Constants.ROBOT_TO_CAMERA_POSE.getTranslation(), Constants.ROBOT_TO_CAMERA_POSE.getRotation());
+      this.cameraSim = new PhotonCameraSim(camera, this.cameraSimProperties);
+      this.visionSim.addCamera(this.cameraSim, robotToCamera);
 
     //local host configurations
 
