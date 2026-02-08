@@ -98,8 +98,8 @@ public class RobotContainer {
       () -> -settings.driverSettings.getRightY()
     );
 
-    this.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.swerve), driveInputs);
-    this.dhara = new ParallelCommandGroup(driveInputs);
+    this.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.swerve), swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
+    this.dhara = new ParallelCommandGroup(swerve.driveInputs(()->-settings.driverSettings.getLeftY(), ()->-settings.driverSettings.getLeftX(), ()->-settings.driverSettings.getRightX()));
 
     this.swerve.setupPathPlanner();
 
