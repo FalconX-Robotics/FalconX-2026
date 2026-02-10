@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.Feed;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
@@ -64,6 +65,7 @@ public class RobotContainer {
   Command driveFieldOrientedDirectAngleSim;
   Command climbDown;
   Command climbUp;
+  Command getToSpeed;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -77,7 +79,8 @@ public class RobotContainer {
     this.climber = new Climber(this);
     this.climbUp = new ClimbUp(this.climber);
     this.climbDown = new ClimbDown(this.climber);
-    
+    this.getToSpeed = new GetToSpeed(swerve, shooter);
+
     absFieldDrive = new AbsoluteFieldDrive(swerve,
       () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
       () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND), 
@@ -134,7 +137,9 @@ public class RobotContainer {
     this.settings.operatorSettings.climbButton.onTrue(climberSequence);
 
     this.settings.operatorSettings.shooterButton.onTrue(new GetToSpeed(swerve, shooter));
-    
+
+    this.settings.operatorSettings.feederButton.whileTrue(new Feed(shooter));
+
   }
 
   /**

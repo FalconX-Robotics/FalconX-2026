@@ -53,8 +53,14 @@ public class Shooter extends SubsystemBase {
     mainMotor.setControl(request.withVelocity(speed));      
   }
 
+  public double getShooterSpeed() {
+    return mainMotor.getVelocity().getValueAsDouble();
+
+  }
+
   public void setFeederSpeed(double speed) {
-    feederMotor.set(speed);
+    final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
+    feederMotor.setControl(request.withVelocity(speed));
   }
 
 
