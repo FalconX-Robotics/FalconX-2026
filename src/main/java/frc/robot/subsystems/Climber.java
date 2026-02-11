@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase{
         
         this.robotContainer = robotContainer;
 
-        operatorController = robotContainer.operatorXboxController;
+        operatorController = robotContainer.controllers.operator;
 
     }
 

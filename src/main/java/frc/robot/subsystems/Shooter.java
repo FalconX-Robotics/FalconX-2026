@@ -25,9 +25,8 @@ public class Shooter extends SubsystemBase {
   public Shooter(RobotContainer robotContainer) {
     Shooter.instance = this;
     this.robotContainer = robotContainer;
-    this.swerveSubsystem = robotContainer.swerve;
-
-    operatorController = robotContainer.operatorXboxController;
+    this.swerveSubsystem = robotContainer.subsystems.swerve;
+    this.operatorController = robotContainer.controllers.operator;
 
     final TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
     talonFXConfigs.MotionMagic.MotionMagicAcceleration = 400;
