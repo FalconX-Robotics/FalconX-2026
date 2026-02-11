@@ -15,7 +15,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase {
   final TalonFX mainMotor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
-  final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
+ 
   final SwerveSubsystem swerveSubsystem;
   final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
@@ -56,11 +56,6 @@ public class Shooter extends SubsystemBase {
   public double getShooterSpeed() {
     return mainMotor.getVelocity().getValueAsDouble();
 
-  }
-
-  public void setFeederSpeed(double speed) {
-    final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    feederMotor.setControl(request.withVelocity(speed));
   }
 
 

@@ -29,6 +29,7 @@ import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
@@ -50,7 +51,7 @@ public class RobotContainer {
   private final Settings settings = new Settings(driverXboxController, operatorXboxController);
   private final Shooter shooter;
   private final Climber climber;
-  
+  private final Feeder feeder;
 
   Thread camThread;
 
@@ -77,10 +78,11 @@ public class RobotContainer {
    
     this.shooter = new Shooter(this);
     this.climber = new Climber(this);
+    this.feeder = new Feeder(this);
     this.climbUp = new ClimbUp(this.climber);
     this.climbDown = new ClimbDown(this.climber);
-    this.getToSpeed = new GetToSpeed(swerve, shooter);
-
+    this.getToSpeed = new GetToSpeed(swerve, shooter, feeder);
+    
     absFieldDrive = new AbsoluteFieldDrive(swerve,
       () -> MathUtil.applyDeadband(settings.driverSettings.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
       () -> MathUtil.applyDeadband(-settings.driverSettings.getLeftX(), OperatorConstants.LEFT_X_DEADBAND), 
@@ -136,9 +138,9 @@ public class RobotContainer {
     SequentialCommandGroup climberSequence= new SequentialCommandGroup(climbUp, new WaitCommand(3.5), climbDown);
     this.settings.operatorSettings.climbButton.onTrue(climberSequence);
 
-    this.settings.operatorSettings.shooterButton.onTrue(new GetToSpeed(swerve, shooter));
+    this.settings.operatorSettings.shooterButton.onTrue(this.getToSpeed);
 
-    this.settings.operatorSettings.feederButton.whileTrue(new Feed(shooter));
+    this.settings.operatorSettings.feederButton.whileTrue(new Feed(shooter, feeder));
 
   }
 

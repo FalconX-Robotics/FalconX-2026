@@ -64,9 +64,9 @@ public class Settings {
 
     public Trigger climbButton = operatorController.a();
 
-    public Trigger shooterButton = operatorController.b();
+    public Trigger shooterButton = operatorController.rightTrigger();
 
-    public Trigger feederButton = operatorController.y();
+    public Trigger feederButton = operatorController.leftTrigger();
 
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
