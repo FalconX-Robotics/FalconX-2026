@@ -8,7 +8,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class Feeder extends SubsystemBase {
@@ -17,7 +16,7 @@ public class Feeder extends SubsystemBase {
     final CommandXboxController operatorController;
     public Feeder(RobotContainer robotContainer){
         this.robotContainer = robotContainer;
-        this.operatorController = robotContainer.operatorXboxController;
+        this.operatorController = robotContainer.controllers.operator;
 
 
 /*
