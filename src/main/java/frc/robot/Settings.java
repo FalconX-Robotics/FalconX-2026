@@ -62,7 +62,8 @@ public class Settings {
       return driverController.getRightTriggerAxis() > 0.5;
     });
 
-    public Trigger climbButton = operatorController.a();
+    public Trigger climbUpButton = operatorController.leftBumper();
+    public Trigger climbDownButton = operatorController.rightBumper();
 
     public Trigger shooterButton = operatorController.rightTrigger();
 

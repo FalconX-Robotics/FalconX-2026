@@ -13,7 +13,7 @@ public class Climber extends SubsystemBase{
     public final TalonFX motor = new TalonFX(Constants.ID.ARM_ID);
     RobotContainer robotContainer;
     CommandXboxController operatorController;
-    DigitalInput climbDownLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
+    DigitalInput climbUpLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
 
     public static Climber instance;
     
@@ -28,15 +28,9 @@ public class Climber extends SubsystemBase{
 
     }
 
-    @Override
-    public void periodic() {
-        
-    }
 
-  
-
-    public boolean IsAtBottom() {
-        return climbDownLimitSwitchInput.get();
+    public boolean ClimbUpDone() {
+        return climbUpLimitSwitchInput.get();
     }
 
     

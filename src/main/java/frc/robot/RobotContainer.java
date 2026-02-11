@@ -134,8 +134,11 @@ public class RobotContainer {
     this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs);
     this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
 
-    final SequentialCommandGroup climberSequence = new SequentialCommandGroup(this.commands.climbUp, new WaitCommand(3.5), this.commands.climbDown);
-    this.settings.operatorSettings.climbButton.onTrue(climberSequence);
+    // final SequentialCommandGroup climberSequence = new SequentialCommandGroup(this.commands.climbUp, new WaitCommand(3.5), this.commands.climbDown);
+    // this.settings.operatorSettings.climbButton.onTrue(climberSequence);
+
+    this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
+    this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     this.settings.operatorSettings.shooterButton.onTrue(this.commands.getToSpeed);
     this.settings.operatorSettings.feederButton.whileTrue(this.commands.feed);

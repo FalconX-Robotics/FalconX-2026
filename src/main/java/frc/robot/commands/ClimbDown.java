@@ -9,7 +9,7 @@ import frc.robot.subsystems.Climber;
 public class ClimbDown extends Command {
     final TalonFX motor;
     Climber climberSubsystem;
-    double voltageDown = 2;
+    double voltageDown = -2;
 
     public ClimbDown(Climber climberSubsystem) {
         this.climberSubsystem = climberSubsystem;
@@ -18,7 +18,7 @@ public class ClimbDown extends Command {
 
     @Override
     public void initialize() {
-        motor.setPosition(0);
+        // motor.setPosition(0);
 
     }
 
@@ -29,11 +29,9 @@ public class ClimbDown extends Command {
         
         
     }
-    
     @Override
-    public boolean isFinished() {
-        return climberSubsystem.IsAtBottom();
+    public void end(boolean interrupted) {
+        motor.setVoltage(0);
     }
-
    
 }

@@ -7,8 +7,8 @@ import frc.robot.subsystems.Climber;
 
 public class ClimbUp extends Command {
     final TalonFX motor;       
-    final double maxRotations = 5.0; // test & change later
-    double rotationsDone = 0.0;
+    // final double maxRotations = 5.0; // test & change later
+    // double rotationsDone = 0.0;
     double voltageUp = 2;
     final Climber climberSubsystem;
     
@@ -20,7 +20,7 @@ public class ClimbUp extends Command {
 
     @Override
     public void initialize() {
-        motor.setPosition(0);
+        // motor.setPosition(0);
 
     }
 
@@ -29,13 +29,18 @@ public class ClimbUp extends Command {
         
         motor.setVoltage(voltageUp);
         
-        rotationsDone = motor.getPosition().getValueAsDouble();
+        // rotationsDone = motor.getPosition().getValueAsDouble();
         
     }
     
     @Override
     public boolean isFinished() {
-        return rotationsDone >= maxRotations;
+        return climberSubsystem.ClimbUpDone();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        motor.setVoltage(0);
     }
 
     

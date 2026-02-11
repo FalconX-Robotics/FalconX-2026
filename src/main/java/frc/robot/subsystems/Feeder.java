@@ -14,6 +14,7 @@ public class Feeder extends SubsystemBase {
     final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
     final RobotContainer robotContainer;
     final CommandXboxController operatorController;
+    
     public Feeder(RobotContainer robotContainer){
         this.robotContainer = robotContainer;
         this.operatorController = robotContainer.controllers.operator;
