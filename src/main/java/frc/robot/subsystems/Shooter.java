@@ -20,7 +20,10 @@ public class Shooter extends SubsystemBase {
   final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
 
+  public double speedOfShooter;
+
   public static Shooter instance;
+
 
   public Shooter(RobotContainer robotContainer) {
     Shooter.instance = this;
@@ -42,6 +45,7 @@ public class Shooter extends SubsystemBase {
 
     motor.getConfigurator().apply(talonFXConfigs);
   }
+ 
   
   public void setShooterSpeed(double speed) {
     speed /= Constants.SHOOTER_WHEEL_RADIUS;
@@ -62,6 +66,13 @@ public class Shooter extends SubsystemBase {
     double velocity = motor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
 
     return velocity * Constants.SHOOTER_WHEEL_RADIUS; // velocity at which objects comes out
+  }
+
+  
+  public void setShooterAcceleration(double acceleration) {
+    final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
+    motor.setControl(request.withAcceleration(acceleration));
+
   }
 
   public boolean isHolding() {

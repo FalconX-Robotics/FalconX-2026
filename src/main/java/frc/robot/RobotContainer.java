@@ -12,15 +12,19 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
-import frc.robot.commands.Feed;
+import frc.robot.commands.AutoFeedFromStorage;
+import frc.robot.commands.AutoFeedIntoStorage;
 import frc.robot.commands.GetToSpeed;
+import frc.robot.commands.ManualShoot;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
@@ -69,7 +73,9 @@ public class RobotContainer {
     public ClimbDown climbDown;
     public ClimbUp climbUp;
     public GetToSpeed getToSpeed;
-    public Feed feed;
+    public AutoFeedIntoStorage autoFeedIntoStorage;
+    public AutoFeedFromStorage autoFeedFromStorage;
+    public ManualShoot manualShoot;
   }
 
   public final Controllers controllers = new Controllers();
@@ -95,7 +101,9 @@ public class RobotContainer {
     this.commands.climbDown = new ClimbDown(this.subsystems.climber);
     this.commands.climbUp = new ClimbUp(this.subsystems.climber);
     this.commands.getToSpeed = new GetToSpeed(this.subsystems.swerve, this.subsystems.shooter, this.subsystems.feeder);
-    this.commands.feed = new Feed(this.subsystems.shooter, this.subsystems.feeder);
+    this.commands.autoFeedIntoStorage = new AutoFeedIntoStorage(this.subsystems.feeder);
+    this.commands.autoFeedFromStorage = new AutoFeedFromStorage(this.subsystems.feeder);
+    this.commands.manualShoot = new ManualShoot(this.subsystems.shooter);
 
     final Command driveInputsCommand = this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
@@ -103,9 +111,13 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getRightX()
     );
 
+
     this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
     this.commands.driveInputs = new ParallelCommandGroup(this.commands.changeSpeed, driveInputsCommand);
     this.commands.dhara = new ParallelCommandGroup(driveInputsCommand);
+    
+
+    
 
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -140,8 +152,17 @@ public class RobotContainer {
     this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
-    this.settings.operatorSettings.shooterButton.onTrue(this.commands.getToSpeed);
-    this.settings.operatorSettings.feederButton.whileTrue(this.commands.feed);
+    //MANUAL SHOOTING
+
+    //gets shooter to speed you want:
+    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.autoFeedIntoStorage); //keeps the fuel from firing
+    this.settings.operatorSettings.feederButton.whileTrue(this.commands.manualShoot); //gains speed on shooter and intake
+    
+    //fires:
+    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
+
+
+     
   }
 
   /**

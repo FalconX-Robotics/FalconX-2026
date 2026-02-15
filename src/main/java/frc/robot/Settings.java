@@ -69,6 +69,8 @@ public class Settings {
 
     public Trigger feederButton = operatorController.leftTrigger();
 
+
+
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }
