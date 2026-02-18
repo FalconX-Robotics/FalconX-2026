@@ -30,10 +30,11 @@ public class GetToSpeed extends Command {
 
     velocity = Util.findVelocity(distance);
     shooter.setShooterSpeed(velocity);
-    feeder.setFeederSpeed(-velocity);
+    // feeder.setFeederSpeed(-velocity);
     isActive = true;
   }
-    
+
+
   public boolean isFinished() {
     if (isActive){
       boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 0.0001);

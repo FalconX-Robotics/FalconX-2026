@@ -44,8 +44,26 @@ public class Feeder extends SubsystemBase {
   public void setFeederSpeed(double speed) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     feederMotor.setControl(request.withVelocity(speed));
+   
   }
 
+  public void setFeederAcceleration(double acceleration) {
+    final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
+    feederMotor.setControl(request.withAcceleration(acceleration));
+
+  }
+
+  public double getShooterSpeed() {
+    return robotContainer.subsystems.shooter.getShooterSpeed();
+  }
+
+  public double getFeederSpeed() {
+    return feederMotor.getVelocity().getValueAsDouble();
+  }
+
+  public double getFeederAcceleration() {
+    return feederMotor.getAcceleration().getValueAsDouble();
+  }
 
 
 
