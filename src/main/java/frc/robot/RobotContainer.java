@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -78,6 +82,10 @@ public class RobotContainer {
 
   public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
 
+  public final PathPlannerAuto shootingAuto;
+
+  
+ NamedCommands.
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -90,7 +98,8 @@ public class RobotContainer {
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
-
+    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  
     // Initialize commands
     this.commands.climbDown = new ClimbDown(this.subsystems.climber);
     this.commands.climbUp = new ClimbUp(this.subsystems.climber);
@@ -103,13 +112,22 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getRightX()
     );
 
+     final Command driveInputsCommand2 = this.subsystems.swerve.driveInputs(
+      () -> -this.settings.driverSettings.getLeftY(),
+      () -> -this.settings.driverSettings.getLeftX(),
+      () -> -this.settings.driverSettings.getRightX()
+    );
+
+
     this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
     this.commands.driveInputs = new ParallelCommandGroup(this.commands.changeSpeed, driveInputsCommand);
-    this.commands.dhara = new ParallelCommandGroup(driveInputsCommand);
-
+    this.commands.dhara = new ParallelCommandGroup(driveInputsCommand2);
+    this.subsystems.swerve.setupPathPlanner();
     this.autoChooser = AutoBuilder.buildAutoChooser();
+    shootingAuto = new PathPlannerAuto("ShootingAuto");
+    NamedCommands.registerCommand("GetToSpeed", this.commands.getToSpeed);;
+    
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
-
     // Configure trigger bindings
     this.configureBindings();
   }
