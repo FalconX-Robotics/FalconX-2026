@@ -11,12 +11,12 @@
   },
   "angle": {
     "type": "sparkmax",
-    "id": 13,
+    "id": 19,
     "canbus": null
   },
   "encoder": {
     "type": "canandmag",
-    "id": 13,
+    "id": 19,
     "canbus": null
   },
   "inverted": {
