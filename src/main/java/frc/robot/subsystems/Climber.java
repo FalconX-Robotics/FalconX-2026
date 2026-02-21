@@ -10,26 +10,18 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Climber extends SubsystemBase {
-    public final TalonFX motor = new TalonFX(Constants.ID.CLIMBER_ID);
-    RobotContainer robotContainer;
-    CommandXboxController operatorController;
-    DigitalInput climbUpLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
+  public final TalonFX motor = new TalonFX(Constants.ID.CLIMBER_ID);
+  CommandXboxController operatorController;
+  DigitalInput climbUpLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
 
-    public static Climber instance;
-    
-    public Climber(RobotContainer robotContainer) {
-        Climber.instance = this;
-        
-        this.robotContainer = robotContainer;
+  public Climber() {
+    operatorController = RobotContainer.getRobotContainer().controllers.operator;
+  }
 
-        operatorController = robotContainer.controllers.operator;
-    }
+  public boolean ClimbUpDone() {
+    final boolean result = climbUpLimitSwitchInput.get();
 
-
-    public boolean ClimbUpDone() {
-        final boolean result = climbUpLimitSwitchInput.get();
-
-        SmartDashboard.putBoolean("climbUpLimitSwitchInput", result);
-        return result;
-    }    
+    SmartDashboard.putBoolean("climbUpLimitSwitchInput", result);
+    return result;
+  }
 }

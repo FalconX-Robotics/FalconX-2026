@@ -176,8 +176,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    final PhotonCamera camera = new PhotonCamera("Limelight");
-    this.vision = new Vision(camera, this);
+    this.vision = new Vision();
   }
 
   public Vision getVision() {

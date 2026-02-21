@@ -11,12 +11,13 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Feeder extends SubsystemBase {
-  public final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
-  final RobotContainer robotContainer;
+  public final TalonFX motor = new TalonFX(Constants.ID.FEEDER_ID);
+  final Shooter shooter;
   final CommandXboxController operatorController;
   
-  public Feeder(RobotContainer robotContainer){
-    this.robotContainer = robotContainer;
+  public Feeder() {
+    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+    this.shooter = robotContainer.subsystems.shooter;
     this.operatorController = robotContainer.controllers.operator;
 
     /**
@@ -34,28 +35,28 @@ public class Feeder extends SubsystemBase {
     slot1Configs.kI = 0.0;
     slot1Configs.kD = 0.0;
 
-    feederMotor.getConfigurator().apply(talonFXConfigs);
+    motor.getConfigurator().apply(talonFXConfigs);
   }
 
   public void setFeederSpeed(double speed) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    feederMotor.setControl(request.withVelocity(speed));
+    motor.setControl(request.withVelocity(speed));
   }
 
   public void setFeederAcceleration(double acceleration) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    feederMotor.setControl(request.withAcceleration(acceleration));
+    motor.setControl(request.withAcceleration(acceleration));
   }
 
   public double getShooterSpeed() {
-    return robotContainer.subsystems.shooter.getShooterSpeed();
+    return this.shooter.getShooterSpeed();
   }
 
   public double getFeederSpeed() {
-    return feederMotor.getVelocity().getValueAsDouble();
+    return motor.getVelocity().getValueAsDouble();
   }
 
   public double getFeederAcceleration() {
-    return feederMotor.getAcceleration().getValueAsDouble();
+    return motor.getAcceleration().getValueAsDouble();
   }
 }

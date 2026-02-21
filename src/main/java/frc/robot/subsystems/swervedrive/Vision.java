@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase{
   public PhotonCamera camera;
@@ -34,10 +35,10 @@ public class Vision extends SubsystemBase{
 
   public static Vision instance;
 
-  public Vision(PhotonCamera camera, SwerveSubsystem swerve) {
+  public Vision() {
     Vision.instance = this;
-    this.camera = camera;
-    this.swerve = swerve;
+    this.camera = RobotContainer.getRobotContainer().visionCamera;
+    this.swerve = RobotContainer.getRobotContainer().subsystems.swerve;
     
     try {
       this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
