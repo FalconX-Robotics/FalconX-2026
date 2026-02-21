@@ -72,19 +72,12 @@ public abstract class Constants {
   }
 
   public static class ID  {
-    public static final int INTAKE_SHOOTER_ID = 21;
-    public static final int FEEDER_ID = 22;
-    public static final int ARM_ID = 22; // Check this later
-    public static final int SHOOTER_ID = 21; //Old
+    public static final int INTAKE_SHOOTER_ID = 3;
+    public static final int FEEDER_ID = 1;
+    public static final int CLIMBER_ID = 2;
     public static final int LIMIT_SWITCH_ID = 9; // Check this later
-    
   }
-   
-
-
   
-
-
   public static class GearRatio {
     //change when we know the REAL gear ratio
     public static final double ARM_GEAR_RATIO = 1.0/36.0;

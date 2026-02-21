@@ -16,7 +16,6 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,9 +40,9 @@ public class Vision extends SubsystemBase{
     this.swerve = swerve;
     
     try {
-      this.fieldLayout = Robot.isReal() ? new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/vision/2025-test-field.json") : AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
+      this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
     } catch (Exception exception) {
-      System.err.println("ERROR: April tag layout file not found!");
+      System.err.println("ERROR: Failed to load a field layout for \"k2026RebuiltWelded\"");
       exception.printStackTrace();
     }
 

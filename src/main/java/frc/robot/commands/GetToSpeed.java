@@ -4,7 +4,6 @@ import org.dyn4j.geometry.Vector2;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.util.Util;
@@ -12,14 +11,12 @@ import frc.robot.util.Util;
 public class GetToSpeed extends Command {
   private final SwerveSubsystem swerveSubsystem;
   private final Shooter shooter;
-  private final Feeder feeder;
   private boolean isActive = false;
   private double velocity;
 
-  public GetToSpeed(SwerveSubsystem swerveSubsystem, Shooter shooter, Feeder feeder) {
+  public GetToSpeed(SwerveSubsystem swerveSubsystem, Shooter shooter) {
     this.swerveSubsystem = swerveSubsystem;
     this.shooter = shooter;
-    this.feeder = feeder;
     addRequirements(shooter);
   }
   
@@ -30,7 +27,6 @@ public class GetToSpeed extends Command {
 
     velocity = Util.findVelocity(distance);
     shooter.setShooterSpeed(velocity);
-    // feeder.setFeederSpeed(-velocity);
     isActive = true;
   }
 

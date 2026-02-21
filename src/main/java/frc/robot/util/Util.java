@@ -57,7 +57,7 @@ public class Util {
 
   public static Vector2 getTargetPosition() {
     final double x = (DriverStation.getAlliance().get() == Alliance.Red) ? (651 - 182.11) : 182.11;
-    final double y = 317 / 2;;
+    final double y = 317 / 2;
     return new Vector2(x, y);
   }
 
