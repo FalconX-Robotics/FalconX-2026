@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 
 import org.photonvision.PhotonCamera;
 
-
-import org.photonvision.PhotonCamera;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
@@ -145,6 +145,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoFeedIntoStorage", this.commands.autoFeedIntoStorage);
     NamedCommands.registerCommand("autoFeedFromStorage", this.commands.autoFeedFromStorage);
 
+    
+
     try {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -192,9 +194,11 @@ public class RobotContainer {
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
 
     //SHOOTING AUTO
+    
     this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
     
-     
+    // this.settings.operatorSettings.shootingAutoButton.onTrue(this.subsystems.swerve.driveToPose(new Pose2d(1.0, 2.0, Rotation2d.fromDegrees(0))).andThen(new PathPlannerAuto("Shooting Auto")));
+    
   }
 
   /**
