@@ -3,13 +3,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-
-public class Climber extends SubsystemBase{
+public class Climber extends SubsystemBase {
     public final TalonFX motor = new TalonFX(Constants.ID.CLIMBER_ID);
     RobotContainer robotContainer;
     CommandXboxController operatorController;
@@ -17,21 +17,19 @@ public class Climber extends SubsystemBase{
 
     public static Climber instance;
     
-
-
     public Climber(RobotContainer robotContainer) {
         Climber.instance = this;
         
         this.robotContainer = robotContainer;
 
         operatorController = robotContainer.controllers.operator;
-
     }
 
 
     public boolean ClimbUpDone() {
-        return climbUpLimitSwitchInput.get();
-    }
+        final boolean result = climbUpLimitSwitchInput.get();
 
-    
+        SmartDashboard.putBoolean("climbUpLimitSwitchInput", result);
+        return result;
+    }    
 }

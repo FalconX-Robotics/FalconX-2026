@@ -57,20 +57,11 @@ public class Settings {
    * Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator)
    */
   public class OperatorSettings {
-    
-    public final Trigger fireTrigger = new Trigger(()-> {
-      return driverController.getRightTriggerAxis() > 0.5;
-    });
-
     public Trigger climbUpButton = operatorController.leftBumper();
     public Trigger climbDownButton = operatorController.rightBumper();
-
     public Trigger shooterButton = operatorController.rightTrigger();
-
     public Trigger feederButton = operatorController.leftTrigger();
-
     public Trigger shootingAutoButton = operatorController.a();
-
 
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);

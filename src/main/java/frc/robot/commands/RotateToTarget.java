@@ -4,8 +4,8 @@ import org.dyn4j.geometry.Vector2;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.util.Util;
 
 public class RotateToTarget extends Command{
@@ -14,8 +14,8 @@ public class RotateToTarget extends Command{
   double currentAngle;
   double targetAngle;
 
-  public RotateToTarget(Vision vision, SwerveSubsystem swerveSubsystem) {
-    this.swerveSubsystem = swerveSubsystem;
+  public RotateToTarget() {
+    this.swerveSubsystem = RobotContainer.getRobotContainer().subsystems.swerve;
     addRequirements(swerveSubsystem);
   }
 
