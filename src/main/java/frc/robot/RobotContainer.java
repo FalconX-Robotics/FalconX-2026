@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -12,11 +13,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
@@ -68,7 +65,7 @@ public class RobotContainer {
     public ParallelCommandGroup driveInputs;
     public ParallelCommandGroup dhara;
 
-    public ChangeSpeed changeSpeed;
+    // public ChangeSpeed changeSpeed;
 
     public ClimbDown climbDown;
     public ClimbUp climbUp;
@@ -93,6 +90,7 @@ public class RobotContainer {
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
 
     // Initialize subsystems
+    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
@@ -105,22 +103,34 @@ public class RobotContainer {
     this.commands.autoFeedFromStorage = new AutoFeedFromStorage(this.subsystems.feeder);
     this.commands.manualShoot = new ManualShoot(this.subsystems.shooter);
 
-    final Command driveInputsCommand = this.subsystems.swerve.driveInputs(
+    // final Command driveInputsCommand = this.subsystems.swerve.driveInputs(
+    //   () -> -this.settings.driverSettings.getLeftY(),
+    //   () -> -this.settings.driverSettings.getLeftX(),
+    //   () -> -this.settings.driverSettings.getRightX()
+    // );
+
+
+    // this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
+    this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
-    );
-
-
-    this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
-    this.commands.driveInputs = new ParallelCommandGroup(this.commands.changeSpeed, driveInputsCommand);
-    this.commands.dhara = new ParallelCommandGroup(driveInputsCommand);
+    ));
+    
+    this.commands.dhara = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
+      () -> -this.settings.driverSettings.getLeftY(),
+      () -> -this.settings.driverSettings.getLeftX(),
+      () -> -this.settings.driverSettings.getRightX()
+    ));
     
 
     
-
-    this.autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", this.autoChooser);
+    try {
+      this.autoChooser = AutoBuilder.buildAutoChooser();
+      SmartDashboard.putData("Auto Chooser", this.autoChooser);
+    } catch (Exception exception) {
+      System.err.println("WARN: Tried to set this.autoChooser but failed");
+    }
 
     // Configure trigger bindings
     this.configureBindings();

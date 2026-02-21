@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Start to Depot"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": null
           }
         }
       ]
