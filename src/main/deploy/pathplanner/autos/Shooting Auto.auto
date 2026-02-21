@@ -33,6 +33,7 @@
           "type": "named",
           "data": {
             "name": "autoFeedFromStorage"
+            "name": "autoFeedFromStorage"
           }
         }
       ]

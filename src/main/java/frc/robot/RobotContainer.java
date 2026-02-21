@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 import org.photonvision.PhotonCamera;
 
+
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -44,7 +47,7 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-
+  
   public static class Controllers {
     /**
      * Driver controller object. The driver controller is connected on port 0.
@@ -137,7 +140,6 @@ public class RobotContainer {
     ));
     
     this.subsystems.swerve.setupPathPlanner();
-
     NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("autoFeedIntoStorage", this.commands.autoFeedIntoStorage);
@@ -189,7 +191,9 @@ public class RobotContainer {
     //fires:
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
 
-
+    //SHOOTING AUTO
+    this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
+    
      
   }
 
