@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -139,7 +140,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
-    
+
     if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -183,9 +184,10 @@ public class RobotContainer {
     //SHOOTING AUTO
     
     this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
-    
-    // this.settings.operatorSettings.shootingAutoButton.onTrue(this.subsystems.swerve.driveToPose(new Pose2d(1.0, 2.0, Rotation2d.fromDegrees(0))).andThen(new PathPlannerAuto("Shooting Auto")));
-    
+
+    PathPlannerAuto topDepotIntakeAuto = new PathPlannerAuto("Top Depot Intake");
+      
+    this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
   }
     
   public static RobotContainer getRobotContainer() {

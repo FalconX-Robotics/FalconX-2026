@@ -62,6 +62,7 @@ public class Settings {
     public Trigger shooterButton = operatorController.rightTrigger();
     public Trigger feederButton = operatorController.leftTrigger();
     public Trigger shootingAutoButton = operatorController.a();
+    public Trigger topDepotIntakeButton = operatorController.b();
 
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);

@@ -32,7 +32,7 @@ public class GetToSpeed extends Command {
     double distance = targetPosition.distance(robotPosition);
 
     velocity = Util.findVelocity(distance);
-    shooter.setShooterSpeed(velocity);
+    shooter.setAutoShooterSpeed(velocity);
     isActive = true;
   }
 

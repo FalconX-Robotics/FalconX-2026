@@ -12,7 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase {
-  final TalonFX motor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
+  public final TalonFX shooterMotor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
  
   final SwerveSubsystem swerveSubsystem;
   final RobotContainer robotContainer;
@@ -38,27 +38,32 @@ public class Shooter extends SubsystemBase {
     slot0Configs.kI = 0.0;
     slot0Configs.kD = 0.0;
 
-    motor.getConfigurator().apply(talonFXConfigs);
+    shooterMotor.getConfigurator().apply(talonFXConfigs);
   }
  
   
-  public void setShooterSpeed(double speed) {
+  public void setAutoShooterSpeed(double speed) {
     speed /= Constants.SHOOTER_WHEEL_RADIUS;
     speed *= Constants.SHOOTER_GEAR_RATIO;
     speed /= 2 * Math.PI;
-     
+    
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    motor.setControl(request.withVelocity(speed));      
+    shooterMotor.setControl(request.withVelocity(speed));      
+  }
+
+  public void setShooterSpeed(double speed) {
+    final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
+    shooterMotor.setControl(request.withVelocity(speed));     
   }
 
   public double getShooterSpeed() {
-    return motor.getVelocity().getValueAsDouble();
+    return shooterMotor.getVelocity().getValueAsDouble();
 
   }
 
 
   public double getSpeed() {
-    double velocity = motor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
+    double velocity = shooterMotor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
 
     return velocity * Constants.SHOOTER_WHEEL_RADIUS; // velocity at which objects comes out
   }
@@ -66,7 +71,7 @@ public class Shooter extends SubsystemBase {
   
   public void setShooterAcceleration(double acceleration) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
-    motor.setControl(request.withAcceleration(acceleration));
+    shooterMotor.setControl(request.withAcceleration(acceleration));
 
   }
 
