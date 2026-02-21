@@ -5,9 +5,34 @@
     "data": {
       "commands": [
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "rotateToTarget"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "getToSpeed"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoFeedIntoStorage"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": null
+            "name": "autoFeedFromStorage"
           }
         }
       ]

@@ -6,6 +6,9 @@ package frc.robot;
 
 import java.io.File;
 import java.time.LocalDateTime;
+
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -29,11 +32,13 @@ import frc.robot.commands.AutoFeedFromStorage;
 import frc.robot.commands.AutoFeedIntoStorage;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.ManualShoot;
+import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.util.Util;
 
 /**
@@ -44,7 +49,8 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-
+  
+  public PhotonCamera visioncamera = new PhotonCamera("Limelight");
   public static class Controllers {
     /**
      * Driver controller object. The driver controller is connected on port 0.
@@ -66,6 +72,7 @@ public class RobotContainer {
     public Shooter shooter;
     public Climber climber;
     public Feeder feeder;
+    public Vision vision;
   }
 
   public static class Commands {
@@ -80,6 +87,7 @@ public class RobotContainer {
     public AutoFeedIntoStorage autoFeedIntoStorage;
     public AutoFeedFromStorage autoFeedFromStorage;
     public ManualShoot manualShoot;
+    public RotateToTarget rotateToTarget;
   }
 
   public final Controllers controllers = new Controllers();
@@ -88,7 +96,7 @@ public class RobotContainer {
 
   public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
 
-  // public final PathPlannerAuto shootingAuto;
+  public final PathPlannerAuto shootingAuto;
 
   
  
@@ -105,7 +113,8 @@ public class RobotContainer {
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
     this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  
+    this.subsystems.vision = new Vision(visioncamera, this.subsystems.swerve);
+
     // Initialize commands
     this.commands.climbDown = new ClimbDown(this.subsystems.climber);
     this.commands.climbUp = new ClimbUp(this.subsystems.climber);
@@ -113,6 +122,7 @@ public class RobotContainer {
     this.commands.autoFeedIntoStorage = new AutoFeedIntoStorage(this.subsystems.feeder);
     this.commands.autoFeedFromStorage = new AutoFeedFromStorage(this.subsystems.feeder);
     this.commands.manualShoot = new ManualShoot(this.subsystems.shooter);
+    this.commands.rotateToTarget = new RotateToTarget(this.subsystems.vision, this.subsystems.swerve);
 
     final Command driveInputsCommand = this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
@@ -125,16 +135,20 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
     );
-
-
+    
     this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
     this.commands.driveInputs = new ParallelCommandGroup(this.commands.changeSpeed, driveInputsCommand);
     this.commands.dhara = new ParallelCommandGroup(driveInputsCommand2);
-    this.subsystems.swerve.setupPathPlanner();
-    this.autoChooser = AutoBuilder.buildAutoChooser();
-    // shootingAuto = new PathPlannerAuto("ShootingAuto");
-    // NamedCommands.registerCommand("GetToSpeed", this.commands.getToSpeed);;
     
+    this.subsystems.swerve.setupPathPlanner();
+    
+    shootingAuto = new PathPlannerAuto("ShootingAuto");
+    NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
+    NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
+    NamedCommands.registerCommand("autoFeedFromStorage", this.commands.autoFeedFromStorage);
+    NamedCommands.registerCommand("autoFeedIntoStorage", this.commands.autoFeedIntoStorage);
+    
+    this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
     // Configure trigger bindings
     this.configureBindings();
@@ -175,7 +189,9 @@ public class RobotContainer {
     //fires:
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
 
-
+    //SHOOTING AUTO
+    this.settings.operatorSettings.shootingAutoButton.onTrue(this.shootingAuto);
+    
      
   }
 

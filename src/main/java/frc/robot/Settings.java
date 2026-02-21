@@ -69,6 +69,7 @@ public class Settings {
 
     public Trigger feederButton = operatorController.leftTrigger();
 
+    public Trigger shootingAutoButton = operatorController.a();
 
 
     public double getLeftX() {
