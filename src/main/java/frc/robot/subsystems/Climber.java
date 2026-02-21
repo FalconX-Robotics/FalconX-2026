@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 
 
 public class Climber extends SubsystemBase{
-    public final TalonFX motor = new TalonFX(Constants.ID.ARM_ID);
+    public final TalonFX motor = new TalonFX(Constants.ID.CLIMBER_ID);
     RobotContainer robotContainer;
     CommandXboxController operatorController;
     DigitalInput climbUpLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
