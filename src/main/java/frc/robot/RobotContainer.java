@@ -100,7 +100,7 @@ public class RobotContainer {
     // Initialize commands
     this.commands.climbDown = new ClimbDown(this.subsystems.climber);
     this.commands.climbUp = new ClimbUp(this.subsystems.climber);
-    this.commands.getToSpeed = new GetToSpeed(this.subsystems.swerve, this.subsystems.shooter, this.subsystems.feeder);
+    this.commands.getToSpeed = new GetToSpeed(this.subsystems.swerve, this.subsystems.shooter);
     this.commands.autoFeedIntoStorage = new AutoFeedIntoStorage(this.subsystems.feeder);
     this.commands.autoFeedFromStorage = new AutoFeedFromStorage(this.subsystems.feeder);
     this.commands.manualShoot = new ManualShoot(this.subsystems.shooter);
