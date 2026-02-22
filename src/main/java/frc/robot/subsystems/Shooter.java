@@ -5,12 +5,10 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.GetToSpeed;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase {
@@ -20,10 +18,7 @@ public class Shooter extends SubsystemBase {
   final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
 
-  public double speedOfShooter;
-
   public static Shooter instance;
-
 
   public Shooter(RobotContainer robotContainer) {
     Shooter.instance = this;

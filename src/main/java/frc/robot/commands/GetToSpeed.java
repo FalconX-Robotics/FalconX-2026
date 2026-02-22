@@ -13,7 +13,6 @@ import frc.robot.util.Util;
 public class GetToSpeed extends Command {
   private final SwerveSubsystem swerveSubsystem;
   private final Shooter shooter;
-  private final Feeder feeder;
   private boolean isActive = false;
   private double velocity;
 
@@ -33,7 +32,6 @@ public class GetToSpeed extends Command {
 
     velocity = Util.findVelocity(distance);
     shooter.setShooterSpeed(velocity);
-    // feeder.setFeederSpeed(-velocity);
     isActive = true;
   }
 

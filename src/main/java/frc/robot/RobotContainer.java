@@ -6,7 +6,15 @@ package frc.robot;
 
 import java.io.File;
 import java.time.LocalDateTime;
+
+import org.photonvision.PhotonCamera;
+
+
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,11 +31,13 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ManualShoot;
+import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.util.Util;
 
 /**
@@ -61,6 +71,7 @@ public class RobotContainer {
     public Shooter shooter;
     public Climber climber;
     public Feeder feeder;
+    public Vision vision;
   }
 
   public static class Commands {
@@ -81,6 +92,7 @@ public class RobotContainer {
 
   public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
 
+  private final PhotonCamera visionCamera = new PhotonCamera("Limelight");
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -98,6 +110,7 @@ public class RobotContainer {
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
+    this.subsystems.vision = new Vision(visionCamera, this.subsystems.swerve);
 
     // Initialize commands
     this.commands.climbDown = new ClimbDown();
@@ -119,6 +132,12 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getRightX()
     ));
 
+    this.subsystems.swerve.setupPathPlanner();
+    NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
+    NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
+    NamedCommands.registerCommand("autoFeedIntoStorage", this.commands.autoFeedIntoStorage);
+    NamedCommands.registerCommand("autoFeedFromStorage", this.commands.autoFeedFromStorage);
+    
     if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -157,7 +176,10 @@ public class RobotContainer {
     this.settings.operatorSettings.feederButton.whileTrue(this.commands.intake);
     
     //fires:
-    this.settings.operatorSettings.shooterButton.whileTrue(this.commands.manualShoot);
+    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
+
+    //SHOOTING AUTO
+    this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto")); 
   }
 
   public static RobotContainer getRobotContainer() {
