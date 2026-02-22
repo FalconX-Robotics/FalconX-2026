@@ -10,7 +10,6 @@ public class ClimbUp extends Command {
   final TalonFX motor;       
   // final double maxRotations = 5.0; // test & change later
   // double rotationsDone = 0.0;
-  double voltageUp = 2;
   final Climber climberSubsystem;
 
   public ClimbUp() {
@@ -19,17 +18,8 @@ public class ClimbUp extends Command {
   }
 
   @Override
-  public void initialize() {
-    // motor.setPosition(0);
-
-  }
-
-  @Override
   public void execute() {
-
-    motor.setVoltage(voltageUp);
-
-  // rotationsDone = motor.getPosition().getValueAsDouble();
+    motor.setVoltage(2.0);
   }
 
   @Override

@@ -12,17 +12,13 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class Shooter extends SubsystemBase {
-  final TalonFX motor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
+  public final TalonFX motor = new TalonFX(Constants.ID.INTAKE_SHOOTER_ID);
  
   final SwerveSubsystem swerveSubsystem;
-  final RobotContainer robotContainer;
   final CommandXboxController operatorController; 
 
-  public static Shooter instance;
-
-  public Shooter(RobotContainer robotContainer) {
-    Shooter.instance = this;
-    this.robotContainer = robotContainer;
+  public Shooter() {
+    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
     this.swerveSubsystem = robotContainer.subsystems.swerve;
     this.operatorController = robotContainer.controllers.operator;
 
@@ -40,7 +36,6 @@ public class Shooter extends SubsystemBase {
 
     motor.getConfigurator().apply(talonFXConfigs);
   }
- 
   
   public void setShooterSpeed(double speed) {
     speed /= Constants.SHOOTER_WHEEL_RADIUS;
@@ -53,9 +48,7 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterSpeed() {
     return motor.getVelocity().getValueAsDouble();
-
   }
-
 
   public double getSpeed() {
     double velocity = motor.getVelocity().getValueAsDouble() * (2.0 * Math.PI) / Constants.SHOOTER_GEAR_RATIO; // velocity of wheels
@@ -67,7 +60,6 @@ public class Shooter extends SubsystemBase {
   public void setShooterAcceleration(double acceleration) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     motor.setControl(request.withAcceleration(acceleration));
-
   }
 
   public boolean isHolding() {

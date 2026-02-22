@@ -2,42 +2,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.Settings;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Shooter;
 
 public class Intake extends Command {
+  private final Settings.OperatorSettings operatorSettings;
   private final Feeder feeder;
-
-  //TODO: 3 below = adjust later based on testing
-  // private double maxvelocity = 4;
-  // private double acceleration = -0.5; 
-  // private double lessenough = 0.25; //subtracted from max velocity -> how much less than max velocity should the motor be for it to start up gaining speed again
+  private final Shooter shooter;
 
   public Intake() {
-    this.feeder = RobotContainer.getRobotContainer().subsystems.feeder;
+    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+    this.operatorSettings = robotContainer.settings.operatorSettings;
+    this.feeder = robotContainer.subsystems.feeder;
+    this.shooter = robotContainer.subsystems.shooter;
 
-    addRequirements(this.feeder);
-  }
-
-  @Override
-  public void initialize() {
-    // feeder.setFeederAcceleration(acceleration);    //into storage TODO: check if negative or positive acceleration
+    addRequirements(this.feeder, this.shooter);
   }
 
   @Override
   public void execute() {
-    // if (feeder.getFeederSpeed() >= maxvelocity) {
-    //     feeder.setFeederAcceleration(0);
-    // }
-    //  if ((feeder.getFeederSpeed() < maxvelocity-lessenough) && (feeder.getFeederAcceleration() == 0)) {
-    //     feeder.setFeederAcceleration(acceleration);
-    // }
-    // feeder.setFeederSpeed(maxvelocity);
-
-    feeder.feederMotor.set(-0.8); // 80% speed
+    // based on how far the trigger is pushed
+    final double value = this.operatorSettings.getLeftTriggerAxis();
+    this.feeder.motor.set(-value);
+    this.shooter.motor.set(-value);
   }
 
   public void end(boolean interrupted){
-    // feeder.setFeederAcceleration(0);
-    feeder.feederMotor.set(0.0);
+    this.feeder.motor.set(0.0);
+    this.shooter.motor.set(0.0);
   }
 }

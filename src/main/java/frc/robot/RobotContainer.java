@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 
@@ -13,8 +14,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -22,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
@@ -48,7 +46,7 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-  private static RobotContainer robotContainer = null; // singleton
+  private static Optional<RobotContainer> robotContainer = null; // singleton
 
   public static class Controllers {
     /**
@@ -93,13 +91,14 @@ public class RobotContainer {
 
   public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
 
-  private final PhotonCamera visionCamera = new PhotonCamera("Limelight");
+  public final PhotonCamera visionCamera = new PhotonCamera("Limelight");
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    if (RobotContainer.robotContainer == null) {
-      RobotContainer.robotContainer = this;
+    if (RobotContainer.robotContainer.isEmpty()) {
+      RobotContainer.robotContainer = Optional.of(this);
     }
 
     // Initialize the logging module
@@ -108,10 +107,10 @@ public class RobotContainer {
 
     // Initialize subsystems
     this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-    this.subsystems.shooter = new Shooter(this);
-    this.subsystems.climber = new Climber(this);
-    this.subsystems.feeder = new Feeder(this);
-    this.subsystems.vision = new Vision(visionCamera, this.subsystems.swerve);
+    this.subsystems.shooter = new Shooter();
+    this.subsystems.climber = new Climber();
+    this.subsystems.feeder = new Feeder();
+    this.subsystems.vision = new Vision();
 
     // Initialize commands
     this.commands.climbDown = new ClimbDown();
@@ -185,11 +184,11 @@ public class RobotContainer {
     this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
     
     // this.settings.operatorSettings.shootingAutoButton.onTrue(this.subsystems.swerve.driveToPose(new Pose2d(1.0, 2.0, Rotation2d.fromDegrees(0))).andThen(new PathPlannerAuto("Shooting Auto")));
-    
   }
     
   public static RobotContainer getRobotContainer() {
-    return RobotContainer.robotContainer;
+    // Optional<T>#orElse(T) returns the value held by Optional<T> if it exists, or the argument T if it doesn't.
+    return RobotContainer.robotContainer.orElse(null);
   }
 
   /**
