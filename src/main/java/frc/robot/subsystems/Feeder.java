@@ -11,22 +11,20 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Feeder extends SubsystemBase {
-    final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
-    final RobotContainer robotContainer;
-    final CommandXboxController operatorController;
-    
-    public Feeder(RobotContainer robotContainer){
-        this.robotContainer = robotContainer;
-        this.operatorController = robotContainer.controllers.operator;
+  public final TalonFX feederMotor = new TalonFX(Constants.ID.FEEDER_ID);
+  final RobotContainer robotContainer;
+  final CommandXboxController operatorController;
+  
+  public Feeder(RobotContainer robotContainer){
+    this.robotContainer = robotContainer;
+    this.operatorController = robotContainer.controllers.operator;
 
-
-/*
-    motor configs
- */
+    /**
+     * motor configs
+     */
     final TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
     talonFXConfigs.MotionMagic.MotionMagicAcceleration = 400;
     talonFXConfigs.MotionMagic.MotionMagicJerk = 4000; // jerk is change in acceleration over time (like acceleration is to velocity, and velocity is to position)
-
 
     final Slot1Configs slot1Configs = talonFXConfigs.Slot1;
     slot1Configs.kS = 0.25;
@@ -37,20 +35,16 @@ public class Feeder extends SubsystemBase {
     slot1Configs.kD = 0.0;
 
     feederMotor.getConfigurator().apply(talonFXConfigs);
-    }
-
-
+  }
 
   public void setFeederSpeed(double speed) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     feederMotor.setControl(request.withVelocity(speed));
-   
   }
 
   public void setFeederAcceleration(double acceleration) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     feederMotor.setControl(request.withAcceleration(acceleration));
-
   }
 
   public double getShooterSpeed() {
@@ -64,7 +58,4 @@ public class Feeder extends SubsystemBase {
   public double getFeederAcceleration() {
     return feederMotor.getAcceleration().getValueAsDouble();
   }
-
-
-
 }

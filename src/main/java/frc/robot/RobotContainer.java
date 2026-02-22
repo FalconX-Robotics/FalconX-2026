@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,9 +19,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
-import frc.robot.commands.AutoFeedFromStorage;
-import frc.robot.commands.AutoFeedIntoStorage;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
+import frc.robot.commands.Intake;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
@@ -37,6 +38,7 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  private static RobotContainer robotContainer = null; // singleton
 
   public static class Controllers {
     /**
@@ -65,13 +67,11 @@ public class RobotContainer {
     public ParallelCommandGroup driveInputs;
     public ParallelCommandGroup dhara;
 
-    // public ChangeSpeed changeSpeed;
-
     public ClimbDown climbDown;
     public ClimbUp climbUp;
     public GetToSpeed getToSpeed;
-    public AutoFeedIntoStorage autoFeedIntoStorage;
-    public AutoFeedFromStorage autoFeedFromStorage;
+    public AutoShoot autoShoot;
+    public Intake intake;
     public ManualShoot manualShoot;
   }
 
@@ -85,6 +85,10 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    if (RobotContainer.robotContainer == null) {
+      RobotContainer.robotContainer = this;
+    }
+
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
@@ -96,21 +100,13 @@ public class RobotContainer {
     this.subsystems.feeder = new Feeder(this);
 
     // Initialize commands
-    this.commands.climbDown = new ClimbDown(this.subsystems.climber);
-    this.commands.climbUp = new ClimbUp(this.subsystems.climber);
-    this.commands.getToSpeed = new GetToSpeed(this.subsystems.swerve, this.subsystems.shooter, this.subsystems.feeder);
-    this.commands.autoFeedIntoStorage = new AutoFeedIntoStorage(this.subsystems.feeder);
-    this.commands.autoFeedFromStorage = new AutoFeedFromStorage(this.subsystems.feeder);
-    this.commands.manualShoot = new ManualShoot(this.subsystems.shooter);
+    this.commands.climbDown = new ClimbDown();
+    this.commands.climbUp = new ClimbUp();
+    this.commands.getToSpeed = new GetToSpeed();
+    this.commands.autoShoot = new AutoShoot();
+    this.commands.intake = new Intake();
+    this.commands.manualShoot = new ManualShoot();
 
-    // final Command driveInputsCommand = this.subsystems.swerve.driveInputs(
-    //   () -> -this.settings.driverSettings.getLeftY(),
-    //   () -> -this.settings.driverSettings.getLeftX(),
-    //   () -> -this.settings.driverSettings.getRightX()
-    // );
-
-
-    // this.commands.changeSpeed = new ChangeSpeed(this.subsystems.swerve);
     this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
       () -> -this.settings.driverSettings.getLeftX(),
@@ -122,14 +118,10 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
     ));
-    
 
-    
-    try {
+    if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
-    } catch (Exception exception) {
-      System.err.println("WARN: Tried to set this.autoChooser but failed");
     }
 
     // Configure trigger bindings
@@ -156,23 +148,20 @@ public class RobotContainer {
     this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs);
     this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
 
-    // final SequentialCommandGroup climberSequence = new SequentialCommandGroup(this.commands.climbUp, new WaitCommand(3.5), this.commands.climbDown);
-    // this.settings.operatorSettings.climbButton.onTrue(climberSequence);
-
     this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     //MANUAL SHOOTING
 
     //gets shooter to speed you want:
-    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.autoFeedIntoStorage); //keeps the fuel from firing
-    this.settings.operatorSettings.feederButton.whileTrue(this.commands.manualShoot); //gains speed on shooter and intake
+    this.settings.operatorSettings.feederButton.whileTrue(this.commands.intake);
     
     //fires:
-    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoFeedFromStorage);
+    this.settings.operatorSettings.shooterButton.whileTrue(this.commands.manualShoot);
+  }
 
-
-     
+  public static RobotContainer getRobotContainer() {
+    return RobotContainer.robotContainer;
   }
 
   /**
