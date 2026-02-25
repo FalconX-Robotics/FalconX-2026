@@ -2,41 +2,37 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.Settings;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 
 public class ManualShoot extends Command {
-  // private final Feeder feeder;
+  private final Settings.OperatorSettings operatorSettings;
+  private final Feeder feeder;
   private final Shooter shooter;
 
-  //TODO: 3 below = adjust later based on testing
-  private double maxvelocity = 4;
-  private double acceleration = 0.5; 
-  private double lessenough = 0.25; //subtracted from max velocity -> how much less than max velocity should the motor be for it to start gaining speed again
-
   public ManualShoot() {
-    this.shooter = RobotContainer.getRobotContainer().subsystems.shooter;
-
-    addRequirements(shooter);
-  }
-
-  @Override
-  public void initialize() {
-    shooter.setShooterAcceleration(acceleration);
+    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+    this.operatorSettings = robotContainer.settings.operatorSettings;
+    this.feeder = robotContainer.subsystems.feeder;
+    this.shooter = robotContainer.subsystems.shooter;
+    
+    addRequirements(this.feeder, this.shooter);
   }
 
   @Override
   public void execute() {
-    if (shooter.getShooterSpeed() >= maxvelocity) {
-      shooter.setShooterAcceleration(0);
-    }
-    if (shooter.getShooterSpeed() < maxvelocity-lessenough) {
-      shooter.setShooterAcceleration(acceleration);
-    }
+    // based on how far the trigger is pushed
+    final double value = this.operatorSettings.getRightTriggerAxis();
+    this.feeder.motor.set(value);
+    this.shooter.motor.set(value);
   }
 
-  @Override
-  public void end(boolean interrupted) {
-    shooter.setShooterAcceleration(0);
+  public void end(boolean interrupted){
+    this.feeder.motor.set(0.0);
+    this.shooter.motor.set(0.0);
   }
 }
+
+

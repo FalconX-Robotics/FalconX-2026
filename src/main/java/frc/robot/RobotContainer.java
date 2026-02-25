@@ -178,7 +178,7 @@ public class RobotContainer {
     this.settings.operatorSettings.feederButton.whileTrue(this.commands.intake);
     
     //fires:
-    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton).whileTrue(this.commands.autoShoot);
+    this.settings.operatorSettings.shooterButton.whileTrue(this.commands.manualShoot);
 
     //SHOOTING AUTO
     
