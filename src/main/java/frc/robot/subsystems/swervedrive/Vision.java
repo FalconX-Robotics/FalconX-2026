@@ -43,7 +43,7 @@ public class Vision extends SubsystemBase{
     this.swerve = RobotContainer.getRobotContainer().subsystems.swerve;
     
     try {
-      this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
+      this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     } catch (Exception exception) {
       System.err.println("ERROR: Failed to load a field layout for \"k2026RebuiltWelded\"");
       exception.printStackTrace();

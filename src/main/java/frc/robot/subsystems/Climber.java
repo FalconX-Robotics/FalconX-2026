@@ -34,7 +34,8 @@ public class Climber extends SubsystemBase {
             previousState = currentState; // Makes previousState the currentState
         }
         
-        return currentState;
+        // return currentState;
+        return false; //TODO: change this back from false to return currentState, THIS IS ONLY FOR TESTING
 
     }
 
