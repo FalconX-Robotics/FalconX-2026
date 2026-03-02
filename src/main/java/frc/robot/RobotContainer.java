@@ -47,9 +47,20 @@ import frc.robot.util.Util;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+    private static RobotContainer instance = null;
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-  private static Optional<RobotContainer> robotContainer = null; // singleton
+  public static Optional <RobotContainer> robotContainer = Optional.empty();  // singleton
 
+   
+  public static RobotContainer getRobotContainer() {
+    // Optional<T>#orElse(T) returns the value held by Optional<T> if it exists, or the argument T if it doesn't.
+    // return RobotContainer.robotContainer.orElse(null);
+    if (instance == null){
+      instance = new RobotContainer();
+    }
+    return instance;
+  }
+  
   public static class Controllers {
     /**
      * Driver controller object. The driver controller is connected on port 0.
@@ -99,8 +110,8 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
-    if (RobotContainer.robotContainer.isEmpty()) {
+  private RobotContainer() {
+    if (RobotContainer.robotContainer.isEmpty() || RobotContainer.robotContainer == null) {
       RobotContainer.robotContainer = Optional.of(this);
     }
 
@@ -136,6 +147,8 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
     ));
+
+    
 
     this.subsystems.swerve.setupPathPlanner();
     NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
@@ -195,11 +208,7 @@ public class RobotContainer {
       
     this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
   }
-    
-  public static RobotContainer getRobotContainer() {
-    // Optional<T>#orElse(T) returns the value held by Optional<T> if it exists, or the argument T if it doesn't.
-    return RobotContainer.robotContainer.orElse(null);
-  }
+   
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
