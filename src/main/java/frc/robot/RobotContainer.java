@@ -17,7 +17,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,18 +46,16 @@ import frc.robot.util.Util;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private static RobotContainer instance = null;
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-  public static Optional <RobotContainer> robotContainer = Optional.empty();  // singleton
+  public static Optional<RobotContainer> robotContainer = Optional.empty();  // singleton
 
-   
   public static RobotContainer getRobotContainer() {
-    // Optional<T>#orElse(T) returns the value held by Optional<T> if it exists, or the argument T if it doesn't.
-    // return RobotContainer.robotContainer.orElse(null);
-    if (instance == null){
-      instance = new RobotContainer();
+    // If the singleton is empty, instantiate with new robot container object
+    if (RobotContainer.robotContainer.isEmpty()) {
+      RobotContainer.robotContainer = Optional.of(new RobotContainer());
     }
-    return instance;
+
+    return RobotContainer.robotContainer.get();
   }
   
   public static class Controllers {
@@ -146,15 +143,14 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getLeftY(),
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
-    ));
-
-    
+    ));    
 
     this.subsystems.swerve.setupPathPlanner();
     NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
+    NamedCommands.registerCommand("keepFromShooting", this.commands.keepFromShooting);
 
     if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();

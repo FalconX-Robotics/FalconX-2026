@@ -12,17 +12,14 @@ public class KeepFromShooting extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
 
-    public KeepFromShooting() {
-
+  public KeepFromShooting() {
     final RobotContainer robotContainer = RobotContainer.getRobotContainer();
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
     this.shooter = robotContainer.subsystems.shooter;
 
     addRequirements(this.feeder, this.shooter);
-
-    }
-
+  }
     
   @Override
   public void execute() {
