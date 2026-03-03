@@ -98,6 +98,5 @@ public class Settings {
 
     operatorSettings = new OperatorSettings();
     driverSettings = new DriverSettings();
-    
   }
 }
