@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.AutoKeepFromShooting;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
@@ -94,6 +95,7 @@ public class RobotContainer {
     public ManualShoot manualShoot;
     public RotateToTarget rotateToTarget;
     public KeepFromShooting keepFromShooting;
+    public AutoKeepFromShooting autoKeepFromShooting;
   }
 
   public final Controllers controllers = new Controllers();
@@ -132,6 +134,7 @@ public class RobotContainer {
     this.commands.manualShoot = new ManualShoot();
     this.commands.rotateToTarget = new RotateToTarget();
     this.commands.keepFromShooting = new KeepFromShooting();
+    this.commands.autoKeepFromShooting = new AutoKeepFromShooting();
 
     this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
@@ -150,7 +153,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
-    NamedCommands.registerCommand("keepFromShooting", this.commands.keepFromShooting);
+    NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
 
     if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
@@ -187,7 +190,7 @@ public class RobotContainer {
     //MANUAL SHOOTING
 
     //gets shooter to speed you want:
-    this.settings.operatorSettings.feederButton.whileTrue(this.commands.intake);
+    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
     
     //gets shooter to speed --> to get how far down you want the shooterbutton to be
     this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);

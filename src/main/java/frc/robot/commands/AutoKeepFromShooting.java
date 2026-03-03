@@ -4,35 +4,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Settings;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Shooter;
 
-
-public class ManualShoot extends Command {
+public class AutoKeepFromShooting extends Command {
+    //used paired with GetToSpeed
   private final Settings.OperatorSettings operatorSettings;
   private final Feeder feeder;
-  private final Shooter shooter;
 
-  public ManualShoot() {
+  public AutoKeepFromShooting() {
     final RobotContainer robotContainer = RobotContainer.getRobotContainer();
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
-    this.shooter = robotContainer.subsystems.shooter;
-    
-    addRequirements(this.feeder, this.shooter);
-  }
 
+    addRequirements(this.feeder);
+  }
+    
   @Override
   public void execute() {
     // based on how far the trigger is pushed
-    final double value = this.operatorSettings.getRightTriggerAxis();
-    this.feeder.motor.set(-value);
-    this.shooter.motor.set(value);
+    double value = feeder.getShooterSpeed();
+    this.feeder.motor.set(value);
   }
 
   public void end(boolean interrupted){
     this.feeder.motor.set(0.0);
-    this.shooter.motor.set(0.0);
   }
 }
-
-
