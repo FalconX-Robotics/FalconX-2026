@@ -185,7 +185,7 @@ public class RobotContainer {
     this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs);
     this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
 
-    this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
+    this.settings.operatorSettings.climbUpButton.onTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     //MANUAL SHOOTING
