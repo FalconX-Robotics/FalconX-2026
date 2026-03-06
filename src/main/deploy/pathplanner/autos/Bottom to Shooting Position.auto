@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top to Climb A"
+            "pathName": "Bottom to Outpost"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost to Shooting Position"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "climbup"
+            "name": "autoShoot"
           }
         }
       ]
