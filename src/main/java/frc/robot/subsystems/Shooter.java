@@ -17,8 +17,7 @@ public class Shooter extends SubsystemBase {
   final SwerveSubsystem swerveSubsystem;
   final CommandXboxController operatorController; 
 
-  public Shooter() {
-    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+  public Shooter(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
     this.operatorController = robotContainer.controllers.operator;
 
@@ -53,7 +52,6 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterSpeed() {
     return motor.getVelocity().getValueAsDouble();
-
   }
 
   public double getSpeed() {
@@ -66,7 +64,6 @@ public class Shooter extends SubsystemBase {
   public void setShooterAcceleration(double acceleration) {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     motor.setControl(request.withAcceleration(acceleration));
-
   }
 
   public boolean isHolding() {

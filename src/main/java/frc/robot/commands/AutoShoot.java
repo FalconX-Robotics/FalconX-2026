@@ -9,9 +9,10 @@ public class AutoShoot extends Command {
   private double speedofShooter;
   private double velocity;
 
-  public AutoShoot() {
-    this.feeder = RobotContainer.getRobotContainer().subsystems.feeder;
-    addRequirements(feeder);
+  public AutoShoot(RobotContainer robotContainer) {
+    this.feeder = robotContainer.subsystems.feeder;
+    
+    super.addRequirements(feeder);
   }
 
   @Override

@@ -15,8 +15,7 @@ public class Feeder extends SubsystemBase {
   final Shooter shooter;
   final CommandXboxController operatorController;
   
-  public Feeder() {
-    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+  public Feeder(RobotContainer robotContainer) {
     this.shooter = robotContainer.subsystems.shooter;
     this.operatorController = robotContainer.controllers.operator;
 

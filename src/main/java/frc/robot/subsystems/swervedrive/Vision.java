@@ -37,10 +37,10 @@ public class Vision extends SubsystemBase{
 
   public static Vision instance;
 
-  public Vision() {
+  public Vision(RobotContainer robotContainer) {
     Vision.instance = this;
-    this.camera = RobotContainer.getRobotContainer().visionCamera;
-    this.swerve = RobotContainer.getRobotContainer().subsystems.swerve;
+    this.camera = robotContainer.visionCamera;
+    this.swerve = robotContainer.subsystems.swerve;
     
     try {
       this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);

@@ -12,28 +12,27 @@ import frc.robot.RobotContainer;
 
 @Logged
 public class Climber extends SubsystemBase {
-
   public final TalonFX motor = new TalonFX(Constants.ID.CLIMBER_ID);
   CommandXboxController operatorController;
   DigitalInput climbUpLimitSwitchInput = new DigitalInput(Constants.ID.LIMIT_SWITCH_ID);
 
   private boolean previousState = false;
 
-  public Climber() {
-    operatorController = RobotContainer.getRobotContainer().controllers.operator;
+  public Climber(RobotContainer robotContainer) {
+    operatorController = robotContainer.controllers.operator;
   }
 
-    // Put into variable then log/return current state (triggered or untriggered)
+  // Put into variable then log/return current state (triggered or untriggered)
   public boolean ClimbUpDone() {
     boolean currentState = climbUpLimitSwitchInput.get();
 
     // Logs whether the limit switch was triggered or not 
     if (previousState != currentState) {
-      SmartDashboard.putBoolean("Triggered", currentState);
       previousState = currentState; // Makes previousState the currentState
     }
     
     // return currentState;
+    SmartDashboard.putBoolean("Triggered", currentState);
     return false; //TODO: change this back from false to return currentState, THIS IS ONLY FOR TESTING
   }
 }

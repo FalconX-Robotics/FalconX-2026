@@ -14,9 +14,10 @@ public class RotateToTarget extends Command{
   double currentAngle;
   double targetAngle;
 
-  public RotateToTarget() {
-    this.swerveSubsystem = RobotContainer.getRobotContainer().subsystems.swerve;
-    addRequirements(swerveSubsystem);
+  public RotateToTarget(RobotContainer robotContainer) {
+    this.swerveSubsystem = robotContainer.subsystems.swerve;
+
+    super.addRequirements(this.swerveSubsystem);
   }
 
   public void recalculateAngle() {
@@ -26,7 +27,6 @@ public class RotateToTarget extends Command{
 
     targetAngle = Math.atan2(targetPosition.y-robotY, targetPosition.x-robotX);
   }
-
 
   // Called when the command is initially scheduled.
   @Override
