@@ -63,36 +63,36 @@ public class LEDs extends SubsystemBase {
   }
 
   public static enum Color {
-  PURPLE (0.91),
-  HEARTBEAT_RED (-0.25),
-  HEARTBEAT_BLUE (-0.23),
-  YELLOW (0.69),
-  FIRE_LARGE(-0.57),
-  CONFETTI(-0.87),
-  CHASE_RED(-0.31),
-  CHASE_BLUE(-0.29),
-  BLACK(0.99),
-  RED_STROBE(-0.11),
-  OCEAN(-0.95),
-  LAVA(-0.93),
-  RED(0.61),
-  BLUE(0.87),
-  FOREST(-0.91),
-  ORANGE(0.65),
-  GREEN(0.77);
+    PURPLE (0.91),
+    HEARTBEAT_RED (-0.25),
+    HEARTBEAT_BLUE (-0.23),
+    YELLOW (0.69),
+    FIRE_LARGE(-0.57),
+    CONFETTI(-0.87),
+    CHASE_RED(-0.31),
+    CHASE_BLUE(-0.29),
+    BLACK(0.99),
+    RED_STROBE(-0.11),
+    OCEAN(-0.95),
+    LAVA(-0.93),
+    RED(0.61),
+    BLUE(0.87),
+    FOREST(-0.91),
+    ORANGE(0.65),
+    GREEN(0.77);
 
-  private final double value;
+    private final double value;
 
-  Color(double value) {
-  this.value = value;
-  }
+    Color(double value) {
+      this.value = value;
+    }
 
-  public double colorToSpeed() {
-  return value;
-  }
+    public double colorToSpeed() {
+      return value;
+    }
   }
 
   public void useChooser() {
-  setColor(colorChooser.getSelected());
+    setColor(colorChooser.getSelected());
   }
 }

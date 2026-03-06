@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification.NotificationLevel;
 import frc.robot.util.Util;
@@ -179,7 +180,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    this.vision = new Vision();
+    this.vision = new Vision(RobotContainer.getRobotContainer());
   }
 
   public Vision getVision() {

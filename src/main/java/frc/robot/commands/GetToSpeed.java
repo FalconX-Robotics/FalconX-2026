@@ -15,15 +15,14 @@ public class GetToSpeed extends Command {
   private boolean isActive = false;
   private double velocity;
 
-  public GetToSpeed() {
-    final RobotContainer.Subsystems subsystems = RobotContainer.getRobotContainer().subsystems;
-    this.swerveSubsystem = subsystems.swerve;
-    this.shooter = subsystems.shooter;
+  public GetToSpeed(RobotContainer robotContainer) {
+    this.swerveSubsystem = robotContainer.subsystems.swerve;
+    this.shooter = robotContainer.subsystems.shooter;
     
-    addRequirements(shooter);
+    super.addRequirements(this.shooter);
   }
   
-  public void initialize(){
+  public void initialize() {
     Vector2 targetPosition = Util.getTargetPosition();
     Vector2 robotPosition = new Vector2(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY());
     double distance = targetPosition.distance(robotPosition);

@@ -12,8 +12,7 @@ public class KeepFromShooting extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
 
-  public KeepFromShooting() {
-    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+  public KeepFromShooting(RobotContainer robotContainer) {
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
     this.shooter = robotContainer.subsystems.shooter;
