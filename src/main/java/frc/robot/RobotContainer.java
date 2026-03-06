@@ -201,7 +201,7 @@ public class RobotContainer {
 
     //SHOOTING AUTO
     
-    this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
+    this.settings.operatorSettings.shootingAutoButton.whileTrue(new PathPlannerAuto("Shooting Auto"));
 
     PathPlannerAuto topDepotIntakeAuto = new PathPlannerAuto("Top Depot Intake");
       

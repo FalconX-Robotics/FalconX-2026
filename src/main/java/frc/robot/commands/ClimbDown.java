@@ -10,6 +10,7 @@ public class ClimbDown extends Command {
   final TalonFX motor;
   Climber climberSubsystem;
   double voltageDown = -2;
+  double maxrotations = 10; //TODO: test value
 
   public ClimbDown() {
     this.climberSubsystem = RobotContainer.getRobotContainer().subsystems.climber;
@@ -18,7 +19,7 @@ public class ClimbDown extends Command {
 
   @Override
   public void initialize() {
-  // motor.setPosition(0);
+  motor.setPosition(0);
   }
 
   @Override
@@ -29,5 +30,9 @@ public class ClimbDown extends Command {
   @Override
   public void end(boolean interrupted) {
     motor.setVoltage(0);
+  }
+  @Override
+  public boolean isFinished() {
+      return motor.getPosition().getValueAsDouble() >= maxrotations;
   }
 }
