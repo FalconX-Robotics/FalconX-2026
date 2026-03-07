@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 import org.photonvision.PhotonCamera;
@@ -28,6 +27,7 @@ import frc.robot.commands.AutoKeepFromShooting;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
+import frc.robot.commands.KeepFromShooting;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
@@ -92,6 +92,7 @@ public class RobotContainer {
     public Intake intake;
     public ManualShoot manualShoot;
     public RotateToTarget rotateToTarget;
+    public KeepFromShooting keepFromShooting;
     public AutoKeepFromShooting autoKeepFromShooting;
   }
 
@@ -107,16 +108,12 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
-    // if (RobotContainer.robotContainer.isEmpty() || RobotContainer.robotContainer == null) {
-    //   RobotContainer.robotContainer = Optional.of(this);
-    // }
-
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
 
     // Initialize subsystems
-    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+    this.subsystems.swerve = new SwerveSubsystem(this);
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
@@ -130,6 +127,7 @@ public class RobotContainer {
     this.commands.intake = new Intake(this);
     this.commands.manualShoot = new ManualShoot(this);
     this.commands.rotateToTarget = new RotateToTarget(this);
+    this.commands.keepFromShooting = new KeepFromShooting(this);
     this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
 
     this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
@@ -190,7 +188,7 @@ public class RobotContainer {
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
     
     //gets shooter to speed --> to get how far down you want the shooterbutton to be
-    // this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);
+    this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);
 
     //fires:
     this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
@@ -204,7 +202,6 @@ public class RobotContainer {
       
     this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
   }
-   
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

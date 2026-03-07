@@ -46,6 +46,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -62,7 +63,6 @@ import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
-import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -99,8 +99,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean speedMode = false;
   public boolean allowVisionPose = true;
   public boolean climbing = false;
-
-  public static SwerveSubsystem instance;
+  
+  private final RobotContainer robotContainer;
 
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
@@ -112,27 +112,13 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param directory Directory of swerve drive config files.
    */
   @SuppressWarnings("deprecation")
-  public SwerveSubsystem(File directory) {
-    SwerveSubsystem.instance = this;
-    // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
-    //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
-    //  The encoder resolution per motor revolution is 1 per motor revolution.
-    final double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(12.8);
-
-    // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO * ENCODER RESOLUTION).
-    //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
-    //  The gear ratio is 6.75 motor revolutions per wheel rotation.
-    //  The encoder resolution per motor revolution is 1 per motor revolution.
-    final double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
-
-    System.out.println("\"conversionFactors\": {");
-    System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + " },");
-    System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + " }");
-    System.out.println("}");
+  public SwerveSubsystem(RobotContainer robotContainer) {
+    this.robotContainer = robotContainer;
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
+      final File directory = new File(Filesystem.getDeployDirectory(), "swerve");
       this.swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED, Constants.STARTING_POSE);
 
       // Alternative method if you don't want to supply the conversion factor via JSON files.
@@ -165,22 +151,12 @@ public class SwerveSubsystem extends SubsystemBase {
       this.swerveDrive.stopOdometryThread();
     }
   }
-  
-  /**
-   * Construct the swerve drive.
-   *
-   * @param driveConfig SwerveDriveConfiguration for the swerve.
-   * @param controllerConfig Swerve Controller.
-   */
-  public SwerveSubsystem(SwerveDriveConfiguration driveConfig, SwerveControllerConfiguration controllerConfig) {
-    this.swerveDrive = new SwerveDrive(driveConfig, controllerConfig, Constants.MAX_SPEED, Constants.STARTING_POSE);
-  }
 
   /**
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    this.vision = new Vision(RobotContainer.getRobotContainer());
+    this.vision = new Vision(this.robotContainer);
   }
 
   public Vision getVision() {

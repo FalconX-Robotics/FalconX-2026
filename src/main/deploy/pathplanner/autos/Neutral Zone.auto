@@ -9,30 +9,30 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "climbdown"
+                  "pathName": "Top Chaos"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Top to Climb A"
+                  "name": "intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.3
+            "pathName": "Chaos to Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "climbup"
+            "name": "autoShoot"
           }
         }
       ]
