@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.023,
-        "y": 1.757
+        "x": 8.270494,
+        "y": 1.7125106990014274
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.023,
-        "y": 0.8089058611477274
+        "x": 8.270494,
+        "y": 0.7644165601491549
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of Top Chaos"
     },
     {
       "anchor": {
@@ -64,7 +64,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0439627043425
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

@@ -3,42 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6113181818181816,
-        "y": 7.374409090909092
+        "x": 8.25706134094151,
+        "y": 6.732710413694722
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8279999999999994,
-        "y": 6.457102272727273
+        "x": 9.214522111269615,
+        "y": 7.677232524964337
       },
       "isLocked": false,
-      "linkedName": "Start of Climb A"
+      "linkedName": "End of Bottom Chaos"
     },
     {
       "anchor": {
-        "x": 1.0655340909090907,
-        "y": 4.694636363636364
+        "x": 3.6113181818181816,
+        "y": 7.374409090909092
       },
       "prevControl": {
-        "x": -0.934221541054918,
-        "y": 4.663372767742299
+        "x": 3.288161389650083,
+        "y": 7.386196361824811
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Start of Climb A"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "climbdown",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

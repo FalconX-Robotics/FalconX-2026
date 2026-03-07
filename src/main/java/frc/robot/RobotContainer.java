@@ -150,10 +150,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
 
-    if (DriverStation.isAutonomous()) {
+    // if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
-    }
+    // }
 
     // Configure trigger bindings
     this.configureBindings();
@@ -198,9 +198,7 @@ public class RobotContainer {
     
     this.settings.operatorSettings.shootingAutoButton.whileTrue(new PathPlannerAuto("Shooting Auto"));
 
-    PathPlannerAuto topDepotIntakeAuto = new PathPlannerAuto("Top Depot Intake");
-      
-    this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
+   
   }
 
   /**

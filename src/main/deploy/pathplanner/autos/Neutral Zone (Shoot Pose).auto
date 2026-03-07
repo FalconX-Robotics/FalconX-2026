@@ -11,22 +11,22 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Top to Climb A"
+                  "pathName": "Top Chaos"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbup"
+            "pathName": "Chaos to Shoot"
           }
         }
       ]

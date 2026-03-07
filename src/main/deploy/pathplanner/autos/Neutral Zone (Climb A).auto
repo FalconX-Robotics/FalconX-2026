@@ -9,15 +9,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Top Chaos"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bottom Chaos"
                 }
               }
             ]
@@ -26,13 +26,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Chaos to Shoot"
+            "pathName": "Bottom Chaos to Climb A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top to Climb A"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "climbup"
           }
         }
       ]
