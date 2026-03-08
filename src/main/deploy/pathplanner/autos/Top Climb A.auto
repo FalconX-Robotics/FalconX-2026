@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Top to Climb A"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "climbdown"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top to Climb A"
+                }
+              }
+            ]
           }
         },
         {
