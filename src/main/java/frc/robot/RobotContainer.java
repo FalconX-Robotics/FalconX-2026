@@ -39,7 +39,8 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.util.Util;
-
+import edu.wpi.first.wpilibj.DataLogManager;
+ 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -155,10 +156,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
     NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
 
-    if (DriverStation.isAutonomous()) {
+    // if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
       SmartDashboard.putData("Auto Chooser", this.autoChooser);
-    }
+    // }
 
     // Configure trigger bindings
     this.configureBindings();

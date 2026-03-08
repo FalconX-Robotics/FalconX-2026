@@ -249,7 +249,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    vision.updateSimulation();
+    vision.updateSimulation(this);
   }
 
   /**

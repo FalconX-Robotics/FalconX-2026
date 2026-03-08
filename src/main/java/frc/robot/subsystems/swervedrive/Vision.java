@@ -115,7 +115,7 @@ public class Vision extends SubsystemBase{
     return fieldLayout;
   }
 
-  public void updateSimulation() {
+  public void updateSimulation(SwerveSubsystem swerve) {
     visionSim.update(swerve.getPose());
     Field2d visionSimField = visionSim.getDebugField(); 
     SmartDashboard.putData("Vision Sim Field", visionSimField);
