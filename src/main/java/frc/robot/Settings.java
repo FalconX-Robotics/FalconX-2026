@@ -61,9 +61,8 @@ public class Settings {
     public Trigger climbDownButton = operatorController.rightBumper();
     public Trigger shooterButton = operatorController.rightTrigger();
     public Trigger feederButton = operatorController.leftTrigger();
-    public Trigger shootingAutoButton = operatorController.a();
-    public Trigger topDepotIntakeButton = operatorController.b();
-
+    public Trigger shootingAutoButton = operatorController.x();
+    
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }

@@ -12,13 +12,12 @@ public class ManualShoot extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
 
-  public ManualShoot() {
-    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+  public ManualShoot(RobotContainer robotContainer) {
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
     this.shooter = robotContainer.subsystems.shooter;
     
-    addRequirements(this.feeder, this.shooter);
+    super.addRequirements(this.feeder, this.shooter);
   }
 
   @Override

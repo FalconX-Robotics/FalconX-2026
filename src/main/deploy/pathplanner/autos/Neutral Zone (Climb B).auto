@@ -9,36 +9,30 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "autoKeepFromShooting"
+                  "pathName": "Top Chaos"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "rotateToTarget"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "getToSpeed"
+                  "name": "intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "autoShoot"
+            "pathName": "Top Chaos to Climb B"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

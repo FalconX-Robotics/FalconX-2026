@@ -7,13 +7,12 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 public class KeepFromShooting extends Command {
-    
+    //run when trying to find the right speed for shooter when pressing the right trigger but not actually shoot
   private final Settings.OperatorSettings operatorSettings;
   private final Feeder feeder;
   private final Shooter shooter;
 
-  public KeepFromShooting() {
-    final RobotContainer robotContainer = RobotContainer.getRobotContainer();
+  public KeepFromShooting(RobotContainer robotContainer) {
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
     this.shooter = robotContainer.subsystems.shooter;
@@ -24,9 +23,9 @@ public class KeepFromShooting extends Command {
   @Override
   public void execute() {
     // based on how far the trigger is pushed
-    double value = this.operatorSettings.getLeftTriggerAxis();
+    double value = this.operatorSettings.getRightTriggerAxis();
     this.feeder.motor.set(value);
-    this.shooter.motor.set(value-0.35);
+    this.shooter.motor.set(value-0.1);
   }
 
   public void end(boolean interrupted){

@@ -9,12 +9,30 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "Top to Climb A"
+                  "pathName": "Bottom Chaos"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Chaos to Climb A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top to Climb A"
           }
         },
         {

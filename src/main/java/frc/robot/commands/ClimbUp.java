@@ -12,9 +12,11 @@ public class ClimbUp extends Command {
   // double rotationsDone = 0.0;
   final Climber climberSubsystem;
 
-  public ClimbUp() {
-    this.climberSubsystem = RobotContainer.getRobotContainer().subsystems.climber;
+  public ClimbUp(RobotContainer robotContainer) {
+    this.climberSubsystem = robotContainer.subsystems.climber;
     this.motor = this.climberSubsystem.motor;
+
+    super.addRequirements(this.climberSubsystem);
   }
 
   @Override

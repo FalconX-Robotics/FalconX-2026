@@ -4,9 +4,7 @@
 
 package frc.robot;
 
-import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 
@@ -49,15 +47,15 @@ import edu.wpi.first.wpilibj.DataLogManager;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-  public static Optional<RobotContainer> robotContainer = Optional.empty();  // singleton
+  public static RobotContainer robotContainer;
 
   public static RobotContainer getRobotContainer() {
     // If the singleton is empty, instantiate with new robot container object
-    if (RobotContainer.robotContainer.isEmpty()) {
-      RobotContainer.robotContainer = Optional.of(new RobotContainer());
+    if (RobotContainer.robotContainer == null) {
+      RobotContainer.robotContainer = new RobotContainer();
     }
 
-    return RobotContainer.robotContainer.get();
+    return RobotContainer.robotContainer;
   }
   
   public static class Controllers {
@@ -111,31 +109,27 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
-    if (RobotContainer.robotContainer.isEmpty() || RobotContainer.robotContainer == null) {
-      RobotContainer.robotContainer = Optional.of(this);
-    }
-
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
 
     // Initialize subsystems
-    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-    this.subsystems.shooter = new Shooter();
-    this.subsystems.climber = new Climber();
-    this.subsystems.feeder = new Feeder();
-    this.subsystems.vision = new Vision();
+    this.subsystems.swerve = new SwerveSubsystem(this);
+    this.subsystems.shooter = new Shooter(this);
+    this.subsystems.climber = new Climber(this);
+    this.subsystems.feeder = new Feeder(this);
+    this.subsystems.vision = new Vision(this);
 
     // Initialize commands
-    this.commands.climbDown = new ClimbDown();
-    this.commands.climbUp = new ClimbUp();
-    this.commands.getToSpeed = new GetToSpeed();
-    this.commands.autoShoot = new AutoShoot();
-    this.commands.intake = new Intake();
-    this.commands.manualShoot = new ManualShoot();
-    this.commands.rotateToTarget = new RotateToTarget();
-    this.commands.keepFromShooting = new KeepFromShooting();
-    this.commands.autoKeepFromShooting = new AutoKeepFromShooting();
+    this.commands.climbDown = new ClimbDown(this);
+    this.commands.climbUp = new ClimbUp(this);
+    this.commands.getToSpeed = new GetToSpeed(this);
+    this.commands.autoShoot = new AutoShoot(this);
+    this.commands.intake = new Intake(this);
+    this.commands.manualShoot = new ManualShoot(this);
+    this.commands.rotateToTarget = new RotateToTarget(this);
+    this.commands.keepFromShooting = new KeepFromShooting(this);
+    this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
 
     this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
       () -> -this.settings.driverSettings.getLeftY(),
@@ -155,6 +149,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
     NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
+    NamedCommands.registerCommand("climbup", this.commands.climbUp);
 
     // if (DriverStation.isAutonomous()) {
       this.autoChooser = AutoBuilder.buildAutoChooser();
@@ -202,13 +197,10 @@ public class RobotContainer {
 
     //SHOOTING AUTO
     
-    this.settings.operatorSettings.shootingAutoButton.onTrue(new PathPlannerAuto("Shooting Auto"));
+    this.settings.operatorSettings.shootingAutoButton.whileTrue(new PathPlannerAuto("Shooting Auto"));
 
-    PathPlannerAuto topDepotIntakeAuto = new PathPlannerAuto("Top Depot Intake");
-      
-    this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
-  }
    
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
