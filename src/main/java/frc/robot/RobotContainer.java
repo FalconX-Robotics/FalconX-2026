@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 import org.photonvision.PhotonCamera;
@@ -107,16 +106,12 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
-    // if (RobotContainer.robotContainer.isEmpty() || RobotContainer.robotContainer == null) {
-    //   RobotContainer.robotContainer = Optional.of(this);
-    // }
-
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
 
     // Initialize subsystems
-    this.subsystems.swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+    this.subsystems.swerve = new SwerveSubsystem(this);
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
@@ -204,7 +199,6 @@ public class RobotContainer {
       
     this.settings.operatorSettings.topDepotIntakeButton.onTrue(this.subsystems.swerve.driveToPose(topDepotIntakeAuto.getStartingPose()).andThen(topDepotIntakeAuto));
   }
-   
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

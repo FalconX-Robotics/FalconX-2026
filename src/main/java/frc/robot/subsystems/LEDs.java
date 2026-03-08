@@ -2,14 +2,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-//import com.revrobotics.SparkMax;
-//import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /**
@@ -18,12 +16,16 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class LEDs extends SubsystemBase {
   private final SendableChooser<LEDs.Color> colorChooser = new SendableChooser<>();
 
+  private final SwerveSubsystem swerveSubsystem;
+
   private Spark LEDs = new Spark(Constants.LED_PORT);
   private Color color = Color.PURPLE;
   @SuppressWarnings("unused")
   private Shooter shooter; // TODO - implement shooter object
 
-  public LEDs() {
+  public LEDs(RobotContainer robotContainer) {
+    this.swerveSubsystem = robotContainer.subsystems.swerve;
+
     for (Color color : Color.values()) {
       colorChooser.addOption(color.name(), color);
     }
@@ -40,7 +42,7 @@ public class LEDs extends SubsystemBase {
       setColor(Color.PURPLE);
     }
 
-    else if (SwerveSubsystem.instance.isLinedUp()) {
+    else if (this.swerveSubsystem.isLinedUp()) {
       setColor(Color.GREEN);
     }
 
