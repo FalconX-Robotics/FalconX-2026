@@ -75,7 +75,7 @@ public abstract class Constants {
     public static final int INTAKE_SHOOTER_ID = 3;
     public static final int FEEDER_ID = 1;
     public static final int CLIMBER_ID = 2;
-    public static final int LIMIT_SWITCH_ID = 9; // Check this later
+    public static final int LIMIT_SWITCH_ID = 0; // Check this later
   }
   
   public static class GearRatio {

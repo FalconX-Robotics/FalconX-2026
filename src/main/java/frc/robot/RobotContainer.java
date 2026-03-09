@@ -13,7 +13,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -46,16 +45,6 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-  public static RobotContainer robotContainer;
-
-  public static RobotContainer getRobotContainer() {
-    // If the singleton is empty, instantiate with new robot container object
-    if (RobotContainer.robotContainer == null) {
-      RobotContainer.robotContainer = new RobotContainer();
-    }
-
-    return RobotContainer.robotContainer;
-  }
   
   public static class Controllers {
     /**
@@ -107,7 +96,7 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  private RobotContainer() {
+  public RobotContainer() {
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
@@ -140,7 +129,7 @@ public class RobotContainer {
       () -> -this.settings.driverSettings.getLeftY(),
       () -> -this.settings.driverSettings.getLeftX(),
       () -> -this.settings.driverSettings.getRightX()
-    ));    
+    ));
 
     this.subsystems.swerve.setupPathPlanner();
     NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
@@ -150,10 +139,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
 
-    // if (DriverStation.isAutonomous()) {
-      this.autoChooser = AutoBuilder.buildAutoChooser();
-      SmartDashboard.putData("Auto Chooser", this.autoChooser);
-    // }
+    this.autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", this.autoChooser);
 
     // Configure trigger bindings
     this.configureBindings();
@@ -176,29 +163,25 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // Bind driver buttons
     this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs);
     this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
 
+    // Bind climber buttons
     this.settings.operatorSettings.climbUpButton.onTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
-    //MANUAL SHOOTING
-
-    //gets shooter to speed you want:
+    // feeder button AND NOT shooter button -> intake
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
     
-    //gets shooter to speed --> to get how far down you want the shooterbutton to be
+    // shooter button AND feeder button -> keep from shooting
     this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);
 
-    //fires:
+    // shooter button AND NOT feeder button -> manual shoot
     this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
 
-
-    //SHOOTING AUTO
-    
+    // auto shoot button -> auto shoot (defined in PathPlanner)
     this.settings.operatorSettings.shootingAutoButton.whileTrue(new PathPlannerAuto("Shooting Auto"));
-
-   
   }
 
   /**

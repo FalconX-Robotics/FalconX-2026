@@ -33,14 +33,12 @@ public class Vision extends SubsystemBase{
   private VisionSystemSim visionSim = new VisionSystemSim("Limelight");
   private SimCameraProperties cameraSimProperties = new SimCameraProperties();
   private PhotonCameraSim cameraSim;
-  private SwerveSubsystem swerve;
 
   public static Vision instance;
 
   public Vision(RobotContainer robotContainer) {
     Vision.instance = this;
     this.camera = robotContainer.visionCamera;
-    this.swerve = robotContainer.subsystems.swerve;
     
     try {
       this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
@@ -61,11 +59,11 @@ public class Vision extends SubsystemBase{
       this.cameraSim = new PhotonCameraSim(camera, this.cameraSimProperties);
       this.visionSim.addCamera(this.cameraSim, robotToCamera);
 
-    //local host configurations
+      // local host configurations
 
-    // cameraSim.enableRawStream(true);
-    // cameraSim.enableProcessedStream(true);
-    // cameraSim.enableDrawWireframe(true);
+      cameraSim.enableRawStream(true);
+      cameraSim.enableProcessedStream(true);
+      cameraSim.enableDrawWireframe(true);
     }
   }
 

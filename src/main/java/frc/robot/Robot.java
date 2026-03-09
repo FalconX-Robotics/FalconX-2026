@@ -17,16 +17,18 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
 
   private final RobotContainer robotContainer;
+  private final CommandScheduler commandScheduler;
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public Robot() {
+    this.commandScheduler = CommandScheduler.getInstance();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    // robotContainer = new RobotContainer();
-    robotContainer = RobotContainer.getRobotContainer();
+    this.robotContainer = new RobotContainer();
   }
 
   /**
@@ -55,11 +57,11 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
+    this.autonomousCommand = this.robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      CommandScheduler.getInstance().schedule(autonomousCommand);
+    if (this.autonomousCommand != null) {
+      this.commandScheduler.schedule(autonomousCommand);
     }
   }
 
@@ -73,8 +75,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
+    if (this.autonomousCommand != null) {
+      this.autonomousCommand.cancel();
     }
   }
 
@@ -85,7 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+    this.commandScheduler.cancelAll();
   }
 
   /** This function is called periodically during test mode. */

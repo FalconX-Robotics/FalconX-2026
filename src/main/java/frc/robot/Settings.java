@@ -57,11 +57,11 @@ public class Settings {
    * Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator)
    */
   public class OperatorSettings {
-    public Trigger climbUpButton = operatorController.leftBumper();
-    public Trigger climbDownButton = operatorController.rightBumper();
-    public Trigger shooterButton = operatorController.rightTrigger();
-    public Trigger feederButton = operatorController.leftTrigger();
-    public Trigger shootingAutoButton = operatorController.x();
+    public final Trigger climbUpButton = operatorController.leftBumper();
+    public final Trigger climbDownButton = operatorController.rightBumper();
+    public final Trigger shooterButton = operatorController.rightTrigger();
+    public final Trigger feederButton = operatorController.leftTrigger();
+    public final Trigger shootingAutoButton = operatorController.x();
     
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
@@ -88,8 +88,8 @@ public class Settings {
     }
   }
 
-  public OperatorSettings operatorSettings;
-  public DriverSettings driverSettings;
+  public final OperatorSettings operatorSettings;
+  public final DriverSettings driverSettings;
 
   public Settings(CommandXboxController driveController, CommandXboxController operatorController) {
     this.operatorController = operatorController;
