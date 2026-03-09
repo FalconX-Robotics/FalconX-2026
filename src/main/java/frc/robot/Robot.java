@@ -5,8 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -14,6 +21,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+
+BooleanLogEntry myBooleanLog;
+DoubleLogEntry myDoubleLog;
+StringLogEntry myStringLog;
+
+    
   private Command autonomousCommand;
 
   private final RobotContainer robotContainer;
@@ -28,6 +41,7 @@ public class Robot extends TimedRobot {
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    // robotContainer = new RobotContainer();
     this.robotContainer = new RobotContainer();
   }
 
@@ -57,8 +71,11 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    this.autonomousCommand = this.robotContainer.getAutonomousCommand();
-
+    autonomousCommand = this.robotContainer.getAutonomousCommand();
+    DataLogManager.log("Auto Finished Successfully");
+    SmartDashboard.putBoolean("AutoSuccess", true);
+    DriverStation.reportWarning("Auto Finished", false);
+    
     // schedule the autonomous command (example)
     if (this.autonomousCommand != null) {
       this.commandScheduler.schedule(autonomousCommand);
