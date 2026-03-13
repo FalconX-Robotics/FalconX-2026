@@ -9,32 +9,38 @@ import frc.robot.subsystems.Climber;
 public class ClimbDown extends Command {
   final Climber climberSubsystem;
   final TalonFX motor;
-  double voltageDown = -2;
-  double maxrotations = 10; //TODO: test value
 
   public ClimbDown(RobotContainer robotContainer) {
     this.climberSubsystem = robotContainer.subsystems.climber;
     this.motor = this.climberSubsystem.motor;
     addRequirements(this.climberSubsystem);
-  }
-
-  @Override
-  public void initialize() {
     motor.setPosition(0);
   }
 
   @Override
+  public void initialize() {
+    // motor.setPosition(0);
+  }
+
+  @Override
   public void execute() {
-    this.climberSubsystem.motor.setVoltage(voltageDown);
+    System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+    this.climberSubsystem.motor.set(-0.6);
   }
   
   @Override
   public void end(boolean interrupted) {
-    this.climberSubsystem.motor.setVoltage(0);
+    this.climberSubsystem.motor.set(0.0);
   }
 
   @Override
   public boolean isFinished() {
-      return motor.getPosition().getValueAsDouble() >= maxrotations;
+    final boolean result = Math.abs(motor.getPosition().getValueAsDouble()) >= 128.0;
+    if (result) {
+      System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+    }
+
+    return result;
+    // return false;
   }
 }

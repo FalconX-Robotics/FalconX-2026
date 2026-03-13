@@ -9,7 +9,7 @@ public class Settings {
   public final CommandXboxController operatorController;
 
   public class DriverSettings {
-    public final Trigger speedModeButton = new Trigger(()-> {
+    public final Trigger slowmode = new Trigger(()-> {
       return driverController.getRightTriggerAxis() > 0.5;
     });
 

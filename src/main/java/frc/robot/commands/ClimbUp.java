@@ -7,9 +7,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
 
 public class ClimbUp extends Command {
-  final TalonFX motor;       
-  // final double maxRotations = 5.0; // test & change later
-  // double rotationsDone = 0.0;
+  final TalonFX motor;
   final Climber climberSubsystem;
 
   public ClimbUp(RobotContainer robotContainer) {
@@ -21,7 +19,7 @@ public class ClimbUp extends Command {
 
   @Override
   public void execute() {
-    motor.setVoltage(2.0);
+    motor.set(0.3);
   }
 
   @Override
@@ -31,6 +29,6 @@ public class ClimbUp extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    motor.setVoltage(0);
+    motor.set(0);
   }
 }

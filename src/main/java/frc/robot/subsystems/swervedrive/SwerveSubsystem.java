@@ -94,7 +94,6 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   private final boolean visionDriveTest = true;
 
-  public boolean speedMode = false;
   public boolean allowVisionPose = true;
   public boolean climbing = false;
   
@@ -308,12 +307,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // Make the robot move
       double x = translationX.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
       double y = translationY.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
-      double angle = angularRotationX.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
-      if (speedMode) {
-        x *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-        y *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-        angle *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-      }
+      double angle = angularRotationX.getAsDouble() * this.swerveDrive.getMaximumChassisAngularVelocity();
 
       this.swerveDrive.drive(new Translation2d(x, y), angle, true, true);
     });
@@ -357,12 +351,8 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX, DoubleSupplier headingY) {
     return super.run(() -> {
-      double xSpeed = translationX.getAsDouble();
-      double ySpeed = translationY.getAsDouble();
-      if (speedMode) {
-        xSpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-        ySpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-      }
+      final double xSpeed = translationX.getAsDouble();
+      final double ySpeed = translationY.getAsDouble();
 
       final Translation2d scaledInputs = SwerveMath.scaleTranslation(new Translation2d(xSpeed, ySpeed), 0.8);
       
@@ -395,12 +385,8 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command simDriveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation) {
     return super.run(() -> {
-      double xSpeed = translationX.getAsDouble();
-      double ySpeed = translationY.getAsDouble();
-      if (speedMode) {
-        xSpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-        ySpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-      }
+      final double xSpeed = translationX.getAsDouble();
+      final double ySpeed = translationY.getAsDouble();
 
       // Make the robot move
       this.driveFieldOriented(this.swerveDrive.swerveController.getTargetSpeeds(xSpeed, ySpeed, rotation.getAsDouble() * Math.PI, this.swerveDrive.getOdometryHeading().getRadians(), this.swerveDrive.getMaximumChassisVelocity()));
@@ -474,12 +460,8 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     return super.run(() -> {
-      double xSpeed = translationX.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
-      double ySpeed = translationY.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
-      if (speedMode) {
-        xSpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-        ySpeed *= Constants.SwerveDriveConstants.SPEED_MODE_SCALE;
-      }
+      final double xSpeed = translationX.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
+      final double ySpeed = translationY.getAsDouble() * this.swerveDrive.getMaximumChassisVelocity();
 
       // Make the robot move
       final Translation2d linearVelocity = SwerveMath.scaleTranslation(new Translation2d(xSpeed, ySpeed), 0.8);                    // translation * 0.8
