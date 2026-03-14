@@ -24,14 +24,13 @@ public class Climber extends SubsystemBase {
 
   // Put into variable then log/return current state (triggered or untriggered)
   public boolean ClimbUpDone() {
-    boolean currentState = climbUpLimitSwitchInput.get();
+    previousState = climbUpLimitSwitchInput.get();
 
-    // Logs whether the limit switch was triggered or not 
-    if (previousState != currentState) {
-      previousState = currentState; // Makes previousState the currentState
+    if (previousState) {
+      motor.setPosition(0);
     }
     
-    SmartDashboard.putBoolean("Triggered", currentState);
-    return currentState;
+    SmartDashboard.putBoolean("Triggered", previousState);
+    return previousState;
   }
 }

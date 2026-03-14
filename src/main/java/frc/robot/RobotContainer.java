@@ -29,7 +29,6 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.KeepFromShooting;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
-import frc.robot.commands.swervedrive.drivebase.ChangeSpeed;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
@@ -71,8 +70,8 @@ public class RobotContainer {
   }
 
   public static class Commands {
-    public ParallelCommandGroup driveInputs;
-    public ParallelCommandGroup dhara;
+    public ParallelCommandGroup standardDrive;
+    public ParallelCommandGroup slowDrive;
 
     public ClimbDown climbDown;
     public ClimbUp climbUp;
@@ -119,16 +118,16 @@ public class RobotContainer {
     this.commands.keepFromShooting = new KeepFromShooting(this);
     this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
 
-    this.commands.driveInputs = new ParallelCommandGroup(new ChangeSpeed(this.subsystems.swerve), this.subsystems.swerve.driveInputs(
-      () -> -this.settings.driverSettings.getLeftY(),
-      () -> -this.settings.driverSettings.getLeftX(),
-      () -> -this.settings.driverSettings.getRightX()
+    this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
+      () -> 0.75 * -this.settings.driverSettings.getLeftY(),
+      () -> 0.75 * -this.settings.driverSettings.getLeftX(),
+      () -> 0.75 * -this.settings.driverSettings.getRightX()
     ));
-    
-    this.commands.dhara = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
-      () -> -this.settings.driverSettings.getLeftY(),
-      () -> -this.settings.driverSettings.getLeftX(),
-      () -> -this.settings.driverSettings.getRightX()
+
+    this.commands.slowDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
+      () -> 0.5 * -this.settings.driverSettings.getLeftY(),
+      () -> 0.5 * -this.settings.driverSettings.getLeftX(),
+      () -> 0.5 * -this.settings.driverSettings.getRightX()
     ));
 
     this.subsystems.swerve.setupPathPlanner();
@@ -164,11 +163,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Bind driver buttons
-    this.settings.driverSettings.speedModeButton.whileTrue(this.commands.driveInputs);
-    this.subsystems.swerve.setDefaultCommand(this.commands.dhara);
+    this.subsystems.swerve.setDefaultCommand(this.commands.standardDrive);
+    this.settings.driverSettings.slowmode.whileTrue(this.commands.slowDrive);
 
     // Bind climber buttons
-    this.settings.operatorSettings.climbUpButton.onTrue(this.commands.climbUp);
+    this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     // feeder button AND NOT shooter button -> intake
