@@ -41,7 +41,7 @@ public class Vision extends SubsystemBase{
     this.camera = robotContainer.visionCamera;
     
     try {
-      this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+      this.fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
     } catch (Exception exception) {
       System.err.println("ERROR: Failed to load a field layout for \"k2026RebuiltWelded\"");
       exception.printStackTrace();
