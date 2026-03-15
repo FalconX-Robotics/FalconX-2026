@@ -82,6 +82,9 @@ public class RobotContainer {
     public RotateToTarget rotateToTarget;
     public KeepFromShooting keepFromShooting;
     public AutoKeepFromShooting autoKeepFromShooting;
+     public Command autoShootIntoHub;
+
+   
   }
 
   public final Controllers controllers = new Controllers();
@@ -117,6 +120,7 @@ public class RobotContainer {
     this.commands.rotateToTarget = new RotateToTarget(this);
     this.commands.keepFromShooting = new KeepFromShooting(this);
     this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
+    this.commands.autoShootIntoHub = (new ParallelCommandGroup(new RotateToTarget(this), new AutoKeepFromShooting(this)).andThen(new AutoShoot(this)));
 
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
@@ -179,8 +183,10 @@ public class RobotContainer {
     // shooter button AND NOT feeder button -> manual shoot
     this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
 
-    // auto shoot button -> auto shoot (defined in PathPlanner)
-    this.settings.operatorSettings.shootingAutoButton.whileTrue(new PathPlannerAuto("Shooting Auto"));
+    // auto rotate and shoot
+    this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
+
+    this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShootIntoHub);
   }
 
   /**

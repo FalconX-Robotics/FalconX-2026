@@ -173,6 +173,7 @@ public class SwerveSubsystem extends SubsystemBase {
     final Optional<Pose2d> cameraPose = vision.getFieldPose();
     if (cameraPose.isPresent()) {
       this.swerveDrive.addVisionMeasurement(cameraPose.get(), Timer.getFPGATimestamp());
+      System.out.println(cameraPose.toString());
     }
     
     // vision.updatePoseEstimation(swerveDrive);

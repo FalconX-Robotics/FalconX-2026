@@ -11,12 +11,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoKeepFromShooting"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "rotateToTarget"
                 }
               },
@@ -24,6 +18,12 @@
                 "type": "named",
                 "data": {
                   "name": "getToSpeed"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoKeepFromShooting"
                 }
               }
             ]

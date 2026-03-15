@@ -30,10 +30,14 @@ public class AutoShoot extends Command {
     speedofShooter = feeder.getShooterSpeed();
     velocity = speedofShooter;
     feeder.setFeederSpeed(velocity); //remove from storage
+
+    
+      System.out.println("AutoShoot");
   }
 
   public void end(boolean interrupted) {
     feeder.setFeederSpeed(0);
+    System.out.println("feederspeed set to 0");
     shooter.setShooterSpeed(0);
   }
 }

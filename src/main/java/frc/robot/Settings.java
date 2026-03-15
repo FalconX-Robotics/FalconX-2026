@@ -51,6 +51,10 @@ public class Settings {
       
       return axis;
     }
+
+
+    public final Trigger autoRotateButton = driverController.x();
+    public final Trigger autoShootButton = driverController.y();
   }
 
   /**
@@ -61,7 +65,7 @@ public class Settings {
     public final Trigger climbDownButton = operatorController.rightBumper();
     public final Trigger shooterButton = operatorController.rightTrigger();
     public final Trigger feederButton = operatorController.leftTrigger();
-    public final Trigger shootingAutoButton = operatorController.x();
+
     
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);

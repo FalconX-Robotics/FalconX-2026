@@ -24,10 +24,13 @@ public class AutoKeepFromShooting extends Command {
     // based on how far the trigger is pushed
     double value = feeder.getShooterSpeed();
     this.feeder.motor.set(value);
+
+      System.out.println("AutoKeepFromShooting");
   }
 
   public void end(boolean interrupted){
     this.feeder.motor.set(0.0);
+    System.out.println("AutoKeepFromShooting ended");
   }
   @Override
   public boolean isFinished() {
