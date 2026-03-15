@@ -108,7 +108,7 @@ public class RobotContainer {
     this.subsystems.shooter = new Shooter(this);
     this.subsystems.climber = new Climber(this);
     this.subsystems.feeder = new Feeder(this);
-    this.subsystems.vision = new Vision(this);
+    // this.subsystems.vision = new Vision(this);
 
     // Initialize commands
     this.commands.climbDown = new ClimbDown(this);

@@ -153,7 +153,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    this.vision = new Vision(this.robotContainer);
+    this.vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
   public Vision getVision() {
@@ -170,11 +170,11 @@ public class SwerveSubsystem extends SubsystemBase {
     this.xPositionLog.append(robotPose.getX());
     this.rotationLog.append(robotYaw.getDegrees());
 
-    final Optional<Pose2d> cameraPose = vision.getFieldPose();
-    if (cameraPose.isPresent()) {
-      this.swerveDrive.addVisionMeasurement(cameraPose.get(), Timer.getFPGATimestamp());
-      System.out.println(cameraPose.toString());
-    }
+    // final Optional<Pose2d> cameraPose = vision.getFieldPose();
+    // if (cameraPose.isPresent()) {
+    //   this.swerveDrive.addVisionMeasurement(cameraPose.get(), Timer.getFPGATimestamp());
+    //   System.out.println(cameraPose.toString());
+    // }
     
     // vision.updatePoseEstimation(swerveDrive);
     SmartDashboard.putNumber("Y velocity", this.getRobotVelocity().vyMetersPerSecond);
@@ -182,19 +182,19 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Angle velocity", this.getRobotVelocity().omegaRadiansPerSecond);
     SmartDashboard.putNumber("Gyro Value",Math.toDegrees(this.swerveDrive.getGyro().getRawRotation3d().getZ()));
 
-    final Optional<Transform3d> tagPose = vision.getTagPose(4);
-    if (tagPose.isPresent()) {
-      final double targetYaw = tagPose.get().getRotation().getZ();
-      SmartDashboard.putNumber("robot angle", Math.toDegrees(this.getYaw().getRadians()));
-      SmartDashboard.putNumber("target angle", Math.toDegrees(targetYaw));
-    }
+    // final Optional<Transform3d> tagPose = vision.getTagPose(4);
+    // if (tagPose.isPresent()) {
+    //   final double targetYaw = tagPose.get().getRotation().getZ();
+    //   SmartDashboard.putNumber("robot angle", Math.toDegrees(this.getYaw().getRadians()));
+    //   SmartDashboard.putNumber("target angle", Math.toDegrees(targetYaw));
+    // }
 
-    if (cameraPose.isPresent()) {
-      final Pose2d estimatedPose = cameraPose.get();
-      SmartDashboard.putNumber("Estimated Robot Pose X", estimatedPose.getX());
-      SmartDashboard.putNumber("Estimated Robot Pose Y", estimatedPose.getY());
-      SmartDashboard.putNumber("Estimated Robot Angle", estimatedPose.getRotation().getDegrees());
-    }
+    // if (cameraPose.isPresent()) {
+    //   final Pose2d estimatedPose = cameraPose.get();
+    //   SmartDashboard.putNumber("Estimated Robot Pose X", estimatedPose.getX());
+    //   SmartDashboard.putNumber("Estimated Robot Pose Y", estimatedPose.getY());
+    //   SmartDashboard.putNumber("Estimated Robot Angle", estimatedPose.getRotation().getDegrees());
+    // }
     
     if (!climbing) {
       this.swerveDrive.updateOdometry();
@@ -209,23 +209,27 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Y Velocity", speed.vyMetersPerSecond);
     SmartDashboard.putNumber("Rotation Velocity", speed.omegaRadiansPerSecond);
 
-    // not moving
-    final boolean isStationaryX = MathUtil.isNear(0, speed.vxMetersPerSecond, 0.0001);
-    final boolean isStationaryY = MathUtil.isNear(0, speed.vyMetersPerSecond, 0.0001);
-    final boolean isNotRotating = MathUtil.isNear(0, speed.omegaRadiansPerSecond, 0.0001);
-    if (isStationaryX && isStationaryY && isNotRotating) {
-      final Optional<Pose2d> visionPose = vision.getFieldPose();
-      if (visionPose.isPresent()) {
-        System.out.println("update odometry");
+    // // not moving
+    // final boolean isStationaryX = MathUtil.isNear(0, speed.vxMetersPerSecond, 0.0001);
+    // final boolean isStationaryY = MathUtil.isNear(0, speed.vyMetersPerSecond, 0.0001);
+    // final boolean isNotRotating = MathUtil.isNear(0, speed.omegaRadiansPerSecond, 0.0001);
+    // if (isStationaryX && isStationaryY && isNotRotating) {
+    //   final Optional<Pose2d> visionPose = vision.getFieldPose();
+    //   if (visionPose.isPresent()) {
+    //     System.out.println("update odometry");
 
-        this.resetOdometry(visionPose.get());
-      }
+    //     this.resetOdometry(visionPose.get());
+    //   }
+    // }
+    if (visionDriveTest) {
+      swerveDrive.updateOdometry();
+      vision.updatePoseEstimation(swerveDrive);
     }
   }
 
   @Override
   public void simulationPeriodic() {
-    vision.updateSimulation(this);
+    // vision.updateSimulation(this);
   }
 
   /**
