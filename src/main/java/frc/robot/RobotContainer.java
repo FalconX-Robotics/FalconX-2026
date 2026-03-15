@@ -120,7 +120,7 @@ public class RobotContainer {
     this.commands.rotateToTarget = new RotateToTarget(this);
     this.commands.keepFromShooting = new KeepFromShooting(this);
     this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
-    this.commands.autoShootIntoHub = (new ParallelCommandGroup(new RotateToTarget(this), new AutoKeepFromShooting(this)).andThen(new AutoShoot(this)));
+    this.commands.autoShootIntoHub = (new ParallelCommandGroup(new GetToSpeed(this), new AutoKeepFromShooting(this)).andThen(new AutoShoot(this)));
 
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
