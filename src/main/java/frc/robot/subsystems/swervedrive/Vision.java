@@ -141,6 +141,7 @@ public class Vision
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent())
       {
+        System.out.println("seeing something and it has a pose estimation");
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
                                          pose.timestampSeconds,
@@ -331,7 +332,7 @@ public class Vision
    */
   enum Cameras
   {
-    LEFT_CAM("limelight",
+    LEFT_CAM("Limelight",
              Constants.ROBOT_TO_CAMERA_POSE.getRotation(),
              Constants.ROBOT_TO_CAMERA_POSE.getTranslation(),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
@@ -530,9 +531,10 @@ public class Vision
     private void updateEstimatedGlobalPose()
     {
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
-      for (var change : resultsList)
-      {
-        visionEst = poseEstimator.update(change);
+      for (var change : resultsList) {
+        System.out.println("pos: " + change.toString());
+
+        visionEst = poseEstimator.estimateLowestAmbiguityPose(change);
         updateEstimationStdDevs(visionEst, change.getTargets());
       }
       estimatedRobotPose = visionEst;
@@ -556,25 +558,18 @@ public class Vision
       } else
       {
         // Pose present. Start running Heuristic
-        var    estStdDevs = singleTagStdDevs;
-        int    numTags    = 0;
-        double avgDist    = 0;
+        var estStdDevs = singleTagStdDevs;
+        int numTags = 0;
+        double avgDist = 0;
 
         // Precalculation - see how many tags we found, and calculate an average-distance metric
-        for (var tgt : targets)
-        {
+        for (var tgt : targets) {
           var tagPose = poseEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
-          if (tagPose.isEmpty())
-          {
+          if (tagPose.isEmpty()) {
             continue;
           }
           numTags++;
-          avgDist +=
-              tagPose
-                  .get()
-                  .toPose2d()
-                  .getTranslation()
-                  .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+          avgDist += tagPose.get().toPose2d().getTranslation().getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
         }
 
         if (numTags == 0)
