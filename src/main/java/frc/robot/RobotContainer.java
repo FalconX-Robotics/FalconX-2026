@@ -128,12 +128,14 @@ public class RobotContainer {
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
       () -> 0.75 * -this.settings.driverSettings.getLeftX(),
       () -> 0.75 * -this.settings.driverSettings.getRightX()
+      // () -> -1, () -> 0, () -> 0
     ));
 
     this.commands.slowDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.5 * -this.settings.driverSettings.getLeftY(),
       () -> 0.5 * -this.settings.driverSettings.getLeftX(),
       () -> 0.5 * -this.settings.driverSettings.getRightX()
+    // () -> -1, () -> 0, () -> 0
     ));
 
     this.subsystems.swerve.setupPathPlanner();

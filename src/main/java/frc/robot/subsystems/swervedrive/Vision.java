@@ -141,7 +141,7 @@ public class Vision
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent())
       {
-        System.out.println("seeing something and it has a pose estimation");
+        // System.out.println("seeing something and it has a pose estimation");
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
                                          pose.timestampSeconds,
@@ -532,7 +532,7 @@ public class Vision
     {
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
       for (var change : resultsList) {
-        System.out.println("pos: " + change.toString());
+        // System.out.println("pos: " + change.toString());
 
         visionEst = poseEstimator.estimateLowestAmbiguityPose(change);
         updateEstimationStdDevs(visionEst, change.getTargets());

@@ -1,6 +1,6 @@
 {
   "imu": {
-    "type": "adxrs450",
+    "type": "navx_usb",
     "id": 0,
     "canbus": "rio"
   },

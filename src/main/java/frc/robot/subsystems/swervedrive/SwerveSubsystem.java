@@ -196,10 +196,6 @@ public class SwerveSubsystem extends SubsystemBase {
     //   SmartDashboard.putNumber("Estimated Robot Angle", estimatedPose.getRotation().getDegrees());
     // }
     
-    if (!climbing) {
-      this.swerveDrive.updateOdometry();
-    }
-
     SmartDashboard.putNumber("Robot Field X", robotPose.getX());
     SmartDashboard.putNumber("Robot Field Y", robotPose.getY());
     SmartDashboard.putNumber("Robot Field Angle", robotPose.getRotation().getDegrees());
