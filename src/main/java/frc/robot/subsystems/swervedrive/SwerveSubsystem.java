@@ -28,7 +28,9 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -87,7 +89,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * AprilTag field layout.
    */
-  public final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+  public final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   /**
    * Enable vision odometry updates while driving.
@@ -97,12 +99,16 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean allowVisionPose = true;
   public boolean climbing = false;
   
+  
+
+
   private final RobotContainer robotContainer;
 
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
   }
 
+  
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
    *
@@ -535,7 +541,9 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return The robot's pose
    */
   public Pose2d getPose() {
+    
     return this.swerveDrive.getPose();
+    
   }
 
   /**

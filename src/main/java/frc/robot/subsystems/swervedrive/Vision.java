@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import java.awt.Desktop;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import org.ejml.simple.SimpleMatrix;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -138,15 +141,53 @@ public class Vision
     }
     for (Cameras camera : Cameras.values())
     {
-      Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
-      if (poseEst.isPresent())
-      {
-        // System.out.println("seeing something and it has a pose estimation");
-        var pose = poseEst.get();
-        swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-                                         pose.timestampSeconds,
-                                         camera.curStdDevs);
+      // Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+      // Transform3d transform = camera.getLatestResult().get().multitagResult.get().estimatedPose.best;
+
+      camera.updateUnreadResults();
+      var results = camera.camera.getAllUnreadResults();
+      if (results.isEmpty()) {
+        System.out.println("results are empty");
+        continue;
       }
+
+      // Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+      var latestResult = results.get(0);
+      // if (!latestResult.isPresent()) {
+      //   System.out.println("latestResult fail");
+      //   continue;
+      // }
+
+      var multiTagResult = latestResult.multitagResult;
+      if (!multiTagResult.isPresent()) {
+        System.out.println("multiTagResult fail");
+        continue;
+      }
+
+      Transform3d transform = multiTagResult.get().estimatedPose.best;
+
+      Pose2d pose = new Pose2d(transform.getX(), transform.getY(), transform.getRotation().toRotation2d());
+      // if (poseEst.isPresent())
+      // {
+      //   // System.out.println("seeing something and it has a pose estimation");
+      //   var pose = poseEst.get();
+      //   swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+      //                                    pose.timestampSeconds); //,
+      //                                   //  new Matrix<N3, N1>(new SimpleMatrix(new double[][]{{0.1, 0.1, 0.1}})));
+      //   // System.out.println("vision measurement added");
+      //   SmartDashboard.putNumber("Est. X", pose.estimatedPose.getX());
+      //   SmartDashboard.putNumber("Est. Y", pose.estimatedPose.getY());
+      //   SmartDashboard.putNumber("Est. Rot", pose.estimatedPose.getRotation().getAngle());
+      // }
+
+      // if (poseEst.isPresent()) {
+        // swerveDrive.addVisionMeasurement(pose, poseEst.get().timestampSeconds);
+        swerveDrive.addVisionMeasurement(pose, camera.lastReadTimestamp);
+
+        SmartDashboard.putNumber("Est. X", pose.getX());
+        SmartDashboard.putNumber("Est. Y", pose.getY());
+        SmartDashboard.putNumber("Est. Rot", pose.getRotation().getDegrees());
+      // }
     }
 
   }
@@ -163,6 +204,7 @@ public class Vision
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Cameras camera)
   {
     Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose();
+    // camera.getLatestResult().get().
     if (Robot.isSimulation())
     {
       Field2d debugField = visionSim.getDebugField();
@@ -341,7 +383,7 @@ public class Vision
     /**
      * Latency alert to use when high latency is detected.
      */
-    public final  Alert latencyAlert;
+    public final Alert latencyAlert;
     /**
      * Camera instance for comms.
      */
@@ -456,9 +498,9 @@ public class Vision
         return Optional.empty();
       }
 
-      PhotonPipelineResult bestResult       = resultsList.get(0);
-      double               amiguity         = bestResult.getBestTarget().getPoseAmbiguity();
-      double               currentAmbiguity = 0;
+      PhotonPipelineResult bestResult = resultsList.get(0);
+      double amiguity = bestResult.getBestTarget().getPoseAmbiguity();
+      double currentAmbiguity = 0;
       for (PhotonPipelineResult result : resultsList)
       {
         currentAmbiguity = result.getBestTarget().getPoseAmbiguity();
@@ -499,8 +541,8 @@ public class Vision
     private void updateUnreadResults()
     {
       double mostRecentTimestamp = resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
-      double currentTimestamp    = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-      double debounceTime        = Milliseconds.of(15).in(Seconds);
+      double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+      double debounceTime = Milliseconds.of(15).in(Seconds);
       for (PhotonPipelineResult result : resultsList)
       {
         mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
