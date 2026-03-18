@@ -36,8 +36,8 @@ public class AutoShoot extends Command {
   }
 
   public void end(boolean interrupted) {
-    feeder.setFeederSpeed(0);
-    System.out.println("feederspeed set to 0");
-    shooter.setShooterSpeed(0);
+    feeder.motor.set(0);
+    // System.out.println("feederspeed set to 0");
+    shooter.motor.set(0);
   }
 }

@@ -24,7 +24,7 @@ public class ClimbDown extends Command {
 
   @Override
   public void execute() {
-    System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+    // System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
     this.climberSubsystem.motor.set(-0.6);
   }
   
@@ -36,9 +36,9 @@ public class ClimbDown extends Command {
   @Override
   public boolean isFinished() {
     final boolean result = Math.abs(motor.getPosition().getValueAsDouble()) >= 128.0;
-    if (result) {
-      System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
-    }
+    // if (result) {
+    //   // System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+    // }
 
     return result;
     // return false;

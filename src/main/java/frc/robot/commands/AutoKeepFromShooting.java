@@ -25,12 +25,12 @@ public class AutoKeepFromShooting extends Command {
     double value = feeder.getShooterSpeed();
     this.feeder.motor.set(value);
 
-      System.out.println("AutoKeepFromShooting");
+      // System.out.println("AutoKeepFromShooting");
   }
 
   public void end(boolean interrupted){
     this.feeder.motor.set(0.0);
-    System.out.println("AutoKeepFromShooting ended");
+    // System.out.println("AutoKeepFromShooting ended");
   }
   @Override
   public boolean isFinished() {

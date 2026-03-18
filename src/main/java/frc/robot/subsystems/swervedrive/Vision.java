@@ -74,6 +74,9 @@ public class Vision
    */
   private Field2d field2d;
 
+  private PhotonPoseEstimator photonPoseEstimator;
+
+  private Matrix<N3, N1> stdDevsMatrix = new Matrix<N3, N1>(new SimpleMatrix(3, 1));
 
   /**
    * Constructor for the Vision class.
@@ -81,23 +84,27 @@ public class Vision
    * @param currentPose Current pose supplier, should reference {@link SwerveDrive#getPose()}
    * @param field       Current field, should be {@link SwerveDrive#field}
    */
-  public Vision(Supplier<Pose2d> currentPose, Field2d field)
-  {
+  public Vision(Supplier<Pose2d> currentPose, Field2d field) {
     this.currentPose = currentPose;
     this.field2d = field;
 
-    if (Robot.isSimulation())
-    {
+    if (Robot.isSimulation()) {
       visionSim = new VisionSystemSim("Vision");
       visionSim.addAprilTags(fieldLayout);
 
-      for (Cameras c : Cameras.values())
-      {
-        c.addToVisionSim(visionSim);
+      for (Cameras camera : Cameras.values()) {
+        camera.addToVisionSim(visionSim);
       }
 
       openSimCameraViews();
     }
+
+    this.photonPoseEstimator = new PhotonPoseEstimator(fieldLayout, new Transform3d(Constants.ROBOT_TO_CAMERA_POSE.getTranslation(), Constants.ROBOT_TO_CAMERA_POSE.getRotation()));
+
+    
+    // this.stdDevsMatrix.set(0, 0, 0.002); // X meters
+    // this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
+    // this.stdDevsMatrix.set(0, 2, 0.183); // Z angle
   }
 
   /**
@@ -108,17 +115,13 @@ public class Vision
    *                    itself correctly.
    * @return The target pose of the AprilTag.
    */
-  public static Pose2d getAprilTagPose(int aprilTag, Transform2d robotOffset)
-  {
+  public static Pose2d getAprilTagPose(int aprilTag, Transform2d robotOffset) {
     Optional<Pose3d> aprilTagPose3d = fieldLayout.getTagPose(aprilTag);
-    if (aprilTagPose3d.isPresent())
-    {
+    if (aprilTagPose3d.isPresent()) {
       return aprilTagPose3d.get().toPose2d().transformBy(robotOffset);
-    } else
-    {
-      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + fieldLayout.toString());
     }
 
+    throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + fieldLayout.toString());
   }
 
   /**
@@ -126,10 +129,8 @@ public class Vision
    *
    * @param swerveDrive {@link SwerveDrive} instance.
    */
-  public void updatePoseEstimation(SwerveDrive swerveDrive)
-  {
-    if (SwerveDriveTelemetry.isSimulation && swerveDrive.getSimulationDriveTrainPose().isPresent())
-    {
+  public void updatePoseEstimation(SwerveDrive swerveDrive) {
+    if (SwerveDriveTelemetry.isSimulation && swerveDrive.getSimulationDriveTrainPose().isPresent()) {
       /*
        * In the maple-sim, odometry is simulated using encoder values, accounting for factors like skidding and drifting.
        * As a result, the odometry may not always be 100% accurate.
@@ -139,34 +140,52 @@ public class Vision
        */
       visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
     }
-    for (Cameras camera : Cameras.values())
-    {
-      // Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
-      // Transform3d transform = camera.getLatestResult().get().multitagResult.get().estimatedPose.best;
 
-      camera.updateUnreadResults();
-      var results = camera.camera.getAllUnreadResults();
-      if (results.isEmpty()) {
-        System.out.println("results are empty");
-        continue;
+    for (Cameras camera : Cameras.values()) {
+      // camera.updateEstimatedGlobalPose();
+      Optional<EstimatedRobotPose> estimatedRobotPose = camera.getEstimatedGlobalPose();
+      List<PhotonPipelineResult> results = camera.camera.getAllUnreadResults();
+      for (PhotonPipelineResult result : results) {
+        Optional<EstimatedRobotPose> visionEst = photonPoseEstimator.estimateCoprocMultiTagPose(result);
+        if (visionEst.isEmpty()) {
+          visionEst = photonPoseEstimator.estimateLowestAmbiguityPose(result);
+        }
+        
+
+        // visionEst.ifPresent(est -> {
+        //   swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, camera.curStdDevs);
+        // });
+      }
+      if (estimatedRobotPose.isPresent()){
+        swerveDrive.addVisionMeasurement(estimatedRobotPose.get().estimatedPose.toPose2d(), estimatedRobotPose.get().timestampSeconds, camera.curStdDevs);
       }
 
       // Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
-      var latestResult = results.get(0);
+      // Transform3d transform = camera.getLatestResult().get().multitagResult.get().estimatedPose.best;
+
+      // camera.updateUnreadResults();
+      // var results = camera.camera.getAllUnreadResults();
+      // if (results.isEmpty()) {
+      //   System.out.println("results are empty");
+      //   continue;
+      // }
+
+      // Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+      // var latestResult = results.get(0);
       // if (!latestResult.isPresent()) {
       //   System.out.println("latestResult fail");
       //   continue;
       // }
 
-      var multiTagResult = latestResult.multitagResult;
-      if (!multiTagResult.isPresent()) {
-        System.out.println("multiTagResult fail");
-        continue;
-      }
+      // var multiTagResult = latestResult.multitagResult;
+      // if (!multiTagResult.isPresent()) {
+      //   System.out.println("multiTagResult fail");
+      //   continue;
+      // }
 
-      Transform3d transform = multiTagResult.get().estimatedPose.best;
+      // Transform3d transform = multiTagResult.get().estimatedPose.best;
 
-      Pose2d pose = new Pose2d(transform.getX(), transform.getY(), transform.getRotation().toRotation2d());
+      // Pose2d pose = new Pose2d(transform.getX(), transform.getY(), transform.getRotation().toRotation2d());
       // if (poseEst.isPresent())
       // {
       //   // System.out.println("seeing something and it has a pose estimation");
@@ -182,11 +201,11 @@ public class Vision
 
       // if (poseEst.isPresent()) {
         // swerveDrive.addVisionMeasurement(pose, poseEst.get().timestampSeconds);
-        swerveDrive.addVisionMeasurement(pose, camera.lastReadTimestamp);
+        // swerveDrive.addVisionMeasurement(pose, camera.lastReadTimestamp);
 
-        SmartDashboard.putNumber("Est. X", pose.getX());
-        SmartDashboard.putNumber("Est. Y", pose.getY());
-        SmartDashboard.putNumber("Est. Rot", pose.getRotation().getDegrees());
+        // SmartDashboard.putNumber("Est. X", pose.getX());
+        // SmartDashboard.putNumber("Est. Y", pose.getY());
+        // SmartDashboard.putNumber("Est. Rot", pose.getRotation().getDegrees());
       // }
     }
 

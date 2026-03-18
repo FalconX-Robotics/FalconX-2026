@@ -46,10 +46,10 @@ public class GetToSpeed extends Command {
   }
   @Override
   public void execute() {
-      System.out.println("GetToSpeed");
+      // System.out.println("GetToSpeed");
   }
   @Override
   public void end(boolean interrupted) {
-      System.out.println("GetToSpeed ended");
+      // System.out.println("GetToSpeed ended");
   }
 }

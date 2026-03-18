@@ -5,9 +5,13 @@ import org.dyn4j.geometry.Vector2;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.util.Elastic;
+import frc.robot.util.Elastic.Notification.NotificationLevel;
 import frc.robot.util.Util;
 
 public class RotateToTarget extends Command{
@@ -20,7 +24,7 @@ public class RotateToTarget extends Command{
 
   public RotateToTarget(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
-    this.pidController = new PIDController(2, 0, 0);
+    this.pidController = new PIDController(2, 0.75, 1.25);
 
 
     super.addRequirements(this.swerveSubsystem);
@@ -28,8 +32,8 @@ public class RotateToTarget extends Command{
 
   public void recalculateAngle() {
     Vector2 targetPosition = Util.getTargetPosition();
-    double robotX = swerveSubsystem.getPose().getX();
-    double robotY = swerveSubsystem.getPose().getY();
+    double robotX = Units.metersToInches(swerveSubsystem.getPose().getX());
+    double robotY = Units.metersToInches(swerveSubsystem.getPose().getY());
 
     targetAngle = Math.atan2(targetPosition.y-robotY, targetPosition.x-robotX);
   }
@@ -38,24 +42,29 @@ public class RotateToTarget extends Command{
   @Override
   public void initialize() {
     recalculateAngle();
+    System.out.println(targetAngle);
     pidController.setSetpoint(targetAngle - Math.PI);
+    final Elastic.Notification notification = new Elastic.Notification(NotificationLevel.INFO, "TARGET ANGLE:", "targetAngle: " + targetAngle);
+    Elastic.sendNotification(notification);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     currentAngle = swerveSubsystem.getYaw().getRadians();
-
-    swerveSubsystem.drive(new ChassisSpeeds(0,0, MathUtil.clamp(pidController.calculate(currentAngle), -MAX_SPEED, MAX_SPEED) ));
+    
+    swerveSubsystem.drive(new ChassisSpeeds(0,0, MathUtil.clamp(pidController.calculate(currentAngle), -MAX_SPEED, MAX_SPEED)));
 
     
-      System.out.println("RotateToTarget");
+      // System.out.println("RotateToTarget");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("RotateToTarget ended");
+    // System.out.println("RotateToTarget ended");
+    final Elastic.Notification notification = new Elastic.Notification(NotificationLevel.INFO, "CURRENT ANGLE:", "Current angle" + currentAngle);
+      Elastic.sendNotification(notification);
   }
 
   // Returns true when the command should end.

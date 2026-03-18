@@ -43,7 +43,7 @@ public abstract class Constants {
 
  
 
-  public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(-6.9, -5.9, 18.875, new Rotation3d(0.0,Math.toRadians(10.0),0.0));
+  public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(Units.inchesToMeters(4.5), Units.inchesToMeters(6.3), Units.inchesToMeters(18.875), new Rotation3d(0.0,Math.toRadians(5), Math.PI));
 
   public static final Pose2d STARTING_POSE = new Pose2d(3, 4, Rotation2d.fromDegrees(0.0));
 
