@@ -15,24 +15,24 @@ public class AutoShoot extends Command {
     this.feeder = robotContainer.subsystems.feeder;
      this.shooter = robotContainer.subsystems.shooter;
 
-    addRequirements(feeder);
+    addRequirements(feeder, shooter);
   }
 
   @Override
   public void initialize() {
-    speedofShooter = feeder.getShooterSpeed();
+    speedofShooter = shooter.getShooterSpeed();
     velocity = speedofShooter;
-    feeder.setFeederSpeed(velocity);    //remove from storage
+    feeder.setFeederSpeed(-velocity);    //remove from storage
   }
 
   @Override
   public void execute() {
-    speedofShooter = feeder.getShooterSpeed();
+    speedofShooter = shooter.getShooterSpeed();
     velocity = speedofShooter;
-    feeder.setFeederSpeed(velocity); //remove from storage
+    feeder.setFeederSpeed(-velocity); //remove from storage
 
     
-      System.out.println("AutoShoot");
+      // System.out.println("AutoShoot");
   }
 
   public void end(boolean interrupted) {

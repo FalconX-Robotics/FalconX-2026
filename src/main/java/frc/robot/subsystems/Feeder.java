@@ -46,10 +46,10 @@ public class Feeder extends SubsystemBase {
     final MotionMagicVelocityVoltage request = new MotionMagicVelocityVoltage(0);
     motor.setControl(request.withAcceleration(acceleration));
   }
-
-  public double getShooterSpeed() {
-    return this.shooter.getShooterSpeed();
-  }
+  //making a method in feeder get a result from a method in another subsystem is unneeded --> just use shooter subsystem
+  // public double getShooterSpeed() {
+  //   return this.shooter.getShooterSpeed();
+  // }
 
   public double getFeederSpeed() {
     return motor.getVelocity().getValueAsDouble();

@@ -42,10 +42,12 @@ public class RotateToTarget extends Command{
   @Override
   public void initialize() {
     recalculateAngle();
-    System.out.println(targetAngle);
+    // System.out.println(targetAngle);
     pidController.setSetpoint(targetAngle - Math.PI);
     final Elastic.Notification notification = new Elastic.Notification(NotificationLevel.INFO, "TARGET ANGLE:", "targetAngle: " + targetAngle);
     Elastic.sendNotification(notification);
+    SmartDashboard.putNumber("Current Angle", currentAngle);
+    SmartDashboard.putNumber("Target Angle", targetAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,6 +55,9 @@ public class RotateToTarget extends Command{
   public void execute() {
     currentAngle = swerveSubsystem.getYaw().getRadians();
     
+    SmartDashboard.putNumber("Current Angle", currentAngle);
+    SmartDashboard.putNumber("Target Angle", targetAngle);
+
     swerveSubsystem.drive(new ChassisSpeeds(0,0, MathUtil.clamp(pidController.calculate(currentAngle), -MAX_SPEED, MAX_SPEED)));
 
     

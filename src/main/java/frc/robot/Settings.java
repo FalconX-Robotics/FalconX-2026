@@ -55,6 +55,7 @@ public class Settings {
 
     public final Trigger autoRotateButton = driverController.x();
     public final Trigger autoShootButton = driverController.y();
+    public final Trigger jiggleRobotButton = driverController.b();
   }
 
   /**

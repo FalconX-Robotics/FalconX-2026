@@ -24,10 +24,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
-import frc.robot.commands.AutoKeepFromShooting;
+// import frc.robot.commands.AutoKeepFromShooting;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
+import frc.robot.commands.JiggleRobot;
 import frc.robot.commands.KeepFromShooting;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
@@ -83,8 +84,9 @@ public class RobotContainer {
     public ManualShoot manualShoot;
     public RotateToTarget rotateToTarget;
     public KeepFromShooting keepFromShooting;
-    public AutoKeepFromShooting autoKeepFromShooting;
-     public Command autoShootIntoHub;
+    // public AutoKeepFromShooting autoKeepFromShooting;
+    public JiggleRobot jiggleRobot;
+    public Command autoShootIntoHub;
 
    
   }
@@ -121,8 +123,9 @@ public class RobotContainer {
     this.commands.manualShoot = new ManualShoot(this);
     this.commands.rotateToTarget = new RotateToTarget(this);
     this.commands.keepFromShooting = new KeepFromShooting(this);
-    this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
-    this.commands.autoShootIntoHub = (new ParallelCommandGroup(new GetToSpeed(this), new AutoKeepFromShooting(this)).andThen(new AutoShoot(this)));
+    // this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
+    this.commands.jiggleRobot = new JiggleRobot(this);
+    this.commands.autoShootIntoHub = new GetToSpeed(this).andThen(new AutoShoot(this));
 
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
@@ -143,7 +146,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
-    NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
+    // NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
 
     this.autoChooser = AutoBuilder.buildAutoChooser();
@@ -191,6 +194,10 @@ public class RobotContainer {
     this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
 
     this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShootIntoHub);
+
+    //Jiggle Robot
+
+    this.settings.driverSettings.jiggleRobotButton.whileTrue(this.commands.jiggleRobot);
   }
 
   /**
