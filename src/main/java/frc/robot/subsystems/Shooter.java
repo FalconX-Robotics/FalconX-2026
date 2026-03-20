@@ -17,6 +17,8 @@ public class Shooter extends SubsystemBase {
   final SwerveSubsystem swerveSubsystem;
   final CommandXboxController operatorController; 
 
+  double lastCommandedShooterSpeed;
+
   public Shooter(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
     this.operatorController = robotContainer.controllers.operator;
@@ -69,5 +71,11 @@ public class Shooter extends SubsystemBase {
   public boolean isHolding() {
     // TODO - need prox sensor to check if ball is being held
     return false;
+  }
+  public void recordLastCommandedShooterSpeed() {
+    lastCommandedShooterSpeed = motor.get();
+  }
+  public double getLastRecordedCommandedShooterSpeed() {
+    return lastCommandedShooterSpeed;
   }
 }

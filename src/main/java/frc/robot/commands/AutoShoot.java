@@ -8,7 +8,7 @@ import frc.robot.subsystems.Shooter;
 public class AutoShoot extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
-  private double speedofShooter;
+  // private double speedofShooter;
   private double velocity;
 
   public AutoShoot(RobotContainer robotContainer) {
@@ -20,17 +20,17 @@ public class AutoShoot extends Command {
 
   @Override
   public void initialize() {
-    speedofShooter = shooter.getShooterSpeed();
-    velocity = speedofShooter;
-    feeder.setFeederSpeed(-velocity);    //remove from storage
+    velocity = shooter.getLastRecordedCommandedShooterSpeed();
+    shooter.motor.set(velocity);
+    feeder.motor.set(-velocity);  //remove from storage
   }
 
   @Override
   public void execute() {
-    speedofShooter = shooter.getShooterSpeed();
-    velocity = speedofShooter;
-    feeder.setFeederSpeed(-velocity); //remove from storage
-    // System.out.println("Autoshoot");
+    // speedofShooter = shooter.getShooterSpeed();
+    // velocity = speedofShooter;
+    // feeder.setFeederSpeed(-velocity); //remove from storage
+    // // System.out.println("Autoshoot");
     
       // System.out.println("AutoShoot");
   }

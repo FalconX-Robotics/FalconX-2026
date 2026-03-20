@@ -56,13 +56,14 @@ public class GetToSpeed extends Command {
   @Override
   public void execute() {
       // System.out.println("GetToSpeed");
-      velocityOfFeeder = shooter.getShooterSpeed();
+      velocityOfFeeder = shooter.getShooterSpeed() + 2;
       feeder.setFeederSpeed(velocityOfFeeder);
 
   }
   @Override
   public void end(boolean interrupted) {
       // System.out.println("GetToSpeed ended");
+      shooter.recordLastCommandedShooterSpeed();
       shooter.motor.set(0);
       feeder.motor.set(0);
   }
