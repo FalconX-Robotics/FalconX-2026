@@ -3,35 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7785164051355205,
-        "y": 5.9952068473609135
+        "x": 3.5862054208273886,
+        "y": 4.403751783166904
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.252493677862793,
-        "y": 6.490229574633641
+        "x": 3.0169044222539214,
+        "y": 4.287303851640512
       },
       "isLocked": false,
-      "linkedName": "End of Middle Depot"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.611556818181818,
-        "y": 5.560409090909091
+        "x": 0.7785164051355205,
+        "y": 5.9952068473609135
       },
       "prevControl": {
-        "x": 1.9931477272727272,
-        "y": 6.447090909090909
+        "x": 1.8265477888730377,
+        "y": 5.982268188302426
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of Depot to Shoot"
+      "linkedName": "End of Middle Depot"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "climbdown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -37.374862320745606
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

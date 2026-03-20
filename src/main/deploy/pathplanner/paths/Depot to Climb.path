@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.252493677862793,
-        "y": 6.490229574633641
+        "x": 1.7283086860124817,
+        "y": 5.475951860632019
       },
       "isLocked": false,
       "linkedName": "End of Middle Depot"
     },
     {
       "anchor": {
-        "x": 2.611556818181818,
-        "y": 5.560409090909091
+        "x": 1.066,
+        "y": 4.695
       },
       "prevControl": {
-        "x": 1.9931477272727272,
-        "y": 6.447090909090909
+        "x": 0.8201024871740762,
+        "y": 4.7401044696900945
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of Depot to Shoot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -37.374862320745606
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,

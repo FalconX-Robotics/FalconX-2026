@@ -148,6 +148,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
     // NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
+    NamedCommands.registerCommand("autoShootIntoHub", this.commands.autoShootIntoHub);
 
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
