@@ -43,7 +43,7 @@ public class GetToSpeed extends Command {
 
   public boolean isFinished() {
     if (isActive){
-      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 0.0001);
+      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 0.1);
       if (result){
         isActive = false;
       }
@@ -63,5 +63,7 @@ public class GetToSpeed extends Command {
   @Override
   public void end(boolean interrupted) {
       // System.out.println("GetToSpeed ended");
+      shooter.motor.set(0);
+      feeder.motor.set(0);
   }
 }

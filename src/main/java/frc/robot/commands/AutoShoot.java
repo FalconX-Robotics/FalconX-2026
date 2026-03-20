@@ -30,7 +30,7 @@ public class AutoShoot extends Command {
     speedofShooter = shooter.getShooterSpeed();
     velocity = speedofShooter;
     feeder.setFeederSpeed(-velocity); //remove from storage
-
+    // System.out.println("Autoshoot");
     
       // System.out.println("AutoShoot");
   }
@@ -39,5 +39,6 @@ public class AutoShoot extends Command {
     feeder.motor.set(0);
     // System.out.println("feederspeed set to 0");
     shooter.motor.set(0);
+    // System.out.println("AutoShoot ended");
   }
 }

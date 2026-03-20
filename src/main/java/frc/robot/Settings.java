@@ -1,6 +1,10 @@
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -14,7 +18,10 @@ public class Settings {
     });
 
     public final Trigger invertButton = driverController.start();
-    public final boolean inverted = false;
+    
+    private final Optional <Alliance> alliance = DriverStation.getAlliance();
+    
+    public final boolean inverted =  alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
 
     public double getLeftX() {
       double axis = MathUtil.applyDeadband(driverController.getLeftX(), 0.1);

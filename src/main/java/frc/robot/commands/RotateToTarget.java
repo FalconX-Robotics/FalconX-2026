@@ -17,14 +17,14 @@ import frc.robot.util.Util;
 public class RotateToTarget extends Command{
   private final SwerveSubsystem swerveSubsystem;
   private final PIDController pidController;
-  private final double MAX_SPEED = 2 * Math.PI;
+  private final double MAX_SPEED =  Math.PI/8;
 
   double currentAngle;
   double targetAngle;
 
   public RotateToTarget(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
-    this.pidController = new PIDController(2, 0.75, 1.25);
+    this.pidController = new PIDController(3, 0.0, 0.0);
 
 
     super.addRequirements(this.swerveSubsystem);
@@ -43,11 +43,12 @@ public class RotateToTarget extends Command{
   public void initialize() {
     recalculateAngle();
     // System.out.println(targetAngle);
-    pidController.setSetpoint(targetAngle - Math.PI);
+    targetAngle -= Math.PI/2;
+    pidController.setSetpoint(targetAngle);
     final Elastic.Notification notification = new Elastic.Notification(NotificationLevel.INFO, "TARGET ANGLE:", "targetAngle: " + targetAngle);
     Elastic.sendNotification(notification);
     SmartDashboard.putNumber("Current Angle", currentAngle);
-    SmartDashboard.putNumber("Target Angle", targetAngle);
+    SmartDashboard.putNumber("Target Angle", targetAngle - Math.PI);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,11 +56,24 @@ public class RotateToTarget extends Command{
   public void execute() {
     currentAngle = swerveSubsystem.getYaw().getRadians();
     
-    SmartDashboard.putNumber("Current Angle", currentAngle);
+    
+    double numberofRotations = swerveSubsystem.getYaw().getRotations() * Math.PI * 2;
+    
+    double remapvalue = (numberofRotations - targetAngle) % Math.PI * 2;
+    
+    if (remapvalue < 0) {
+      remapvalue += Math.PI * 2;
+    }
+    
+    remapvalue = (remapvalue - Math.PI + targetAngle);
+    
+    double clamp = MathUtil.clamp(pidController.calculate(remapvalue), -MAX_SPEED, MAX_SPEED);
+    swerveSubsystem.drive(new ChassisSpeeds(0,0, clamp));
+    
+    SmartDashboard.putNumber("Clamp", clamp);
+    
+    SmartDashboard.putNumber("Remap value", remapvalue);
     SmartDashboard.putNumber("Target Angle", targetAngle);
-
-    swerveSubsystem.drive(new ChassisSpeeds(0,0, MathUtil.clamp(pidController.calculate(currentAngle), -MAX_SPEED, MAX_SPEED)));
-
     
       // System.out.println("RotateToTarget");
   }
