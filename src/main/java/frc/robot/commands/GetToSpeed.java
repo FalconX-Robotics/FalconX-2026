@@ -67,7 +67,7 @@ public class GetToSpeed extends Command {
   }
   @Override
   public void end(boolean interrupted) {
-      System.out.println("GetToSpeed ended");
+      // System.out.println("GetToSpeed ended");
       shooter.recordLastCommandedShooterSpeed();
       shooter.motor.set(0);
       feeder.motor.set(0);

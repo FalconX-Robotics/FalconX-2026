@@ -23,7 +23,7 @@ public class JiggleRobot extends Command {
     public void execute() {
         recalcuateForwardVelocity();
         recalcuateSidewaysVelocity();
-        recalculateRotationalVelocity();
+        // recalculateRotationalVelocity();
         swerveSubsystem.drive(new ChassisSpeeds(forwardVelocity, sidewaysVelocity, 0));
     }
 
@@ -41,9 +41,9 @@ public class JiggleRobot extends Command {
         sidewaysVelocity = Math.random() * (max - min) + min;
     }
     
-    private void recalculateRotationalVelocity() {
-        double min = -Math.PI;
-        double max = Math.PI;
-        rotationalvelocity = Math.random() * (max - min) + min;
-    }
+    // private void recalculateRotationalVelocity() {
+    //     double min = -Math.PI;
+    //     double max = Math.PI;
+    //     rotationalvelocity = Math.random() * (max - min) + min;
+    // }
 }

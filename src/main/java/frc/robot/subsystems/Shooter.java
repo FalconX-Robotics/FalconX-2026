@@ -74,6 +74,7 @@ public class Shooter extends SubsystemBase {
   }
   public void recordLastCommandedShooterSpeed() {
     lastCommandedShooterSpeed = motor.get();
+    // System.out.print(lastCommandedShooterSpeed);
   }
   public double getLastRecordedCommandedShooterSpeed() {
     return lastCommandedShooterSpeed;
