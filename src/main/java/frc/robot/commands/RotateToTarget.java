@@ -17,7 +17,7 @@ import frc.robot.util.Util;
 public class RotateToTarget extends Command{
   private final SwerveSubsystem swerveSubsystem;
   private final PIDController pidController;
-  private final double MAX_SPEED =  Math.PI/8;
+  private final double MAX_SPEED = 2;
 
   double currentAngle;
   double targetAngle;

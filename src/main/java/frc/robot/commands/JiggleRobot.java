@@ -24,20 +24,20 @@ public class JiggleRobot extends Command {
         recalcuateForwardVelocity();
         recalcuateSidewaysVelocity();
         recalculateRotationalVelocity();
-        swerveSubsystem.drive(new ChassisSpeeds(forwardVelocity, sidewaysVelocity, rotationalvelocity));
+        swerveSubsystem.drive(new ChassisSpeeds(forwardVelocity, sidewaysVelocity, 0));
     }
 
 
      private void recalcuateForwardVelocity(){
-        double min = Units.inchesToMeters(-2);
-        double max = Units.inchesToMeters(2);
+        double min = Units.inchesToMeters(-3);
+        double max = Units.inchesToMeters(3);
         forwardVelocity = Math.random() * (max - min) + min;
 
     }
 
      private void recalcuateSidewaysVelocity(){
-        double min = Units.inchesToMeters(-2);
-        double max = Units.inchesToMeters(2);
+        double min = Units.inchesToMeters(-3);
+        double max = Units.inchesToMeters(3);
         sidewaysVelocity = Math.random() * (max - min) + min;
     }
     

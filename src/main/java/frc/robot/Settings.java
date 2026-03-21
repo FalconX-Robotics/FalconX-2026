@@ -17,11 +17,11 @@ public class Settings {
       return driverController.getRightTriggerAxis() > 0.5;
     });
 
-    public final Trigger invertButton = driverController.start();
+    public final Trigger invertButton = driverController.leftBumper();
     
-    private final Optional <Alliance> alliance = DriverStation.getAlliance();
+    // private final Optional <Alliance> alliance = DriverStation.getAlliance();
     
-    public final boolean inverted =  alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+    public boolean inverted = false;
 
     public double getLeftX() {
       double axis = MathUtil.applyDeadband(driverController.getLeftX(), 0.1);
@@ -74,7 +74,11 @@ public class Settings {
     public final Trigger shooterButton = operatorController.rightTrigger();
     public final Trigger feederButton = operatorController.leftTrigger();
 
-    
+    public final Trigger percent25shoot = operatorController.a();
+    public final Trigger percent50shoot = operatorController.b();
+    public final Trigger percent75shoot = operatorController.x();
+    public final Trigger percent100shoot = operatorController.y();
+
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }

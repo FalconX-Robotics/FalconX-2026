@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.ControlledShoot;
+import frc.robot.commands.DriverInvert;
 // import frc.robot.commands.AutoKeepFromShooting;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.GetToSpeed;
@@ -88,7 +90,12 @@ public class RobotContainer {
     public JiggleRobot jiggleRobot;
     public Command autoShootIntoHub;
 
-   
+    public ControlledShoot percent25shoot;
+    public ControlledShoot percent50shoot;
+    public ControlledShoot percent75shoot;
+    public ControlledShoot percent100shoot;
+
+    public DriverInvert driverInvert;
   }
 
   public final Controllers controllers = new Controllers();
@@ -97,7 +104,7 @@ public class RobotContainer {
 
   public final Settings settings = new Settings(this.controllers.driver, this.controllers.operator);
 
-  public final PhotonCamera visionCamera = new PhotonCamera("Limelight");
+  public final PhotonCamera visionCamera = new PhotonCamera("Limelight"); 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -126,6 +133,11 @@ public class RobotContainer {
     // this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
     this.commands.jiggleRobot = new JiggleRobot(this);
     this.commands.autoShootIntoHub = new GetToSpeed(this).andThen(new AutoShoot(this));
+    this.commands.percent25shoot = new ControlledShoot(this, 0.25);
+    this.commands.percent50shoot = new ControlledShoot(this, 0.5);
+    this.commands.percent75shoot = new ControlledShoot(this, 0.75);
+    this.commands.percent100shoot = new ControlledShoot(this, 1);
+    this.commands.driverInvert = new DriverInvert(this);
 
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
@@ -196,9 +208,20 @@ public class RobotContainer {
 
     this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShootIntoHub);
 
+    // controlled shoot bindings
+
+    this.settings.operatorSettings.percent25shoot.whileTrue(this.commands.percent25shoot);
+    this.settings.operatorSettings.percent50shoot.whileTrue(this.commands.percent50shoot);
+    this.settings.operatorSettings.percent75shoot.whileTrue(this.commands.percent75shoot);
+    this.settings.operatorSettings.percent100shoot.whileTrue(this.commands.percent100shoot);
+
     //Jiggle Robot
 
     this.settings.driverSettings.jiggleRobotButton.whileTrue(this.commands.jiggleRobot);
+
+    //invert controls
+
+    this.settings.driverSettings.invertButton.onTrue(this.commands.driverInvert);
   }
 
   /**

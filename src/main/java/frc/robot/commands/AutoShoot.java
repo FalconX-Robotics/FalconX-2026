@@ -9,7 +9,7 @@ public class AutoShoot extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
   // private double speedofShooter;
-  private double velocity;
+  private double value;
 
   public AutoShoot(RobotContainer robotContainer) {
     this.feeder = robotContainer.subsystems.feeder;
@@ -20,9 +20,10 @@ public class AutoShoot extends Command {
 
   @Override
   public void initialize() {
-    velocity = shooter.getLastRecordedCommandedShooterSpeed();
-    shooter.motor.set(velocity);
-    feeder.motor.set(-velocity);  //remove from storage
+    value = shooter.getLastRecordedCommandedShooterSpeed();
+    shooter.motor.set(value);
+    feeder.motor.set(-value);  //remove from storage
+    System.out.println("AutoShoot started");
   }
 
   @Override

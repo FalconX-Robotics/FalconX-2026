@@ -146,9 +146,9 @@ public class Vision
       Optional<EstimatedRobotPose> estimatedRobotPose = camera.getEstimatedGlobalPose();
       List<PhotonPipelineResult> results = camera.camera.getAllUnreadResults();
       for (PhotonPipelineResult result : results) {
-        Optional<EstimatedRobotPose> visionEst = photonPoseEstimator.estimateCoprocMultiTagPose(result);
-        if (visionEst.isEmpty()) {
-          visionEst = photonPoseEstimator.estimateLowestAmbiguityPose(result);
+        // Optional<EstimatedRobotPose> visionEst = photonPoseEstimator.estimateCoprocMultiTagPose(result);
+        if (true) {
+          Optional <EstimatedRobotPose> visionEst = photonPoseEstimator.estimateLowestAmbiguityPose(result);
         }
         
 

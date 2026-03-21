@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.611556818181818,
-        "y": 5.560409090909091
+        "x": 2.6028673323823104,
+        "y": 5.1800713266761775
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.627420937824445,
-        "y": 5.480240522640479
+        "x": 3.6187314520249374,
+        "y": 5.099902758407565
       },
       "isLocked": false,
       "linkedName": "End of Depot to Shoot"
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -37.374862320745606
+    "rotation": 141.58194465517786
   },
   "useDefaultConstraints": true
 }

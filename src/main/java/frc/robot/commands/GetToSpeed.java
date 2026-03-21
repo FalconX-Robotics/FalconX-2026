@@ -16,7 +16,7 @@ public class GetToSpeed extends Command {
   private final Feeder feeder;
   private boolean isActive = false;
   private double velocity;
-  private double velocityOfFeeder;
+  private double valueofFeeder;
 
   public GetToSpeed(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
@@ -34,9 +34,14 @@ public class GetToSpeed extends Command {
     velocity = Util.findVelocity(distance);
     shooter.setAutoShooterSpeed(velocity);
 
-    velocityOfFeeder = shooter.getShooterSpeed() + 2;
-    feeder.setFeederSpeed(velocityOfFeeder);
+    // velocityOfFeeder = shooter.getShooterSpeed() + 2;
+    // feeder.setFeederSpeed(velocityOfFeeder);
     
+
+    shooter.recordLastCommandedShooterSpeed();
+    valueofFeeder = shooter.getLastRecordedCommandedShooterSpeed() + 0.1;
+    feeder.motor.set(valueofFeeder);
+
     isActive = true;
   }
 
@@ -55,14 +60,14 @@ public class GetToSpeed extends Command {
   }
   @Override
   public void execute() {
-      // System.out.println("GetToSpeed");
-      velocityOfFeeder = shooter.getShooterSpeed() + 2;
-      feeder.setFeederSpeed(velocityOfFeeder);
+      // // System.out.println("GetToSpeed");
+      // velocityOfFeeder = shooter.getShooterSpeed() + 2;
+      // feeder.setFeederSpeed(velocityOfFeeder);
 
   }
   @Override
   public void end(boolean interrupted) {
-      // System.out.println("GetToSpeed ended");
+      System.out.println("GetToSpeed ended");
       shooter.recordLastCommandedShooterSpeed();
       shooter.motor.set(0);
       feeder.motor.set(0);
