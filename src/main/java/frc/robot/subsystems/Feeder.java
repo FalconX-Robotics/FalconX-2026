@@ -25,7 +25,11 @@ public class Feeder extends SubsystemBase {
     final TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
     talonFXConfigs.MotionMagic.MotionMagicAcceleration = 400;
     talonFXConfigs.MotionMagic.MotionMagicJerk = 4000; // jerk is change in acceleration over time (like acceleration is to velocity, and velocity is to position)
-
+    talonFXConfigs.CurrentLimits.StatorCurrentLimit = 60;
+    talonFXConfigs.CurrentLimits.SupplyCurrentLimit = 60;
+    talonFXConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+    talonFXConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+    
     final Slot1Configs slot1Configs = talonFXConfigs.Slot1;
     slot1Configs.kS = 0.25;
     slot1Configs.kV = 0.12;

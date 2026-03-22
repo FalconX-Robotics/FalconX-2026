@@ -3,6 +3,7 @@ package frc.robot.commands;
 import org.dyn4j.geometry.Vector2;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Feeder;
@@ -16,7 +17,7 @@ public class GetToSpeed extends Command {
   private final Feeder feeder;
   private boolean isActive = false;
   private double velocity;
-  private double valueofFeeder;
+  private double velocityOfFeeder;
 
   public GetToSpeed(RobotContainer robotContainer) {
     this.swerveSubsystem = robotContainer.subsystems.swerve;
@@ -31,16 +32,17 @@ public class GetToSpeed extends Command {
     Vector2 robotPosition = new Vector2(swerveSubsystem.getPose().getX(), swerveSubsystem.getPose().getY());
     double distance = targetPosition.distance(robotPosition);
 
-    velocity = Util.findVelocity(distance);
-    shooter.setAutoShooterSpeed(velocity);
-
+    // velocity = Util.findVelocity(distance);
+    // shooter.setAutoShooterSpeed(velocity);
+    shooter.motor.set(0.75);
     // velocityOfFeeder = shooter.getShooterSpeed() + 2;
     // feeder.setFeederSpeed(velocityOfFeeder);
     
 
-    shooter.recordLastCommandedShooterSpeed();
-    valueofFeeder = shooter.getLastRecordedCommandedShooterSpeed() + 0.1;
-    feeder.motor.set(valueofFeeder);
+    // velocityOfFeeder = shooter.motor.getVelocity().getValueAsDouble() + 2.0;
+    // feeder.setFeederSpeed(velocityOfFeeder);
+
+    feeder.motor.set(1);
 
     isActive = true;
   }
@@ -48,7 +50,8 @@ public class GetToSpeed extends Command {
 
   public boolean isFinished() {
     if (isActive){
-      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 0.1);
+      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 5);
+      // System.out.println("velocity: " + velocity + " ; shooter spped: " + shooter.getSpeed());
       if (result){
         isActive = false;
       }
@@ -68,7 +71,7 @@ public class GetToSpeed extends Command {
   @Override
   public void end(boolean interrupted) {
       // System.out.println("GetToSpeed ended");
-      shooter.recordLastCommandedShooterSpeed();
+      shooter.recordShooterSpeed();
       shooter.motor.set(0);
       feeder.motor.set(0);
   }

@@ -23,8 +23,9 @@ public class Util {
   public static String getLogFilename() {
     final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneId.of("UTC"));
     final String prefix = Robot.isSimulation() ? "sim_" : "robot_";
+    final String suffix = DriverStation.isFMSAttached() ? "_match" + DriverStation.getMatchNumber() : "_test" + (DriverStation.isAutonomous() ? "Auto" : "Teleop");
     
-    return prefix + timeFormatter.format(Util.startTime) + ".wpilog";
+    return prefix + timeFormatter.format(Util.startTime) + suffix + ".wpilog";
   }
 
   public static void setStartTime(LocalDateTime time) {

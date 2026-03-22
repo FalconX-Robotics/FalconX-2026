@@ -5,53 +5,71 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
+          "data": {
+            "pathName": "Bottom to Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "climbdown"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "race",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "climbdown"
+                  "name": "getToSpeed"
                 }
               },
               {
-                "type": "sequential",
+                "type": "wait",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Bottom to Shoot"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "autoShootIntoHub"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Bottom Shoot to Climb B"
-                      }
-                    }
-                  ]
+                  "waitTime": 2.0
                 }
               }
             ]
           }
         },
         {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoShoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Shoot to Climb B"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 2.0
           }
         },
         {

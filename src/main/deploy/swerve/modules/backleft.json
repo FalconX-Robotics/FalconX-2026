@@ -23,5 +23,6 @@
     "drive": false,
     "angle": true
   },
+
   "absoluteEncoderInverted": true
 }
