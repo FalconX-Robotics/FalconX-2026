@@ -49,17 +49,20 @@ public class GetToSpeed extends Command {
 
 
   public boolean isFinished() {
-    if (isActive){
-      boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 5);
-      // System.out.println("velocity: " + velocity + " ; shooter spped: " + shooter.getSpeed());
-      if (result){
-        isActive = false;
-      }
+  //   if (isActive){
+  //     boolean result = MathUtil.isNear(velocity, shooter.getSpeed(), 5);
+  //     // System.out.println("velocity: " + velocity + " ; shooter spped: " + shooter.getSpeed());
+  //     if (result){
+  //       isActive = false;
+  //     }
         
-      return result;
-    }
+  //     return result;
+  //   }
 
-    return false;
+  
+  //   return false;
+
+  return false;
   }
   @Override
   public void execute() {

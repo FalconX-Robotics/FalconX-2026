@@ -40,6 +40,7 @@
     "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.05,\"y\":-0.3},\"end\":{\"x\":-0.05,\"y\":-0.2},\"strokeWidth\":0.02}}",
     "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.05,\"y\":-0.3},\"end\":{\"x\":-0.05,\"y\":-0.2},\"strokeWidth\":0.02}}",
     "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.05,\"y\":-0.3},\"end\":{\"x\":0.1,\"y\":-0.25},\"strokeWidth\":0.02}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.1,\"y\":-0.25},\"end\":{\"x\":0.05,\"y\":-0.2},\"strokeWidth\":0.02}}"
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.1,\"y\":-0.25},\"end\":{\"x\":0.05,\"y\":-0.2},\"strokeWidth\":0.02}}",
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.0,\"y\":-0.385},\"size\":{\"width\":0.03,\"length\":0.03},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }
