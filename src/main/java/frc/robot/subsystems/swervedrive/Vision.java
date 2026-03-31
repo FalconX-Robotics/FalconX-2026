@@ -109,9 +109,9 @@ public class Vision {
     new Cameras("Limelight", Constants.ROBOT_TO_CAMERA_POSE.getRotation(), Constants.ROBOT_TO_CAMERA_POSE.getTranslation(), VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
     new Cameras("RPI", null, null, null, null);
 
-    this.stdDevsMatrix.set(0, 0, 0.002); // X meters
-    this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
-    this.stdDevsMatrix.set(0, 2, 0.183); // Z angle
+    // this.stdDevsMatrix.set(0, 0, 0.002); // X meters
+    // this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
+    // this.stdDevsMatrix.set(0, 2, 0.183); // Z angle
   }
 
   /**
