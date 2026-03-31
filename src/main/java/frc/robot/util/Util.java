@@ -82,4 +82,11 @@ public class Util {
 
     return Math.abs(Math.sqrt(-4 * a * c) / (2 * a));
   }
+
+  public static double getPowerFromDistance(double distanceInInches) {
+    // https://www.desmos.com/calculator/rz9wefetyr
+
+    final double factor = 82.5 / 264.5;
+    return (factor * distanceInInches) + 12.0;
+  }
 }

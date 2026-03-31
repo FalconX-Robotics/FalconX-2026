@@ -27,6 +27,12 @@
           "data": {
             "name": "climbup"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": []
+          }
         }
       ]
     }

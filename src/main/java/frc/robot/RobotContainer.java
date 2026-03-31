@@ -87,7 +87,6 @@ public class RobotContainer {
     public ManualShoot manualShoot;
     public RotateToTarget rotateToTarget;
     public KeepFromShooting keepFromShooting;
-    // public AutoKeepFromShooting autoKeepFromShooting;
     public JiggleRobot jiggleRobot;
     public Command autoShootIntoHub;
 
@@ -207,8 +206,7 @@ public class RobotContainer {
 
     // auto rotate and shoot
     this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
-
-    this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShootIntoHub);
+    this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShoot);
 
     // controlled shoot bindings
 
