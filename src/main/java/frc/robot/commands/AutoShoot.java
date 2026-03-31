@@ -23,6 +23,7 @@ public class AutoShoot extends Command {
     // velocity = shooter.getLastReccordedShooterVelocity();
     // shooter.setShooterSpeed(velocity);
     // feeder.setFeederSpeed(-velocity);  //remove from storage
+    
     shooter.motor.set(0.75);
     feeder.motor.set(-1);
     // System.out.println("AutoShoot started");

@@ -109,9 +109,9 @@ public class Vision {
     new Cameras("Limelight", Constants.ROBOT_TO_CAMERA_POSE.getRotation(), Constants.ROBOT_TO_CAMERA_POSE.getTranslation(), VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
     new Cameras("RPI", null, null, null, null);
 
-    this.stdDevsMatrix.set(0, 0, 0.002); // X meters
-    this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
-    this.stdDevsMatrix.set(0, 2, 0.183); // Z angle
+    // this.stdDevsMatrix.set(0, 0, 0.002); // X meters
+    // this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
+    // this.stdDevsMatrix.set(0, 2, 0.183); // Z angle
   }
 
   /**
@@ -439,6 +439,10 @@ public class Vision {
      */
     Cameras(String name, Rotation3d robotToCamRotation, Translation3d robotToCamTranslation, Matrix<N3, N1> singleTagStdDevs, Matrix<N3, N1> multiTagStdDevsMatrix) {
       this.camera = new PhotonCamera(name);
+      if (!this.camera.isConnected()) {
+        System.err.println("CAMERA \"" + name + "\" not connected!");
+        return;
+      }
 
       try {
         this.latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
@@ -472,6 +476,7 @@ public class Vision {
 
         Cameras.cameras.add(this);
       } catch (Exception exception) {
+        System.out.println("================== EXCEPTION IN VISION CAUGHT ==================");
         exception.printStackTrace();
       }
     }
@@ -542,14 +547,18 @@ public class Vision {
         mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
       }
 
-      resultsList = Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
-      lastReadTimestamp = currentTimestamp;
-      resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> {
-        return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
-      });
+      try {
+        resultsList = Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
+        lastReadTimestamp = currentTimestamp;
+        resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> {
+          return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
+        });
 
-      if (!resultsList.isEmpty()) {
-        updateEstimatedGlobalPose();
+        if (!resultsList.isEmpty()) {
+          updateEstimatedGlobalPose();
+        }
+      } catch (NullPointerException nullPointerException) {
+        nullPointerException.printStackTrace();
       }
     }
 

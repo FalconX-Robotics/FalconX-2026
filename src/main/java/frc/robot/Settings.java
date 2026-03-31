@@ -74,10 +74,10 @@ public class Settings {
     public final Trigger shooterButton = operatorController.rightTrigger();
     public final Trigger feederButton = operatorController.leftTrigger();
 
-    public final Trigger percent25shoot = operatorController.a();
-    public final Trigger percent50shoot = operatorController.b();
-    public final Trigger percent75shoot = operatorController.x();
-    public final Trigger percent100shoot = operatorController.y();
+    public final Trigger lowShootButton = operatorController.a();
+    public final Trigger mediumShootButton = operatorController.b();
+    public final Trigger highShootButton = operatorController.x();
+    public final Trigger maxShootButton = operatorController.y();
 
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);

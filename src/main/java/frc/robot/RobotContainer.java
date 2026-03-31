@@ -91,10 +91,10 @@ public class RobotContainer {
     public JiggleRobot jiggleRobot;
     public Command autoShootIntoHub;
 
-    public ControlledShoot percent25shoot;
-    public ControlledShoot percent50shoot;
-    public ControlledShoot percent75shoot;
-    public ControlledShoot percent100shoot;
+    public ControlledShoot lowPowerControlledShoot;
+    public ControlledShoot meduimPowerControlledShoot;
+    public ControlledShoot highPowerControlledShoot;
+    public ControlledShoot maxPowControlledShoot;
 
     public DriverInvert driverInvert;
   }
@@ -134,10 +134,10 @@ public class RobotContainer {
     // this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
     this.commands.jiggleRobot = new JiggleRobot(this);
     this.commands.autoShootIntoHub = new GetToSpeed(this).andThen(new AutoShoot(this));
-    this.commands.percent25shoot = new ControlledShoot(this, 0.25);
-    this.commands.percent50shoot = new ControlledShoot(this, 0.5);
-    this.commands.percent75shoot = new ControlledShoot(this, 0.75);
-    this.commands.percent100shoot = new ControlledShoot(this, 1);
+    this.commands.lowPowerControlledShoot = new ControlledShoot(this, 0.55);
+    this.commands.meduimPowerControlledShoot = new ControlledShoot(this, 0.70);
+    this.commands.highPowerControlledShoot = new ControlledShoot(this, 0.85);
+    this.commands.maxPowControlledShoot = new ControlledShoot(this, 1);
     this.commands.driverInvert = new DriverInvert(this);
 
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
@@ -212,10 +212,10 @@ public class RobotContainer {
 
     // controlled shoot bindings
 
-    this.settings.operatorSettings.percent25shoot.whileTrue(this.commands.percent25shoot);
-    this.settings.operatorSettings.percent50shoot.whileTrue(this.commands.percent50shoot);
-    this.settings.operatorSettings.percent75shoot.whileTrue(this.commands.percent75shoot);
-    this.settings.operatorSettings.percent100shoot.whileTrue(this.commands.percent100shoot);
+    this.settings.operatorSettings.lowShootButton.whileTrue(this.commands.lowPowerControlledShoot);
+    this.settings.operatorSettings.mediumShootButton.whileTrue(this.commands.meduimPowerControlledShoot);
+    this.settings.operatorSettings.highShootButton.whileTrue(this.commands.highPowerControlledShoot);
+    this.settings.operatorSettings.maxShootButton.whileTrue(this.commands.maxPowControlledShoot);
 
     //Jiggle Robot
 
