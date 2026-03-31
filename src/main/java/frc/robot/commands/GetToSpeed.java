@@ -34,6 +34,8 @@ public class GetToSpeed extends Command {
 
     // velocity = Util.findVelocity(distance);
     // shooter.setAutoShooterSpeed(velocity);
+
+    
     shooter.motor.set(0.75);
     // velocityOfFeeder = shooter.getShooterSpeed() + 2;
     // feeder.setFeederSpeed(velocityOfFeeder);

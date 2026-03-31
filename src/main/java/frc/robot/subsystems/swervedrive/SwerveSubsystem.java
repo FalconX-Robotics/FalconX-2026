@@ -99,7 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean allowVisionPose = true;
   public boolean climbing = false;
   
-  
+  public final PathConstraints pathConstraints;
 
 
   private final RobotContainer robotContainer;
@@ -153,6 +153,11 @@ public class SwerveSubsystem extends SubsystemBase {
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
       this.swerveDrive.stopOdometryThread();
     }
+
+    final double maxLinearVelocity = swerveDrive.getMaximumChassisVelocity();
+    final double maxAngularVelocity = swerveDrive.getMaximumChassisAngularVelocity();
+    final double maxAngularAcceleration = Units.degreesToRadians(2131);
+    pathConstraints = new PathConstraints(maxLinearVelocity, 4.0, maxAngularVelocity, maxAngularAcceleration);
   }
 
   /**

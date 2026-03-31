@@ -65,13 +65,19 @@ public class Util {
   public static double findVelocity(double distanceInMeters) {
     final double angle = Math.toRadians(Constants.SHOOTER_ANGLE);
 
-    final double cos = Math.cos(angle);
-    final double tan = Math.tan(angle);
+    /*
+    adjacent is base ___
+    opposite is height |
+    hypotenus is sloped /
+     */
 
-    final double x = distanceInMeters;
-    final double y = Constants.HEIGHT_OF_TARGET;
+    final double cos = Math.cos(angle); //adjacent over hypotenus
+    final double tan = Math.tan(angle); // opposite over adjacent
 
-    final double a = y - (tan * x);
+    final double x = distanceInMeters; //adjacent
+    final double y = Constants.HEIGHT_OF_TARGET; //opposite
+
+    final double a = y - (tan * x); // returns 0 --> opposite - (opposite/adjacent * adjacent)
     final double c = 4.9 * Math.pow(x, 2) / Math.pow(cos, 2);
 
     return Math.abs(Math.sqrt(-4 * a * c) / (2 * a));
