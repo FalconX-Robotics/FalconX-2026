@@ -33,5 +33,3 @@ public class ManualShoot extends Command {
     this.shooter.motor.set(0.0);
   }
 }
-
-

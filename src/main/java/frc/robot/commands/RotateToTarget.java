@@ -26,7 +26,6 @@ public class RotateToTarget extends Command{
     this.swerveSubsystem = robotContainer.subsystems.swerve;
     this.pidController = new PIDController(3, 0.0, 0.0);
 
-
     super.addRequirements(this.swerveSubsystem);
   }
 
@@ -56,7 +55,6 @@ public class RotateToTarget extends Command{
   public void execute() {
     currentAngle = swerveSubsystem.getYaw().getRadians();
     
-    
     double numberofRotations = swerveSubsystem.getYaw().getRotations() * Math.PI * 2;
     
     double remapvalue = (numberofRotations - targetAngle) % Math.PI * 2;
@@ -75,7 +73,7 @@ public class RotateToTarget extends Command{
     SmartDashboard.putNumber("Remap value", remapvalue);
     SmartDashboard.putNumber("Target Angle", targetAngle);
     
-      // System.out.println("RotateToTarget");
+    // System.out.println("RotateToTarget");
   }
 
   // Called once the command ends or is interrupted.
@@ -83,7 +81,7 @@ public class RotateToTarget extends Command{
   public void end(boolean interrupted) {
     // System.out.println("RotateToTarget ended");
     final Elastic.Notification notification = new Elastic.Notification(NotificationLevel.INFO, "CURRENT ANGLE:", "Current angle" + currentAngle);
-      Elastic.sendNotification(notification);
+    Elastic.sendNotification(notification);
   }
 
   // Returns true when the command should end.
@@ -101,5 +99,4 @@ public class RotateToTarget extends Command{
 
     return angleAtTarget && speedAtTarget;
   }
-  
 }
