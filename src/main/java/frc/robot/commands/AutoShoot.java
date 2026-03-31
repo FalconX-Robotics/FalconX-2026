@@ -13,17 +13,19 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.util.Util;
 
 public class AutoShoot extends Command {
+  private static final Field2d field = new Field2d();
+
   private final Feeder feeder;
   private final Shooter shooter;
-  private final Field2d field;
 
-  private final boolean isBlueHub = DriverStation.getAlliance().get() == Alliance.Blue;
+  private static final boolean isRedHub = DriverStation.getAlliance().get() == Alliance.Red;
 
-  private final double offsetFactor = 2.0;
+  private static final double offsetFactor = 18.0;
+  private static final boolean invertOffset = true;
 
-  private final Translation2d hubTranslation = new Translation2d(182.11 + (this.isBlueHub ? 287.0 : 0.0), 158.84);
-  private final Rotation2d hubRotation = new Rotation2d(0.0, 0.0);
-  private final Pose2d poseOfHub = new Pose2d(this.hubTranslation, this.hubRotation);
+  private static Translation2d hubTranslation; // = new Translation2d(182.11 + (AutoShoot.isRedHub ? 287.0 : 0.0), 158.84);
+  private static Rotation2d hubRotation; // = new Rotation2d(0.0, 0.0);
+  private static Pose2d poseOfHub; // = new Pose2d(AutoShoot.hubTranslation, AutoShoot.hubRotation);
 
   public AutoShoot(RobotContainer robotContainer) {
     this.feeder = robotContainer.subsystems.feeder;
@@ -31,23 +33,23 @@ public class AutoShoot extends Command {
 
     addRequirements(feeder, shooter);
 
-    this.field = new Field2d();
+    hubTranslation = new Translation2d(182.11 + (AutoShoot.isRedHub ? 287.0 : 0.0), 158.84);
+    hubRotation = new Rotation2d(0.0, 0.0);
+    poseOfHub = new Pose2d(AutoShoot.hubTranslation, AutoShoot.hubRotation);
   }
 
   @Override
   public void initialize() {
-    final Pose2d robotPos = this.field.getRobotPose();
+    final Pose2d robotPos = AutoShoot.field.getRobotPose();
 
-    final double a_sq = Math.pow(robotPos.getX() - this.poseOfHub.getX() + Math.sqrt(this.offsetFactor), 2.0);
-    final double b_sq = Math.pow(robotPos.getY() - this.poseOfHub.getY() + Math.sqrt(this.offsetFactor), 2.0);
+    final double a_sq = Math.pow(robotPos.getX() - AutoShoot.poseOfHub.getX() + (invertOffset ? -1 : 1) * Math.sqrt(AutoShoot.offsetFactor), 2.0);
+    final double b_sq = Math.pow(robotPos.getY() - AutoShoot.poseOfHub.getY() + (invertOffset ? -1 : 1) * Math.sqrt(AutoShoot.offsetFactor), 2.0);
     final double hypotenuse = Math.sqrt(a_sq + b_sq);
     final double power = Util.getPowerFromDistance(hypotenuse);
 
-    System.out.println("AUTOSHOOT POWER: " + power + "%");
+    System.out.println("AUTOSHOOT POWER: " + power + "% ; CALCULATED HYPOTENUSE LEN: " + hypotenuse + "in");
     this.shooter.motor.set(power);
     this.feeder.motor.set(-power);
-
-    field.close();
   }
 
   public void end(boolean interrupted) {

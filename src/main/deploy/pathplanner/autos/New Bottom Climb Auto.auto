@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "climbdown"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Bottom Climb B (new)"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "climbdown"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bottom Climb B (new)"
+                }
+              }
+            ]
           }
         },
         {
