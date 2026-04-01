@@ -39,13 +39,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "meduimPowerControlledShoot"
+                        "name": "95PowerControlledShoot"
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 10.0
+                        "waitTime": 8.0
                       }
                     }
                   ]

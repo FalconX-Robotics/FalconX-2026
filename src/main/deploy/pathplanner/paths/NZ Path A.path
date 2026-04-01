@@ -3,35 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6525454545454545,
-        "y": 0.819272727272728
+        "x": 3.982363636363636,
+        "y": 0.63375
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.518795454545454,
-        "y": 0.5616022727272743
+        "x": 4.982363636363629,
+        "y": 0.63375
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.281738636363636,
-        "y": 2.313761363636364
+        "x": 7.651590909090908,
+        "y": 1.1800113636363643
       },
       "prevControl": {
-        "x": 1.5054206299141168,
-        "y": 1.8867828200640786
+        "x": 7.672204545454543,
+        "y": 0.46884090909090914
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of Bottom to Shoot"
+      "linkedName": "NZ Point AB"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "intake",
+      "waypointRelativePos": 0.9999999999999978,
+      "endWaypointRelativePos": 1.7716535433070866,
+      "command": null
+    },
+    {
+      "name": "autoShoot",
+      "waypointRelativePos": 1.5,
+      "endWaypointRelativePos": 3.354330708661432,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -143.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Using",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -138.8140748342903
   },
   "useDefaultConstraints": true
 }
