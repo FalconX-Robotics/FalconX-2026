@@ -151,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     this.swerveDrive.pushOffsetsToEncoders();
 
-    if (this.useVision) {
+    if (this.visionDriveTest || true) {
       this.setupPhotonVision();
 
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
@@ -237,10 +237,12 @@ public class SwerveSubsystem extends SubsystemBase {
     //     this.resetOdometry(visionPose.get());
     //   }
     // }
-    if (useVision) {
+    if (visionDriveTest) {
       swerveDrive.updateOdometry();
       
-      vision.updatePoseEstimation(swerveDrive);
+      if (DriverStation.isTeleop()) {
+        vision.updatePoseEstimation(swerveDrive);
+      }
     }
   }
 
