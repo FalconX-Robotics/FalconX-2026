@@ -3,60 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.745192582025677,
-        "y": 2.695848787446506
+        "x": 7.651590909090908,
+        "y": 1.1800113636363643
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.176041565703163,
-        "y": 3.4828224374802508
+        "x": 7.619369338003909,
+        "y": 2.333561436392933
       },
       "isLocked": false,
-      "linkedName": "End of Bottom to Shoot"
+      "linkedName": "NZ Point AB"
     },
     {
       "anchor": {
-        "x": 1.9003863636363634,
-        "y": 2.427136363636364
+        "x": 6.930113636363636,
+        "y": 7.2095
       },
       "prevControl": {
-        "x": 2.1633262492665293,
-        "y": 2.906062583891309
-      },
-      "nextControl": {
-        "x": 1.3232045454545456,
-        "y": 1.3758409090909094
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": -0.45987500000000014,
-        "y": 3.9216250000000006
-      },
-      "prevControl": {
-        "x": 1.4468863636363634,
-        "y": 4.199909090909091
+        "x": 8.207457545810673,
+        "y": 7.250445536979771
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "NZ Path B2"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.44098442993470743,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.7731092436974787,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 45.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.0664160401002507,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.7511811023622053,
       "constraints": {
-        "maxVelocity": 0.6,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -76,14 +64,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 180.0
+    "velocity": 0,
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Using",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -143.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
