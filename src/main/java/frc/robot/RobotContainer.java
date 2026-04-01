@@ -35,6 +35,7 @@ import frc.robot.commands.JiggleRobot;
 import frc.robot.commands.KeepFromShooting;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
+import frc.robot.commands.SwitchVisionState;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
@@ -93,9 +94,11 @@ public class RobotContainer {
     public ControlledShoot lowPowerControlledShoot;
     public ControlledShoot meduimPowerControlledShoot;
     public ControlledShoot highPowerControlledShoot;
-    public ControlledShoot maxPowControlledShoot;
+    public ControlledShoot maxPowerControlledShoot;
 
     public DriverInvert driverInvert;
+
+    public SwitchVisionState switchVisionState;
   }
 
   public final Controllers controllers = new Controllers();
@@ -136,9 +139,11 @@ public class RobotContainer {
     this.commands.lowPowerControlledShoot = new ControlledShoot(this, 0.55);
     this.commands.meduimPowerControlledShoot = new ControlledShoot(this, 0.70);
     this.commands.highPowerControlledShoot = new ControlledShoot(this, 0.85);
-    this.commands.maxPowControlledShoot = new ControlledShoot(this, 1);
+    this.commands.maxPowerControlledShoot = new ControlledShoot(this, 1);
     this.commands.driverInvert = new DriverInvert(this);
 
+    this.commands.switchVisionState = new SwitchVisionState(this);
+    
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.75 * -this.settings.driverSettings.getLeftY(),
       () -> 0.75 * -this.settings.driverSettings.getLeftX(),
@@ -162,6 +167,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
     NamedCommands.registerCommand("climbdown", this.commands.climbDown);
     NamedCommands.registerCommand("autoShootIntoHub", this.commands.autoShootIntoHub);
+    NamedCommands.registerCommand("lowPowerControlledShoot", this.commands.lowPowerControlledShoot);
+    NamedCommands.registerCommand("meduimPowerControlledShoot", this.commands.meduimPowerControlledShoot);
+    NamedCommands.registerCommand("highPowerControlledShoot", this.commands.highPowerControlledShoot);
+    NamedCommands.registerCommand("maxPowerControlledShoot", this.commands.maxPowerControlledShoot);
+    NamedCommands.registerCommand("switchVisionState", this.commands.switchVisionState);
     
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -213,7 +223,7 @@ public class RobotContainer {
     this.settings.operatorSettings.lowShootButton.whileTrue(this.commands.lowPowerControlledShoot);
     this.settings.operatorSettings.mediumShootButton.whileTrue(this.commands.meduimPowerControlledShoot);
     this.settings.operatorSettings.highShootButton.whileTrue(this.commands.highPowerControlledShoot);
-    this.settings.operatorSettings.maxShootButton.whileTrue(this.commands.maxPowControlledShoot);
+    this.settings.operatorSettings.maxShootButton.whileTrue(this.commands.maxPowerControlledShoot);
 
     //Jiggle Robot
 

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.709904387411299,
-        "y": 3.2264448037806037
+        "x": 1.451326676177478,
+        "y": 1.6995720399400964
       },
       "isLocked": false,
       "linkedName": "End of Bottom to Shoot"
@@ -80,7 +80,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -143.0

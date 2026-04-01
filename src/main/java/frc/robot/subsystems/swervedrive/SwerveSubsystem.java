@@ -94,7 +94,11 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean visionDriveTest = true;
+  public final boolean visionDriveTest = true;
+
+  public boolean useVision = false;
+
+  public boolean isSwitchedToTelop = false;
 
   public boolean allowVisionPose = true;
   public boolean climbing = false;
@@ -147,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
     this.swerveDrive.pushOffsetsToEncoders();
 
-    if (this.visionDriveTest) {
+    if (this.useVision) {
       this.setupPhotonVision();
 
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
@@ -173,6 +177,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (!isSwitchedToTelop && DriverStation.isTeleop()) {
+      isSwitchedToTelop = true;
+      useVision = true;
+    }
     final Pose2d robotPose = this.getPose();
     final Rotation2d robotYaw = this.getYaw();
 
@@ -228,7 +237,7 @@ public class SwerveSubsystem extends SubsystemBase {
     //     this.resetOdometry(visionPose.get());
     //   }
     // }
-    if (visionDriveTest) {
+    if (useVision) {
       swerveDrive.updateOdometry();
       
       vision.updatePoseEstimation(swerveDrive);

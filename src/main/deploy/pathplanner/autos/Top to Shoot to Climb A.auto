@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top to Shoot"
+            "pathName": "Left to Shoot"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top Shoot to Climb A"
+            "pathName": "Left Shoot to Climb A"
           }
         },
         {
