@@ -20,7 +20,7 @@ public class AutoShoot extends Command {
 
   private static final boolean isRedHub = DriverStation.getAlliance().get() == Alliance.Red;
 
-  private static final double offsetFactor = 18.0;
+  private static final double offsetFactor = 180.0;
   private static final boolean invertOffset = true;
 
   private static Translation2d hubTranslation; // = new Translation2d(182.11 + (AutoShoot.isRedHub ? 287.0 : 0.0), 158.84);

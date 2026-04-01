@@ -231,9 +231,7 @@ public class SwerveSubsystem extends SubsystemBase {
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
       
-      if (DriverStation.isTeleop()) {
-        vision.updatePoseEstimation(swerveDrive);
-      }
+      vision.updatePoseEstimation(swerveDrive);
     }
   }
 

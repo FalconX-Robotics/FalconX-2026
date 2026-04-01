@@ -108,7 +108,7 @@ public class Vision {
 
     // Instantiate the cameras, they'll be added to Cameras.cameras so they shouldn't be garbage collected
     new Cameras("Limelight", Constants.ROBOT_TO_CAMERA_POSE.getRotation(), Constants.ROBOT_TO_CAMERA_POSE.getTranslation(), VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
-    new Cameras("RPI", null, null, null, null);
+    new Cameras("RPI", Constants.ROBOT_TO_RPI_POSE.getRotation(), Constants.ROBOT_TO_RPI_POSE.getTranslation(), VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
     // this.stdDevsMatrix.set(0, 0, 0.002); // X meters
     // this.stdDevsMatrix.set(0, 1, 0.005); // Y meters
