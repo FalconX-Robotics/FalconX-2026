@@ -19,6 +19,6 @@ public class SwitchVisionState extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        this.robotContainer.subsystems.swerve.useVision = !this.robotContainer.subsystems.swerve.useVision;
+        // this.robotContainer.subsystems.swerve.useVision = !this.robotContainer.subsystems.swerve.useVision;
     }
 }

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.745192582025677,
-        "y": 2.695848787446506
+        "x": 2.281738636363636,
+        "y": 2.313761363636364
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.176041565703163,
-        "y": 3.4828224374802508
+        "x": 1.3335113636363636,
+        "y": 2.128238636363636
       },
       "isLocked": false,
       "linkedName": "End of Bottom to Shoot"
     },
     {
       "anchor": {
-        "x": 1.9003863636363634,
-        "y": 2.427136363636364
+        "x": 1.35,
+        "y": 2.9
       },
       "prevControl": {
-        "x": 2.1633262492665293,
-        "y": 2.906062583891309
+        "x": 1.4260723939867659,
+        "y": 2.5749634075110914
       },
       "nextControl": {
-        "x": 1.3232045454545456,
-        "y": 1.3758409090909094
+        "x": 1.236625,
+        "y": 3.384420454545454
       },
       "isLocked": false,
       "linkedName": null
@@ -56,8 +56,8 @@
       "minWaypointRelativePos": 1.0664160401002507,
       "maxWaypointRelativePos": 2.0,
       "constraints": {
-        "maxVelocity": 0.6,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 0.5,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
