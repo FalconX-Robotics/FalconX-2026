@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "switchVisionState"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Middle to Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "switchVisionState"
           }
         },
         {
@@ -21,45 +33,19 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
-                      "type": "race",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "getToSpeed"
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.25
-                            }
-                          }
-                        ]
+                        "name": "lowPowerControlledShoot"
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "wait",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "autoShoot"
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 5.0
-                            }
-                          }
-                        ]
+                        "waitTime": 10.0
                       }
                     }
                   ]
@@ -77,7 +63,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 1.0
           }
         },
         {
@@ -90,6 +76,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Using",
   "choreoAuto": false
 }

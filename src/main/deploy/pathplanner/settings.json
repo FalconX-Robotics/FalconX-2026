@@ -3,9 +3,11 @@
   "robotLength": 0.787,
   "holonomicMode": true,
   "pathFolders": [
-    "edf"
+    "Using"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Using"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

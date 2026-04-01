@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom Climb B (new)"
+                  "pathName": "Right Climb B (new)"
                 }
               }
             ]
@@ -33,6 +33,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Using",
   "choreoAuto": false
 }

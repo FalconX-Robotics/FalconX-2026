@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 
-public class DynamicRightClimbAuto {
+public class DynamicRightClimbAuto extends Command {
 
     PathPlannerAuto auto;
     PathPlannerPath path;
