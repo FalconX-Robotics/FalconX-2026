@@ -44,16 +44,11 @@
       "linkedName": "NZ Path BC2"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4537815126050421,
-      "rotationDegrees": 45.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.2110236220472441,
+      "minWaypointRelativePos": 0.21,
       "maxWaypointRelativePos": 1.6629921259842537,
       "constraints": {
         "maxVelocity": 0.5,
@@ -65,8 +60,26 @@
       }
     }
   ],
-  "pointTowardsZones": [],
-  "eventMarkers": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.625594,
+        "y": 4.034536
+      },
+      "rotationOffset": 180.0,
+      "minWaypointRelativePos": 0.21,
+      "maxWaypointRelativePos": 1.4917865474339034,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "maxPowerControlledShoot",
+      "waypointRelativePos": 0.21,
+      "endWaypointRelativePos": 1.49,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -80,7 +93,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

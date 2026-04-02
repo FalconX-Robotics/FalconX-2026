@@ -31,20 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "intake",
-      "waypointRelativePos": 0.9999999999999978,
-      "endWaypointRelativePos": 1.7716535433070866,
-      "command": null
-    },
-    {
-      "name": "autoShoot",
-      "waypointRelativePos": 1.5,
-      "endWaypointRelativePos": 3.354330708661432,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -58,7 +45,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -138.8140748342903
