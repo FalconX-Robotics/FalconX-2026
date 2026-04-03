@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.745,
-        "y": 5.373072
+        "x": 7.837269736842105,
+        "y": 1.2559100877192975
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.023220035778175,
-        "y": 5.276243291592128
+        "x": 7.864364937388194,
+        "y": 1.8526833631484796
       },
       "isLocked": false,
-      "linkedName": "End of Top to Shoot"
+      "linkedName": "NZ Point AB"
     },
     {
       "anchor": {
-        "x": 1.066,
-        "y": 4.695
+        "x": 7.837269736842105,
+        "y": 3.6215021929824562
       },
       "prevControl": {
-        "x": 1.0243509272467899,
-        "y": 5.10243937232525
+        "x": 7.783237924865832,
+        "y": 3.1020393559928436
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of NZ Path B3"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 100.0
   },
   "reversed": false,
   "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 143.0
+    "rotation": 100.0
   },
   "useDefaultConstraints": true
 }

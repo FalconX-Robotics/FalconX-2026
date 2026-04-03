@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.745,
-        "y": 5.373072
+        "x": 7.837269736842105,
+        "y": 3.6215021929824562
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.023220035778175,
-        "y": 5.276243291592128
+        "x": 8.327697368421052,
+        "y": 3.698432017543859
       },
       "isLocked": false,
-      "linkedName": "End of Top to Shoot"
+      "linkedName": "End of NZ Path B3"
     },
     {
       "anchor": {
-        "x": 1.066,
-        "y": 4.695
+        "x": 7.5968640350877195,
+        "y": 0.6116228070175429
       },
       "prevControl": {
-        "x": 1.0243509272467899,
-        "y": 5.10243937232525
+        "x": 7.653434704830055,
+        "y": 0.927835420393559
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of NZ Path C2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.25,
+      "rotationDegrees": -100.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 143.0
+    "rotation": 100.0
   },
   "useDefaultConstraints": true
 }

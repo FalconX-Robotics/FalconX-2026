@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.651590909090908,
-        "y": 1.1800113636363643
+        "x": 7.837269736842105,
+        "y": 1.2559100877192975
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.619369338003909,
-        "y": 2.333561436392933
+        "x": 7.805048165755106,
+        "y": 2.4094601604758665
       },
       "isLocked": false,
       "linkedName": "NZ Point AB"
     },
     {
       "anchor": {
-        "x": 6.930113636363636,
-        "y": 7.2095
+        "x": 6.875646929824561,
+        "y": 7.371831140350877
       },
       "prevControl": {
-        "x": 8.207457545810673,
-        "y": 7.250445536979771
+        "x": 8.152990839271599,
+        "y": 7.412776677330648
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "NZ Path B2"
+      "linkedName": "NZ Path B1 End"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.7731092436974787,
-      "rotationDegrees": 90.0
+      "rotationDegrees": 100.0
     },
     {
       "waypointRelativePos": 1,
@@ -65,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 100.0
   },
   "useDefaultConstraints": true
 }

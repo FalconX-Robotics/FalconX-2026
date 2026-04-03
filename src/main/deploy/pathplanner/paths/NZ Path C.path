@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.961511363636363,
-        "y": 7.405329545454546
+        "x": 6.875646929824561,
+        "y": 7.371831140350877
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8692272727272723,
-        "y": 7.395022727272727
+        "x": 0.06728954526386399,
+        "y": 7.371831140350878
       },
       "isLocked": false,
-      "linkedName": "NZ Path BC2"
+      "linkedName": "NZ Path B1 End"
     },
     {
       "anchor": {
-        "x": 0.9624659090909089,
-        "y": 7.2095
+        "x": 0.8078070175474727,
+        "y": 7.371831140350877
       },
       "prevControl": {
-        "x": 2.570329545454545,
-        "y": 7.240420454545455
+        "x": 2.4159679384909554,
+        "y": 7.371831140350877
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Using",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

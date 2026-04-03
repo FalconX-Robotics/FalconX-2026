@@ -17,7 +17,26 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "NZ Path B1"
+                  "pathName": "NZ Path B3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "NZ Path C2"
                 }
               },
               {
@@ -32,13 +51,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NZ Path B2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NZ Path C"
+            "pathName": "NZ Path D1"
           }
         }
       ]

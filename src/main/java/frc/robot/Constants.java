@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import frc.robot.util.Util;
 import swervelib.math.Matter;
 
@@ -42,9 +41,7 @@ public abstract class Constants {
   public static final double SHOOTER_WHEEL_RADIUS = Units.inchesToMeters(2.0);
   public static final double RADIUS_OF_SHOOTER_WHEEL = Units.inchesToMeters(2.0);
 
- 
-
-  public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(Units.inchesToMeters(4.5), Units.inchesToMeters(6.3), Units.inchesToMeters(18.875), new Rotation3d(0.0,Math.toRadians(5), Math.PI));
+  public static final Pose3d ROBOT_TO_CAMERA_POSE = new Pose3d(Units.inchesToMeters(4.5), Units.inchesToMeters(6.3), Units.inchesToMeters(20.275), new Rotation3d(0.0, Math.toRadians(5), Math.PI));
   public static final Pose3d ROBOT_TO_RPI_POSE = new Pose3d(Units.inchesToMeters(7.5), Units.inchesToMeters(9.0), Units.inchesToMeters(17.0), new Rotation3d(0.0, Math.toRadians(20.0), 0.0));
 
   public static final Pose2d STARTING_POSE = new Pose2d(3, 4, Rotation2d.fromDegrees(0.0));
