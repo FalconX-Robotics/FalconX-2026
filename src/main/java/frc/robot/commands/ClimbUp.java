@@ -10,16 +10,22 @@ public class ClimbUp extends Command {
   final TalonFX motor;
   final Climber climberSubsystem;
 
+
+  //arm down
   public ClimbUp(RobotContainer robotContainer) {
     this.climberSubsystem = robotContainer.subsystems.climber;
     this.motor = this.climberSubsystem.motor;
 
     super.addRequirements(this.climberSubsystem);
   }
+  @Override
+  public void initialize() {
+      System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+  }
 
   @Override
   public void execute() {
-    motor.set(0.3);
+    motor.set(-0.3);
   }
 
   @Override
@@ -29,6 +35,7 @@ public class ClimbUp extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    motor.set(0);
+    motor.set(0.0);
+    System.out.println("ClimbUp ended");
   }
 }

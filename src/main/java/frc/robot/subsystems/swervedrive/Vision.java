@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
+
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -89,7 +91,7 @@ public class Vision {
    * @param currentPose Current pose supplier, should reference {@link SwerveDrive#getPose()}
    * @param field Current field, should be {@link SwerveDrive#field}
    */
-  public Vision(Supplier<Pose2d> currentPose, Field2d field) {
+  public Vision(Supplier<Pose2d> currentPose, Field2d field, RobotContainer robotContainer) {
     this.currentPose = currentPose;
     this.field2d = field;
 
@@ -148,7 +150,6 @@ public class Vision {
        */
       visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
     }
-
     for (Cameras camera : Cameras.getInstances()) {
       // camera.updateEstimatedGlobalPose();
       Optional<EstimatedRobotPose> estimatedRobotPose = camera.getEstimatedGlobalPose();

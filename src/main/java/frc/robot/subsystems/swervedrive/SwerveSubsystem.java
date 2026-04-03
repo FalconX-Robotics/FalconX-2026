@@ -165,7 +165,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Setup the photon vision class.
    */
   public void setupPhotonVision() {
-    this.vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+    this.vision = new Vision(swerveDrive::getPose, swerveDrive.field, this.robotContainer);
   }
 
   public Vision getVision() {
