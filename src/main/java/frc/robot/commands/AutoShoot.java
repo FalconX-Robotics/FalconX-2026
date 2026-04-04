@@ -18,7 +18,7 @@ public class AutoShoot extends Command {
   private final Feeder feeder;
   private final Shooter shooter;
 
-  private static final boolean isRedHub = DriverStation.getAlliance().get() == Alliance.Red;
+    // private static final boolean isRedHub = true;
 
   private static final double offsetFactor = 180.0;
   private static final boolean invertOffset = true;
@@ -33,23 +33,25 @@ public class AutoShoot extends Command {
 
     addRequirements(feeder, shooter);
 
-    hubTranslation = new Translation2d(182.11 + (AutoShoot.isRedHub ? 287.0 : 0.0), 158.84);
     hubRotation = new Rotation2d(0.0, 0.0);
-    poseOfHub = new Pose2d(AutoShoot.hubTranslation, AutoShoot.hubRotation);
   }
 
   @Override
   public void initialize() {
+    boolean isRedHub = DriverStation.getAlliance().isPresent() ? DriverStation.getAlliance().get() == Alliance.Red : false;
+    hubTranslation = new Translation2d(182.11 + (isRedHub ? 287.0 : 0.0), 158.84);
+    poseOfHub = new Pose2d(hubTranslation, AutoShoot.hubRotation);
+    
     final Pose2d robotPos = AutoShoot.field.getRobotPose();
 
-    final double a_sq = Math.pow(robotPos.getX() - AutoShoot.poseOfHub.getX() + (invertOffset ? -1 : 1) * Math.sqrt(AutoShoot.offsetFactor), 2.0);
-    final double b_sq = Math.pow(robotPos.getY() - AutoShoot.poseOfHub.getY() + (invertOffset ? -1 : 1) * Math.sqrt(AutoShoot.offsetFactor), 2.0);
+    final double a_sq = Math.pow(robotPos.getX() - poseOfHub.getX(), 2.0);
+    final double b_sq = Math.pow(robotPos.getY() - poseOfHub.getY(), 2.0);
     final double hypotenuse = Math.sqrt(a_sq + b_sq);
     final double power = Util.getPowerFromDistance(hypotenuse);
 
-    System.out.println("AUTOSHOOT POWER: " + power + "% ; CALCULATED HYPOTENUSE LEN: " + hypotenuse + "in");
+    System.out.println("AUTOSHOOT POWER: " + power + "% ; CALCULATED HYPOTENUSE LENGTH: " + hypotenuse + "in");
     this.shooter.motor.set(power);
-    this.feeder.motor.set(-power);
+    this.feeder.motor.set(-1);
   }
 
   public void end(boolean interrupted) {

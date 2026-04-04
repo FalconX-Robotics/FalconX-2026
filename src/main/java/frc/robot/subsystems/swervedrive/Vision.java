@@ -1,7 +1,6 @@
 package frc.robot.subsystems.swervedrive;
 
 import static edu.wpi.first.units.Units.Microseconds;
-import static edu.wpi.first.units.Units.Milliseconds;
 import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -20,9 +19,9 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -84,6 +83,17 @@ public class Vision {
   private PhotonPoseEstimator photonPoseEstimator;
 
   private Matrix<N3, N1> stdDevsMatrix = new Matrix<N3, N1>(new SimpleMatrix(3, 1));
+  
+  private boolean disabled = false;
+
+  public boolean isDisabled() {
+    return this.disabled;
+  }
+
+  public void toggleDisabledState() {
+    this.disabled = !this.disabled;
+    SmartDashboard.putBoolean("Vision Disabled", this.disabled);
+  }
 
   /**
    * Constructor for the Vision class.
@@ -94,6 +104,8 @@ public class Vision {
   public Vision(Supplier<Pose2d> currentPose, Field2d field, RobotContainer robotContainer) {
     this.currentPose = currentPose;
     this.field2d = field;
+    
+    SmartDashboard.putBoolean("Vision Disabled", this.disabled);
 
     if (Robot.isSimulation()) {
       visionSim = new VisionSystemSim("Vision");

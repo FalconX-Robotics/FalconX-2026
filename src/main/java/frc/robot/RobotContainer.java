@@ -22,9 +22,7 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.ControlledShoot;
 import frc.robot.commands.DriverInvert;
-// import frc.robot.commands.AutoKeepFromShooting;
 import frc.robot.commands.AutoShoot;
-import frc.robot.commands.CheckInputs;
 import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
 import frc.robot.commands.JiggleRobot;
@@ -32,6 +30,7 @@ import frc.robot.commands.KeepFromShooting;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.SwitchVisionState;
+import frc.robot.commands.ToggleVision;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
@@ -95,7 +94,8 @@ public class RobotContainer {
     public DriverInvert driverInvert;
 
     public SwitchVisionState switchVisionState;
-    public CheckInputs checkInputs;
+
+    public ToggleVision toggleVision;
   }
 
   public final Controllers controllers = new Controllers();
@@ -130,7 +130,6 @@ public class RobotContainer {
     this.commands.manualShoot = new ManualShoot(this);
     this.commands.rotateToTarget = new RotateToTarget(this);
     this.commands.keepFromShooting = new KeepFromShooting(this);
-    // this.commands.autoKeepFromShooting = new AutoKeepFromShooting(this);
     this.commands.jiggleRobot = new JiggleRobot(this);
     this.commands.autoShootIntoHub = new GetToSpeed(this).andThen(new AutoShoot(this));
     this.commands.lowPowerControlledShoot = new ControlledShoot(this, 0.55);
@@ -140,7 +139,8 @@ public class RobotContainer {
     this.commands.driverInvert = new DriverInvert(this);
 
     this.commands.switchVisionState = new SwitchVisionState(this);
-    this.commands.checkInputs = new CheckInputs(this);
+
+    this.commands.toggleVision = new ToggleVision(this);
     
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
       () -> 0.90 * -this.settings.driverSettings.getLeftY(),
@@ -173,6 +173,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("sixtyPowerControlledShoot", new ControlledShoot(this, 0.6));
     NamedCommands.registerCommand("90PowerControlledShoot", new ControlledShoot(this, 0.90));
     NamedCommands.registerCommand("95PowerControlledShoot", new ControlledShoot(this, 0.95));
+    NamedCommands.registerCommand("85PowerControlledShoot", new ControlledShoot(this, 0.85));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -206,8 +207,6 @@ public class RobotContainer {
     this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
     this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
-    // this.settings.operatorSettings.climbUpButton.onTrue(this.commands.checkInputs);
-
     // feeder button AND NOT shooter button -> intake
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
     
@@ -222,19 +221,19 @@ public class RobotContainer {
     this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShoot);
 
     // controlled shoot bindings
-
     this.settings.operatorSettings.lowShootButton.whileTrue(this.commands.lowPowerControlledShoot);
     this.settings.operatorSettings.mediumShootButton.whileTrue(this.commands.meduimPowerControlledShoot);
     this.settings.operatorSettings.highShootButton.whileTrue(this.commands.highPowerControlledShoot);
     this.settings.operatorSettings.maxShootButton.whileTrue(this.commands.maxPowerControlledShoot);
 
-    //Jiggle Robot
-
+    // jiggle Robot
     this.settings.driverSettings.jiggleRobotButton.whileTrue(this.commands.jiggleRobot);
 
-    //invert controls
-
+    // invert controls
     this.settings.driverSettings.invertButton.onTrue(this.commands.driverInvert);
+    
+    // toggle vision
+    this.settings.operatorSettings.toggleVisionButton.onTrue(this.commands.toggleVision);
   }
 
   /**

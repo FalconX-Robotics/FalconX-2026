@@ -21,7 +21,7 @@ public class ClimbDown extends Command {
   @Override
   public void initialize() {
     // motor.setPosition(0);
-    System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+    // System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
   }
 
   @Override
@@ -33,7 +33,7 @@ public class ClimbDown extends Command {
   @Override
   public void end(boolean interrupted) {
     this.climberSubsystem.motor.set(0.0);
-    System.out.println("ClimbDown ended");
+    // System.out.println("ClimbDown ended");
   }
 
   @Override

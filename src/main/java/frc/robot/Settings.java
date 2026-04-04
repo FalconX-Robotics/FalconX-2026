@@ -75,6 +75,8 @@ public class Settings {
     public final Trigger highShootButton = operatorController.x();
     public final Trigger maxShootButton = operatorController.y();
 
+    public final Trigger toggleVisionButton = operatorController.start();
+
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);
     }

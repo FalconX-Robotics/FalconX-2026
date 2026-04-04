@@ -20,7 +20,7 @@ public class ClimbUp extends Command {
   }
   @Override
   public void initialize() {
-      System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
+      // System.out.println("Rotations: " + motor.getPosition().getValueAsDouble());
   }
 
   @Override
@@ -36,6 +36,6 @@ public class ClimbUp extends Command {
   @Override
   public void end(boolean interrupted) {
     motor.set(0.0);
-    System.out.println("ClimbUp ended");
+    // System.out.println("ClimbUp ended");
   }
 }
