@@ -87,6 +87,6 @@ public class Util {
     // https://www.desmos.com/calculator/rz9wefetyr
 
     final double factor = 82.5 / 264.5;
-    return (factor * distanceInInches) + 0.12;
+    return (factor * distanceInInches) + 0.03;
   }
 }

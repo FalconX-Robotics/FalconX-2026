@@ -57,7 +57,6 @@ public class Settings {
 
 
     public final Trigger autoRotateButton = driverController.x();
-    public final Trigger autoShootButton = driverController.y();
     public final Trigger jiggleRobotButton = driverController.b();
   }
 
@@ -76,6 +75,8 @@ public class Settings {
     public final Trigger maxShootButton = operatorController.y();
 
     public final Trigger toggleVisionButton = operatorController.start();
+
+    public final Trigger autoShootButton = operatorController.leftStick();
 
     public double getLeftX() {
       return MathUtil.applyDeadband(operatorController.getLeftX(), 0.1);

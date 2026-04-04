@@ -165,16 +165,17 @@ public class RobotContainer {
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
     NamedCommands.registerCommand("climbdown", this.commands.climbDown);
     NamedCommands.registerCommand("autoShootIntoHub", this.commands.autoShootIntoHub);
-    NamedCommands.registerCommand("lowPowerControlledShoot", this.commands.lowPowerControlledShoot);
-    NamedCommands.registerCommand("meduimPowerControlledShoot", this.commands.meduimPowerControlledShoot);
-    NamedCommands.registerCommand("highPowerControlledShoot", this.commands.highPowerControlledShoot);
-    NamedCommands.registerCommand("maxPowerControlledShoot", this.commands.maxPowerControlledShoot);
+    NamedCommands.registerCommand("lowPowerControlledShoot", this.commands.lowPowerControlledShoot); //0.55
+    NamedCommands.registerCommand("meduimPowerControlledShoot", this.commands.meduimPowerControlledShoot); //0.70
+    NamedCommands.registerCommand("highPowerControlledShoot", this.commands.highPowerControlledShoot); //0.85
+    NamedCommands.registerCommand("maxPowerControlledShoot", this.commands.maxPowerControlledShoot); // 1.0
     NamedCommands.registerCommand("switchVisionState", this.commands.switchVisionState);
     NamedCommands.registerCommand("sixtyPowerControlledShoot", new ControlledShoot(this, 0.6));
     NamedCommands.registerCommand("90PowerControlledShoot", new ControlledShoot(this, 0.90));
     NamedCommands.registerCommand("95PowerControlledShoot", new ControlledShoot(this, 0.95));
     NamedCommands.registerCommand("85PowerControlledShoot", new ControlledShoot(this, 0.85));
     NamedCommands.registerCommand("65PowerControlledShoot", new ControlledShoot(this, 0.65));
+    NamedCommands.registerCommand("75PowerControlledShoot", new ControlledShoot(this, 0.75));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -219,7 +220,7 @@ public class RobotContainer {
 
     // auto rotate and shoot
     this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
-    this.settings.driverSettings.autoShootButton.whileTrue(this.commands.autoShoot);
+    this.settings.operatorSettings.autoShootButton.whileTrue(this.commands.autoShoot);
 
     // controlled shoot bindings
     this.settings.operatorSettings.lowShootButton.whileTrue(this.commands.lowPowerControlledShoot);
