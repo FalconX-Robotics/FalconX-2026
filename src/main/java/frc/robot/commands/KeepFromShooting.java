@@ -24,8 +24,8 @@ public class KeepFromShooting extends Command {
   public void execute() {
     // based on how far the trigger is pushed
     double value = this.operatorSettings.getRightTriggerAxis();
-    this.feeder.motor.set(value);
-    this.shooter.motor.set(value-0.1);
+    this.feeder.motor.set(1.0);
+    this.shooter.motor.set(value);
   }
 
   public void end(boolean interrupted){

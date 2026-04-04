@@ -24,7 +24,7 @@ public class ManualShoot extends Command {
   public void execute() {
     // based on how far the trigger is pushed
     final double value = this.operatorSettings.getRightTriggerAxis();
-    this.feeder.motor.set(-value * 0.5);
+    this.feeder.motor.set(-value * 1.2);
     this.shooter.motor.set(value);
   }
 

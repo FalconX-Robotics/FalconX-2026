@@ -18,8 +18,8 @@ public class Intake extends Command {
 
   @Override
   public void execute() {
-    this.feeder.motor.set(0.9);
-    this.shooter.motor.set(0.8);
+    this.feeder.motor.set(1.0);
+    this.shooter.motor.set(0.9);
   }
 
   public void end(boolean interrupted){

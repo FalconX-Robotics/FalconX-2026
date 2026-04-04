@@ -174,6 +174,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("90PowerControlledShoot", new ControlledShoot(this, 0.90));
     NamedCommands.registerCommand("95PowerControlledShoot", new ControlledShoot(this, 0.95));
     NamedCommands.registerCommand("85PowerControlledShoot", new ControlledShoot(this, 0.85));
+    NamedCommands.registerCommand("65PowerControlledShoot", new ControlledShoot(this, 0.65));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);

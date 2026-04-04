@@ -21,7 +21,7 @@ public class ControlledShoot extends Command {
   @Override
   public void initialize() {
     this.shooterSubsystem.motor.set(this.power);
-    this.feederSubsystem.motor.set(-this.power);
+    this.feederSubsystem.motor.set(-this.power * 1.2);
   }
 
   @Override
