@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right to Shoot"
+            "pathName": "Left Trench to Shoot"
           }
         },
         {
@@ -27,7 +27,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "85PowerControlledShoot"
+                        "name": "meduimPowerControlledShoot"
                       }
                     },
                     {
@@ -45,7 +45,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Shoot to Climb B"
+            "pathName": "Left Shoot to Climb A"
           }
         },
         {

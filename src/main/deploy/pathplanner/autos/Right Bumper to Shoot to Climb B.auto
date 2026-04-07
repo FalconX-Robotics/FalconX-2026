@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to Shoot"
+            "pathName": "Right Bumper to Shoot"
           }
         },
         {
@@ -27,13 +27,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "meduimPowerControlledShoot"
+                        "name": "85PowerControlledShoot"
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 10.0
+                        "waitTime": 5.0
                       }
                     }
                   ]
@@ -45,13 +45,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Shoot to Climb A"
+            "pathName": "Right Shoot to Climb B"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 0.5
           }
         },
         {

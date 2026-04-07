@@ -10,6 +10,8 @@ import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.ControlledGetToSpeed;
 import frc.robot.commands.ControlledShoot;
 import frc.robot.commands.DriverInvert;
 import frc.robot.commands.AutoShoot;
@@ -27,6 +30,7 @@ import frc.robot.commands.GetToSpeed;
 import frc.robot.commands.Intake;
 import frc.robot.commands.JiggleRobot;
 import frc.robot.commands.KeepFromShooting;
+import frc.robot.commands.LockSwerve;
 import frc.robot.commands.ManualShoot;
 import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.SwitchVisionState;
@@ -75,6 +79,8 @@ public class RobotContainer {
     public ParallelCommandGroup standardDrive;
     public ParallelCommandGroup slowDrive;
 
+    LockSwerve lockSwerve;
+
     public ClimbDown climbDown;
     public ClimbUp climbUp;
     public GetToSpeed getToSpeed;
@@ -113,6 +119,7 @@ public class RobotContainer {
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
+    DataLogManager.stop();
 
     // Initialize subsystems
     this.subsystems.swerve = new SwerveSubsystem(this);
@@ -137,6 +144,7 @@ public class RobotContainer {
     this.commands.highPowerControlledShoot = new ControlledShoot(this, 0.85);
     this.commands.maxPowerControlledShoot = new ControlledShoot(this, 1);
     this.commands.driverInvert = new DriverInvert(this);
+    this.commands.lockSwerve = new LockSwerve(this);
 
     this.commands.switchVisionState = new SwitchVisionState(this);
 
@@ -176,6 +184,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("85PowerControlledShoot", new ControlledShoot(this, 0.85));
     NamedCommands.registerCommand("65PowerControlledShoot", new ControlledShoot(this, 0.65));
     NamedCommands.registerCommand("75PowerControlledShoot", new ControlledShoot(this, 0.75));
+    NamedCommands.registerCommand("85PowerControlledGetToSpeed", new ControlledGetToSpeed(this, 0.85));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -236,6 +245,9 @@ public class RobotContainer {
     
     // toggle vision
     this.settings.operatorSettings.toggleVisionButton.onTrue(this.commands.toggleVision);
+
+    //lock swerve
+    this.settings.driverSettings.lockSwerveButton.whileTrue(this.commands.lockSwerve);
   }
 
   /**

@@ -37,7 +37,7 @@ public class AutoShoot extends Command {
 
     addRequirements(feeder, shooter);
 
-    hubRotation = new Rotation2d(0.0, 0.0);
+    hubRotation = new Rotation2d(0);
   }
 
   @Override
