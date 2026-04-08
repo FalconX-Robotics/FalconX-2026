@@ -119,7 +119,7 @@ public class RobotContainer {
     // Initialize the logging module
     Util.setStartTime(LocalDateTime.now());
     DataLogManager.start(Filesystem.getOperatingDirectory() + "/logs", Util.getLogFilename());
-    DataLogManager.stop();
+    // DataLogManager.stop();
 
     // Initialize subsystems
     this.subsystems.swerve = new SwerveSubsystem(this);
@@ -215,8 +215,8 @@ public class RobotContainer {
     this.settings.driverSettings.slowmode.whileTrue(this.commands.slowDrive);
 
     // Bind climber buttons
-    this.settings.operatorSettings.climbUpButton.whileTrue(this.commands.climbUp);
-    this.settings.operatorSettings.climbDownButton.whileTrue(this.commands.climbDown);
+    this.settings.driverSettings.climbUpButton.whileTrue(this.commands.climbUp);
+    this.settings.driverSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     // feeder button AND NOT shooter button -> intake
     this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
@@ -244,7 +244,7 @@ public class RobotContainer {
     this.settings.driverSettings.invertButton.onTrue(this.commands.driverInvert);
     
     // toggle vision
-    this.settings.operatorSettings.toggleVisionButton.onTrue(this.commands.toggleVision);
+    this.settings.driverSettings.toggleVisionButton.onTrue(this.commands.toggleVision);
 
     //lock swerve
     this.settings.driverSettings.lockSwerveButton.whileTrue(this.commands.lockSwerve);

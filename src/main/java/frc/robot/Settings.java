@@ -13,7 +13,17 @@ public class Settings {
       return driverController.getRightTriggerAxis() > 0.5;
     });
 
-    public final Trigger invertButton = driverController.leftBumper();
+    public final Trigger invertButton = driverController.back();
+
+    
+    public final Trigger climbUpButton = driverController.leftBumper();
+    public final Trigger climbDownButton = driverController.rightBumper();
+
+    public final Trigger toggleVisionButton = driverController.start();
+
+        
+    public final Trigger lockSwerveButton = driverController.povUp();
+
     
     // private final Optional <Alliance> alliance = DriverStation.getAlliance();
     
@@ -59,15 +69,12 @@ public class Settings {
     public final Trigger autoRotateButton = driverController.x();
     public final Trigger jiggleRobotButton = driverController.b();
 
-    public final Trigger lockSwerveButton = driverController.y();
   }
 
   /**
    * Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator)
    */
   public class OperatorSettings {
-    public final Trigger climbUpButton = operatorController.leftBumper();
-    public final Trigger climbDownButton = operatorController.rightBumper();
     public final Trigger shooterButton = operatorController.rightTrigger();
     public final Trigger feederButton = operatorController.leftTrigger();
 
@@ -76,7 +83,6 @@ public class Settings {
     public final Trigger highShootButton = operatorController.x();
     public final Trigger maxShootButton = operatorController.y();
 
-    public final Trigger toggleVisionButton = operatorController.start();
 
     public final Trigger autoShootButton = operatorController.leftStick();
 

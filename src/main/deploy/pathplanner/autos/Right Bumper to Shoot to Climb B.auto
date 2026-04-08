@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Right Bumper to Shoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Bumper to Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "85PowerControlledGetToSpeed"
+                }
+              }
+            ]
           }
         },
         {
