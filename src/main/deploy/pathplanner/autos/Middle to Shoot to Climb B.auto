@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Middle to Shoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle to Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "meduimPowerControlledGetToSpeed"
+                }
+              }
+            ]
           }
         },
         {

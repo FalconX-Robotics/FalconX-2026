@@ -185,6 +185,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("65PowerControlledShoot", new ControlledShoot(this, 0.65));
     NamedCommands.registerCommand("75PowerControlledShoot", new ControlledShoot(this, 0.75));
     NamedCommands.registerCommand("85PowerControlledGetToSpeed", new ControlledGetToSpeed(this, 0.85));
+    NamedCommands.registerCommand("meduimPowerControlledGetToSpeed", new ControlledGetToSpeed(this, 0.70));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);
@@ -219,14 +220,17 @@ public class RobotContainer {
     this.settings.driverSettings.climbDownButton.whileTrue(this.commands.climbDown);
 
     // feeder button AND NOT shooter button -> intake
-    this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
+    // this.settings.operatorSettings.feederButton.and(this.settings.operatorSettings.shooterButton.negate()).whileTrue(this.commands.intake);
     
     // shooter button AND feeder button -> keep from shooting
-    this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);
+    // this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton).whileTrue(this.commands.keepFromShooting);
 
     // shooter button AND NOT feeder button -> manual shoot
-    this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
+    // this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
 
+
+    //shooting for driver
+    this.settings.driverSettings.shooterButton.whileTrue(this.commands.manualShoot);
     // auto rotate and shoot
     this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
     this.settings.operatorSettings.autoShootButton.whileTrue(this.commands.autoShoot);

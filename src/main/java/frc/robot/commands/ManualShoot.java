@@ -9,6 +9,7 @@ import frc.robot.subsystems.Shooter;
 
 public class ManualShoot extends Command {
   private final Settings.OperatorSettings operatorSettings;
+  private final Settings.DriverSettings driverSettings;
   private final Feeder feeder;
   private final Shooter shooter;
 
@@ -16,6 +17,7 @@ public class ManualShoot extends Command {
     this.operatorSettings = robotContainer.settings.operatorSettings;
     this.feeder = robotContainer.subsystems.feeder;
     this.shooter = robotContainer.subsystems.shooter;
+    this.driverSettings = robotContainer.settings.driverSettings;
     
     super.addRequirements(this.feeder, this.shooter);
   }
@@ -23,7 +25,7 @@ public class ManualShoot extends Command {
   @Override
   public void execute() {
     // based on how far the trigger is pushed
-    final double value = this.operatorSettings.getRightTriggerAxis();
+    final double value = this.driverSettings.getLeftTriggerAxis();
     this.feeder.motor.set(-value * 1.2);
     this.shooter.motor.set(value);
   }

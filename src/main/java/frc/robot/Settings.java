@@ -24,6 +24,8 @@ public class Settings {
         
     public final Trigger lockSwerveButton = driverController.povUp();
 
+    public final Trigger shooterButton = driverController.leftTrigger();
+
     
     // private final Optional <Alliance> alliance = DriverStation.getAlliance();
     
@@ -65,6 +67,11 @@ public class Settings {
       return axis;
     }
 
+    
+    public double getLeftTriggerAxis() {
+      return MathUtil.applyDeadband(driverController.getLeftTriggerAxis(), 0.1);
+    }
+
 
     public final Trigger autoRotateButton = driverController.x();
     public final Trigger jiggleRobotButton = driverController.b();
@@ -75,7 +82,7 @@ public class Settings {
    * Controller bindings and such for controlling arm and arm adjacent parts (eg:intake and elevator)
    */
   public class OperatorSettings {
-    public final Trigger shooterButton = operatorController.rightTrigger();
+    
     public final Trigger feederButton = operatorController.leftTrigger();
 
     public final Trigger lowShootButton = operatorController.a();
