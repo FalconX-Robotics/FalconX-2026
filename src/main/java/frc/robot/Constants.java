@@ -27,7 +27,7 @@ public abstract class Constants {
   public static final double ROBOT_MASS = Util.poundsToKilos(98.6);
   public static final Matter CHASSIS = new Matter((new Translation3d(0, 0, 0)), Constants.ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED = Units.feetToMeters(10.0);
+  public static final double MAX_SPEED = Units.feetToMeters(15.0);
   public static final double MAX_ANGULAR_VELOCITY = 1 * Math.PI;
   public static final double CLAW_MASS = 0;
   public static final double CLAW_SPEED = 3;

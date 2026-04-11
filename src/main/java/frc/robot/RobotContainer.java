@@ -186,6 +186,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("75PowerControlledShoot", new ControlledShoot(this, 0.75));
     NamedCommands.registerCommand("85PowerControlledGetToSpeed", new ControlledGetToSpeed(this, 0.85));
     NamedCommands.registerCommand("meduimPowerControlledGetToSpeed", new ControlledGetToSpeed(this, 0.70));
+    NamedCommands.registerCommand("maxPowerControlledGetToSpeed", new ControlledGetToSpeed(this, 1.0));
  
     this.autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", this.autoChooser);

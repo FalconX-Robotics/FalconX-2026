@@ -46,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8321167883211682,
+      "waypointRelativePos": 0.9099756690997566,
       "rotationDegrees": 180.0
     }
   ],
@@ -85,16 +85,22 @@
         "y": 4.035
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.5361445783132535,
-      "maxWaypointRelativePos": 0.825301204819277,
+      "minWaypointRelativePos": 0.3313253012048191,
+      "maxWaypointRelativePos": 0.8072289156626503,
       "name": "Point Towards Zone"
     }
   ],
   "eventMarkers": [
     {
-      "name": "85PowerControlledShoot",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
+      "name": "maxPowerControlledGetToSpeed",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 0.33,
+      "command": null
+    },
+    {
+      "name": "maxPowerControlledShoot",
+      "waypointRelativePos": 0.33,
+      "endWaypointRelativePos": 0.81,
       "command": null
     }
   ],
