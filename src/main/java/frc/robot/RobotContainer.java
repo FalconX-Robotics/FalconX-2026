@@ -153,15 +153,15 @@ public class RobotContainer {
     this.commands.toggleVision = new ToggleVision(this);
     
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
-      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getLeftY(),
-      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getLeftX(),
-      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getRightX()
+      () -> (RobotContainer.atRecEvent ? 0.50 : 0.90) * -this.settings.driverSettings.getLeftY(),
+      () -> (RobotContainer.atRecEvent ? 0.50 : 0.90) * -this.settings.driverSettings.getLeftX(),
+      () -> (RobotContainer.atRecEvent ? 0.50 : 0.90) * -this.settings.driverSettings.getRightX()
     ));
 
     this.commands.slowDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
-      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getLeftY(),
-      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getLeftX(),
-      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getRightX()
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.5) * -this.settings.driverSettings.getLeftY(),
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.5) * -this.settings.driverSettings.getLeftX(),
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.5) * -this.settings.driverSettings.getRightX()
     ));
 
     this.subsystems.swerve.setupPathPlanner();
