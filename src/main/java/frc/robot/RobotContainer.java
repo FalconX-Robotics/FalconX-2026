@@ -50,6 +50,8 @@ import frc.robot.util.Util;
  */
 public class RobotContainer {
   public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+
+  public static final boolean atRecEvent = true;
   
   public static class Controllers {
     /**
@@ -151,25 +153,23 @@ public class RobotContainer {
     this.commands.toggleVision = new ToggleVision(this);
     
     this.commands.standardDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
-      () -> 0.90 * -this.settings.driverSettings.getLeftY(),
-      () -> 0.90 * -this.settings.driverSettings.getLeftX(),
-      () -> 0.90 * -this.settings.driverSettings.getRightX()
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getLeftY(),
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getLeftX(),
+      () -> (RobotContainer.atRecEvent ? 0.25 : 0.90) * -this.settings.driverSettings.getRightX()
     ));
 
     this.commands.slowDrive = new ParallelCommandGroup(this.subsystems.swerve.driveInputs(
-      () -> 0.5 * -this.settings.driverSettings.getLeftY(),
-      () -> 0.5 * -this.settings.driverSettings.getLeftX(),
-      () -> 0.5 * -this.settings.driverSettings.getRightX()
+      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getLeftY(),
+      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getLeftX(),
+      () -> (RobotContainer.atRecEvent ? 0.125 : 0.5) * -this.settings.driverSettings.getRightX()
     ));
 
-
-
     this.subsystems.swerve.setupPathPlanner();
+    
     NamedCommands.registerCommand("rotateToTarget", this.commands.rotateToTarget);
     NamedCommands.registerCommand("getToSpeed", this.commands.getToSpeed);
     NamedCommands.registerCommand("intake", this.commands.intake);
     NamedCommands.registerCommand("autoShoot", this.commands.autoShoot);
-    // NamedCommands.registerCommand("autoKeepFromShooting", this.commands.autoKeepFromShooting);
     NamedCommands.registerCommand("climbup", this.commands.climbUp);
     NamedCommands.registerCommand("climbdown", this.commands.climbDown);
     NamedCommands.registerCommand("autoShootIntoHub", this.commands.autoShootIntoHub);
@@ -229,9 +229,9 @@ public class RobotContainer {
     // shooter button AND NOT feeder button -> manual shoot
     // this.settings.operatorSettings.shooterButton.and(this.settings.operatorSettings.feederButton.negate()).whileTrue(this.commands.manualShoot);
 
-
     //shooting for driver
     this.settings.driverSettings.shooterButton.whileTrue(this.commands.manualShoot);
+    
     // auto rotate and shoot
     this.settings.driverSettings.autoRotateButton.whileTrue(this.commands.rotateToTarget);
     this.settings.operatorSettings.autoShootButton.whileTrue(this.commands.autoShoot);
